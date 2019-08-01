@@ -172,7 +172,7 @@ class Game:
                                 p2.update_score(p1.get_score())
                             elif p1.get_head() == p2.get_head():
                                 # todo
-                                # in the case of head on collision:
+                                # in the case of head on collision of snakes of the same length:
                                 # currently an arbitrarily chosen snake dies
                                 smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
                                 other = p1 if smaller == p2 else p2
