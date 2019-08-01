@@ -153,18 +153,31 @@ class Game:
         Checks whether two snakes have collided, if so, the colliding snake is pronounced dead.
         In head-on collision, the longer snake wins.
         """
+        # todo
+        # initiate new snake after death (with the previous score)?
         for p1 in self.get_players():
-            for p2 in self.get_players():
-                if p1 is not p2:
-                    if p1.alive() and p2.alive():
-                        if p1.get_head() in p2.get_location_set():
-                            p1.dead()
-                            p2.update_score(p1.get_score())
-                        elif p1.get_head() == p2.get_head():
-                            smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
-                            other = p1 if smaller == p2 else p2
-                            smaller.dead()
-                            other.update_score(smaller.get_score())
+            if p1.alive():
+                if p1.get_head() in p1.get_location_set():
+                    p1.dead()
+                    # todo
+                    # negative score
+                    break
+                for p2 in self.get_players():
+                    if p1 is not p2:
+                        if p2.alive():
+                            if p1.get_head() in p2.get_location_set():
+                                # todo
+                                # negative score to p1
+                                p1.dead()
+                                p2.update_score(p1.get_score())
+                            elif p1.get_head() == p2.get_head():
+                                # todo
+                                # in the case of head on collision:
+                                # currently an arbitrarily chosen snake dies
+                                smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
+                                other = p1 if smaller == p2 else p2
+                                smaller.dead()
+                                other.update_score(smaller.get_score())
 
     def update_board(self):
         """
