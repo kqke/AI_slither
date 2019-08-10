@@ -2,7 +2,7 @@ import numpy as np
 
 from players.base_player import BasePlayer
 from constants import *
-from utils.geo import l1_distance
+from utils import l1_distance
 
 
 class GreedyPlayer(BasePlayer):

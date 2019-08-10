@@ -7,6 +7,9 @@
 # search for todo s ...
 # if reaching end state - don't update cnn player
 
+from time import sleep
+from os import system, name
+
 import numpy as np
 from players.cnn_player import CNNPlayer
 from players.greedy_player import GreedyPlayer
@@ -14,9 +17,7 @@ from players.random_player import RandomPlayer
 from players.manual_player import ManualPlayer
 from constants import *
 from config import *
-from time import sleep
-from os import system, name
-
+from utils import sample_bool_matrix
 
 SCORE_MULTIPLIER = 2
 DIRECTION = 6
@@ -25,7 +26,6 @@ HEAD_POS = 4
 LOCATION = 3
 TAIL_POS = 2
 IN_PLAY = 1
-SCORE = 0
 
 
 def clear():
@@ -64,7 +64,7 @@ class Game:
         for player in players:
             n = players[player]
             for k in range(n):
-                head = np.random.choice(np.where(self._state == 0))
+                head = sample_bool_matrix(self._state == FREE_SQUARE)
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
                 elif player == GREEDY_PLAYER:
@@ -91,7 +91,7 @@ class Game:
         The amount of food on the board in a given time is specified by FOOD_N.
         """
         if len(self._food) < FOOD_N:
-            new_food = np.random.choice(np.where(self._state == 0))
+            new_food = sample_bool_matrix(self._state == FREE_SQUARE)
             self._food.add(new_food)
         for food in self._food:
             self._state[food] = FOOD
@@ -201,7 +201,7 @@ class Game:
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
         n_x, n_y = self.get_next_location(player.get_head(), direction)
-        player.move((n_x, n_y), food)
+        player.move((n_x, n_y))
 
     def get_state(self):
         """
