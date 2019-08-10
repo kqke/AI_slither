@@ -111,7 +111,7 @@ class CNNPlayer(BasePlayer):
         aligned_state = self.align_state(game.get_state())
         model_input = np.zeros(self.input_shape)
         model_input[:, :, 0] = aligned_state == self.pid  # body
-        model_input[:, :, 1] = aligned_state == -self.pid  # head
+        model_input[:, :, 1] = aligned_state == game.get_head_mark(self.pid)  # head
         model_input[:, :, 2] = aligned_state == FOOD
         # model_input[:, :, 3] = -1  # todo other players
         model_input = model_input[np.newaxis, :]

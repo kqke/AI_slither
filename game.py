@@ -151,14 +151,19 @@ class Game:
         In head-on collision, the longer snake wins.
         """
         for p1 in self.get_players():
+            # self collision
             if p1.get_head() in p1.get_location_set():
                 self._dead.append(p1)
                 break
+            # 2 players collision
             for p2 in self.get_players():
                 if p1 is not p2:
+                    # head to body collision
                     if p1.get_head() in p2.get_location_set():
                         self._dead.append(p1)
-                        p2.update_score(p1.get_score())
+                        if SCORE_KILL:
+                            p2.update_score(p1.get_score())
+                    # head to head collision
                     elif p1.get_head() == p2.get_head():
                         # todo
                         # in the case of head on collision of snakes of the same length:
@@ -166,7 +171,8 @@ class Game:
                         smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
                         other = p1 if smaller == p2 else p2
                         self._dead.append(smaller)
-                        other.update_score(smaller.get_score())
+                        if SCORE_KILL:
+                            other.update_score(smaller.get_score())
 
     def update_board(self):
         """
@@ -182,6 +188,7 @@ class Game:
 
     def update_dead(self):
         for dead in self._dead:
+            print("{} is dead!".format(dead.get_id()))  # todo verbose
             new_head = sample_bool_matrix(self._state)
             dead.dead(new_head)
             self._state[new_head] = self.get_head_mark(dead.get_id())
@@ -204,6 +211,7 @@ class Game:
         n_y, n_x = self.get_next_location(player.get_head(), direction)
         player.update_leftover(food)
         new_loc = (n_y, n_x)
+        print("{}: {} -> {} ({})".format(player.get_id(), player.get_head(), new_loc, direction))  # todo verbose
         player.move(new_loc)
 
     def get_state(self):
@@ -291,13 +299,13 @@ class Game:
         y, x = loc
         n_y, n_x = y, x
         if direction == UP:
-            n_x = (x - 1) % self._h
+            n_y = (y - 1) % self._h
         elif direction == DOWN:
-            n_x = (x + 1) % self._h
+            n_y = (y + 1) % self._h
         elif direction == RIGHT:
-            n_y = (y + 1) % self._w
+            n_x = (x + 1) % self._w
         elif direction == LEFT:
-            n_y = (y - 1) % self._w
+            n_x = (x - 1) % self._w
         # else:
         #     assert 0
 
