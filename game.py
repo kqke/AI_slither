@@ -18,6 +18,7 @@ from players.manual_player import ManualPlayer
 from constants import *
 from config import *
 from utils import sample_bool_matrix
+from pygame_snake import play_gui
 
 SCORE_MULTIPLIER = 2
 DIRECTION = 6
@@ -101,6 +102,9 @@ class Game:
         Runs the game for max_turns (specified in constructor) turns.
         """
         i = 0
+        if PYGAME:
+            play_gui(self)
+            pass
         while i < turns:
             if DISPLAY:
                 print(self)
