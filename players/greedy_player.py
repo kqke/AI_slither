@@ -30,7 +30,7 @@ class GreedyPlayer(BasePlayer):
             action_loc = game.get_next_location(self.head, action_direction)
 
             # avoid obvious collisions
-            if state[action_loc] in [FOOD, FREE_SQUARE]:
+            if state[action_loc] in [FOOD_MARK, FREE_SQUARE_MARK]:
                 dist = l1_distance(min_food, action_loc)
             else:  # snake's body or another snake
                 dist = float("inf")
