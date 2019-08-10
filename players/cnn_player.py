@@ -9,6 +9,7 @@ import os
 from players.base_player import BasePlayer
 from constants import *
 from config import *
+from utils import get_greedy_action
 
 DIRECTION_TO_N_ROT90 = {
     UP: 0,
@@ -53,9 +54,15 @@ class CNNPlayer(BasePlayer):
             action_index = np.argmax(q_values)
         self.action_index = action_index
         action = ACTIONS[action_index]
-        return action
+        # return action  # todo tmp
+
+        greedy_action = get_greedy_action(game, self.head, self.direction)
+        return greedy_action
 
     def post_action(self, game):
+        if not TRAIN_MODEL:
+            return
+
         cur_state = self.extract_model_input(game)
         reward = self.get_score() - self.prev_score
         sample = (self.prev_state, self.action_index, reward, cur_state)
@@ -74,14 +81,14 @@ class CNNPlayer(BasePlayer):
                 y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
 
             loss = self.model.train_on_batch(x, y)
-            # todo rm
-            print("loss = {:.3f}".format(loss))
-            # todo rm end
             self.batch = []
             self.n_batches += 1
 
             if SAVE_MODEL:
-                if self.n_batches % SAVE_MODEL_ITERATIONS == 0:
+                if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
+                    # todo rm
+                    print("loss = {:.3f}".format(loss))
+                    # todo rm end
                     print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
                     model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
                     self.model.save(os.path.join(MODELS_DIR, model_fn))
@@ -89,9 +96,9 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(16, (3, 3), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Convolution2D(8, (2, 2), strides=(2, 2), input_shape=self.input_shape))
         model.add(Activation("relu"))
-        model.add(Convolution2D(16, (3, 3), strides=(1, 1)))
+        model.add(Convolution2D(8, (2, 2), strides=(2, 2)))
         model.add(Activation("relu"))
         model.add(Flatten())
         model.add(Dense(64))

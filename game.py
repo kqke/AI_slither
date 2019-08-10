@@ -91,7 +91,7 @@ class Game:
         Fills the board with food tokens.
         The amount of food on the board in a given time is specified by FOOD_N.
         """
-        if len(self._food) < FOOD_N:
+        if len(self._food) < N_FOOD:
             new_food = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
             self._food.add(new_food)
         for food in self._food:
@@ -107,8 +107,23 @@ class Game:
                 print(self)
                 sleep(RENDER_DELAY)
                 # clear()  # todo
-            self.play_turn()
+            else:
+                if i % NO_DISPLAY_ITERATION_SUMMARY == 0:
+                    print("{} iters".format(i))
+                    ret = ""
+                    for pid, player in self._players_dict.items():
+                        t = [str(pid), player.get_type(),
+                             SCORE_STR, str(player.get_score())]
+                        left_over = self._w - (sum([len(i) for i in t]) + 2)
+                        ret += " ".join(t[:2])
+                        ret += " " * left_over
+                        ret += " ".join(t[2:])
+                        ret += "\n"
+                    print(ret)
+
             i += 1
+            self.play_turn()
+
 
     def play_turn(self):
         """
@@ -142,7 +157,7 @@ class Game:
         :return:
         """
         if player.get_head() in self._food:
-            player.update_score(FOOD_PRIZE)
+            player.update_score(SCORE_FOOD)
             self._food.remove(player.get_head())
             player.update_leftover(1)
 
@@ -162,8 +177,7 @@ class Game:
                     # head to body collision
                     if p1.get_head() in p2.get_location_set():
                         self._dead.append(p1)
-                        if SCORE_KILL:
-                            p2.update_score(p1.get_score())
+                        p2.update_score(SCORE_KILLING)
                     # head to head collision
                     elif p1.get_head() == p2.get_head():
                         # todo
@@ -172,8 +186,7 @@ class Game:
                         smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
                         other = p1 if smaller == p2 else p2
                         self._dead.append(smaller)
-                        if SCORE_KILL:
-                            other.update_score(smaller.get_score())
+                        other.update_score(SCORE_KILLING)
 
     def update_board(self):
         """
@@ -264,7 +277,7 @@ class Game:
             ret += " ".join(t[:2])
             ret += " " * left_over
             ret += " ".join(t[2:])
-            ret += "\n\n\n"
+            ret += "\n"
 
         return ret
 
