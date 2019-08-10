@@ -52,8 +52,8 @@ class Game:
         self._turn_number = 0
         self._dead = []
         self.init_players(players)
-        self.update_food()
         self.update_board()
+        self.update_food()
 
     def init_players(self, players):
         """
@@ -100,12 +100,14 @@ class Game:
         """
         Runs the game for max_turns (specified in constructor) turns.
         """
-        while self._turn_number < turns:
+        i = 0
+        while i < turns:
             if DISPLAY:
                 print(self)
                 sleep(RENDER_DELAY)
                 # clear()  # todo
             self.play_turn()
+            i += 1
 
     def play_turn(self):
         """
@@ -154,18 +156,17 @@ class Game:
                 break
             for p2 in self.get_players():
                 if p1 is not p2:
-                    if p2.alive():
-                        if p1.get_head() in p2.get_location_set():
-                            self._dead.append(p1)
-                            p2.update_score(p1.get_score())
-                        elif p1.get_head() == p2.get_head():
-                            # todo
-                            # in the case of head on collision of snakes of the same length:
-                            # currently an arbitrarily chosen snake dies
-                            smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
-                            other = p1 if smaller == p2 else p2
-                            self._dead.append(smaller)
-                            other.update_score(smaller.get_score())
+                    if p1.get_head() in p2.get_location_set():
+                        self._dead.append(p1)
+                        p2.update_score(p1.get_score())
+                    elif p1.get_head() == p2.get_head():
+                        # todo
+                        # in the case of head on collision of snakes of the same length:
+                        # currently an arbitrarily chosen snake dies
+                        smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
+                        other = p1 if smaller == p2 else p2
+                        self._dead.append(smaller)
+                        other.update_score(smaller.get_score())
 
     def update_board(self):
         """
@@ -201,6 +202,7 @@ class Game:
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
         n_x, n_y = self.get_next_location(player.get_head(), direction)
+        player.update_leftover(food)
         player.move((n_x, n_y))
 
     def get_state(self):
