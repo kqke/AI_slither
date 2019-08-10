@@ -182,7 +182,7 @@ class Game:
 
     def update_dead(self):
         for dead in self._dead:
-            new_head = np.random.choice(np.where(self._state == 0))
+            new_head = sample_bool_matrix(self._state)
             dead.dead(new_head)
             self._state[new_head] = - dead.get_id()
         self._dead = []
