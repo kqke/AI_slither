@@ -6,11 +6,12 @@
 # x corresponds to width and y to height (stick with this convention - o.w. prone to bugs)
 # search for todo s ...
 # if reaching end state - don't update cnn player
+# check if CNN can handle width != height, maybe enforce width = height
 
 from time import sleep
 from os import system, name
-
 import numpy as np
+
 from players.cnn_player import CNNPlayer
 from players.greedy_player import GreedyPlayer
 from players.random_player import RandomPlayer
@@ -46,7 +47,7 @@ class Game:
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
         self._h, self._w = height, width
-        self._state = np.full((height, width), FREE_SQUARE)
+        self._state = np.full((height, width), FREE_SQUARE_MARK)
         self._check = self._state.copy()
         self._players_dict = dict()
         self._food = set()
@@ -65,7 +66,7 @@ class Game:
         for player in players:
             n = players[player]
             for k in range(n):
-                head = sample_bool_matrix(self._state == FREE_SQUARE)
+                head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
                 elif player == GREEDY_PLAYER:
@@ -91,11 +92,11 @@ class Game:
         Fills the board with food tokens.
         The amount of food on the board in a given time is specified by FOOD_N.
         """
-        if len(self._food) < FOOD_N:
-            new_food = sample_bool_matrix(self._state == FREE_SQUARE)
+        if len(self._food) < N_FOOD:
+            new_food = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
             self._food.add(new_food)
         for food in self._food:
-            self._state[food] = FOOD
+            self._state[food] = FOOD_MARK
 
     def run(self, turns):
         """
@@ -110,8 +111,23 @@ class Game:
                 print(self)
                 sleep(RENDER_DELAY)
                 # clear()  # todo
-            self.play_turn()
+            else:
+                if i % NO_DISPLAY_ITERATION_SUMMARY == 0:
+                    print("{} iters".format(i))
+                    ret = ""
+                    for pid, player in self._players_dict.items():
+                        t = [str(pid), player.get_type(),
+                             SCORE_STR, str(player.get_score())]
+                        left_over = self._w - (sum([len(i) for i in t]) + 2)
+                        ret += " ".join(t[:2])
+                        ret += " " * left_over
+                        ret += " ".join(t[2:])
+                        ret += "\n"
+                    print(ret)
+
             i += 1
+            self.play_turn()
+
 
     def play_turn(self):
         """
@@ -135,7 +151,8 @@ class Game:
         Move each player to its next position.
         """
         for player in self.get_players():
-            self.do_action(player, self.check_food(player))
+            self.do_action(player)
+            self.check_food(player)
 
     def check_food(self, player):
         """
@@ -144,10 +161,9 @@ class Game:
         :return:
         """
         if player.get_head() in self._food:
-            player.update_score(FOOD_PRIZE)
+            player.update_score(SCORE_FOOD)
             self._food.remove(player.get_head())
-            return 1
-        return 0
+            player.update_leftover(1)
 
     def check_collisions(self):
         """
@@ -155,14 +171,18 @@ class Game:
         In head-on collision, the longer snake wins.
         """
         for p1 in self.get_players():
+            # self collision
             if p1.get_head() in p1.get_location_set():
                 self._dead.append(p1)
                 break
+            # 2 players collision
             for p2 in self.get_players():
                 if p1 is not p2:
+                    # head to body collision
                     if p1.get_head() in p2.get_location_set():
                         self._dead.append(p1)
-                        p2.update_score(p1.get_score())
+                        p2.update_score(SCORE_KILLING)
+                    # head to head collision
                     elif p1.get_head() == p2.get_head():
                         # todo
                         # in the case of head on collision of snakes of the same length:
@@ -170,13 +190,13 @@ class Game:
                         smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
                         other = p1 if smaller == p2 else p2
                         self._dead.append(smaller)
-                        other.update_score(smaller.get_score())
+                        other.update_score(SCORE_KILLING)
 
     def update_board(self):
         """
         Generates a numpy array corresponding to the current game state.
         """
-        self._state = np.full((self._h, self._w), FREE_SQUARE)
+        self._state = np.full((self._h, self._w), FREE_SQUARE_MARK)
         for pid, player in self._players_dict.items():
             if player not in self._dead:
                 for loc in player.get_locations():
@@ -186,7 +206,8 @@ class Game:
 
     def update_dead(self):
         for dead in self._dead:
-            new_head = sample_bool_matrix(self._state)
+            # print("{} is dead!".format(dead.get_id()))  # todo verbose
+            new_head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
             dead.dead(new_head)
             self._state[new_head] = self.get_head_mark(dead.get_id())
         self._dead = []
@@ -195,19 +216,18 @@ class Game:
         for player in self.get_players():
             player.post_action(self)
 
-    def do_action(self, player, food):
+    def do_action(self, player):
         """
         Advances a player according to its action.
         :param player: The player.
-        :param food: Whether it got a food token in the previous round.
         """
         action = player.get_action(self)
 
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
         n_y, n_x = self.get_next_location(player.get_head(), direction)
-        player.update_leftover(food)
         new_loc = (n_y, n_x)
+        # print("{}: {} -> {} ({})".format(player.get_id(), player.get_head(), new_loc, direction))  # todo verbose
         player.move(new_loc)
 
     def get_state(self):
@@ -224,7 +244,9 @@ class Game:
         """
         String representation of the current game state.
         """
-        ret = " "
+        ret = ""
+        ret += "{} iters\n".format(self._turn_number)
+        ret += " "
         ret += "_" * self._w
         ret += '\n'
         for i in range(self._h):
@@ -295,13 +317,13 @@ class Game:
         y, x = loc
         n_y, n_x = y, x
         if direction == UP:
-            n_x = (x - 1) % self._h
+            n_y = (y - 1) % self._h
         elif direction == DOWN:
-            n_x = (x + 1) % self._h
+            n_y = (y + 1) % self._h
         elif direction == RIGHT:
-            n_y = (y + 1) % self._w
+            n_x = (x + 1) % self._w
         elif direction == LEFT:
-            n_y = (y - 1) % self._w
+            n_x = (x - 1) % self._w
         # else:
         #     assert 0
 

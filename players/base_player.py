@@ -127,7 +127,7 @@ class BasePlayer:
         """
         Pronounce the snake dead.
         """
-        self.score = 0
+        self.score += SCORE_DEAD
         self.head = new_head
         self.locations = [self.head]
         self.leftover_counter = STARTING_LENGTH
