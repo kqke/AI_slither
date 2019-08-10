@@ -81,6 +81,9 @@ class Game:
     def get_players(self):
         return self._players_dict.values()
 
+    def get_food(self):
+        return self._food
+
     def update_food(self):
         """
         Fills the board with food tokens.
@@ -206,16 +209,7 @@ class Game:
 
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
-        x, y = player.get_head()
-        n_x, n_y = x, y
-        if direction == UP:
-            n_x = (x - 1) % self._h
-        elif direction == DOWN:
-            n_x = (x + 1) % self._h
-        elif direction == RIGHT:
-            n_y = (y + 1) % self._w
-        elif direction == LEFT:
-            n_y = (y - 1) % self._w
+        n_x, n_y = self.get_next_location(player.get_head(), direction)
         player.move((n_x, n_y), food)
 
     def get_state(self):
@@ -302,6 +296,23 @@ class Game:
                 return DOWN
             elif cur_direction == DOWN:
                 return RIGHT
+
+    def get_next_location(self, loc, direction):
+        x, y = loc
+        n_x, n_y = x, y
+        if direction == UP:
+            n_x = (x - 1) % self._h
+        elif direction == DOWN:
+            n_x = (x + 1) % self._h
+        elif direction == RIGHT:
+            n_y = (y + 1) % self._w
+        elif direction == LEFT:
+            n_y = (y - 1) % self._w
+        # else:
+        #     assert 0
+
+        next_loc = n_x, n_y
+        return next_loc
 
     # def check_enclosure(self):
     #     """
