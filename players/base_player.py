@@ -7,22 +7,19 @@ class BasePlayer:
     Player object that the game holds for each player.
     """
 
-    def __init__(self, pid, head):
+    def __init__(self, pid, head, leftover=STARTING_LENGTH):
         """
         Initiates a new GamePlayer object, identified by pid
         :param pid: Player identifier
         """
-        self.locations = []
-        # maintaining a set of locations reduces some complexity
-        # see the function move for explanation.
         self.locations_set = set()
         self.head = head
-        self.init_snake()
+        self.locations = [self.head]
         self.tail = self.locations[-1]
         self.direction = UP
-        self.is_alive = True
         self.pid = pid
         self.score = 0
+        self.leftover_counter = leftover
 
     @staticmethod
     def get_type():
@@ -40,29 +37,32 @@ class BasePlayer:
     def post_action(self, game):
         pass
 
-    def init_snake(self):
-        """
-        Initializes the starting position of the snake.
-        """
-        counter = 1
-        hx, hy = self.head
-        while counter < STARTING_LENGTH:
-            self.locations.append((hx + counter, hy))
-            counter += 1
-        self.locations_set = set(self.locations)
-        self.locations = [self.head] + self.locations
+    # probably not necessary
+    # def init_snake(self):
+    #     """
+    #     Initializes the starting position of the snake.
+    #     """
+    #     counter = 1
+    #     hx, hy = self.head
+    #     while counter < STARTING_LENGTH:
+    #         self.locations.append((hx + counter, hy))
+    #         counter += 1
+    #     self.locations_set = set(self.locations)
+    #     self.locations = [self.head] + self.locations
 
-    def move(self, new_pos, food):
+    def move(self, new_pos):
         """
         Advances the snake by one move.
         :param new_pos: New location of the head.
-        :param food: Whether the snake got a food token in the previous round.
         """
         # TODO
         # check if valid position
 
-        if not food:
+        if self.leftover_counter == 0:
             self.locations.pop()
+
+        else:
+            self.leftover_counter -= 1
 
         self.locations_set = set(self.locations)
 
@@ -116,18 +116,21 @@ class BasePlayer:
         """
         return self.tail
 
-    def alive(self):
-        """
-        Is the snake alive?
-        :return: True if yes, False otherwise.
-        """
-        return self.is_alive
+    # def alive(self):
+    #     """
+    #     Is the snake alive?
+    #     :return: True if yes, False otherwise.
+    #     """
+    #     return self.is_alive
 
-    def dead(self):
+    def dead(self, new_head):
         """
         Pronounce the snake dead.
         """
-        self.is_alive = False
+        self.score = 0
+        self.head = new_head
+        self.locations = [self.head]
+        self.leftover_counter = STARTING_LENGTH
 
     def get_score(self):
         """
@@ -153,6 +156,14 @@ class BasePlayer:
         :return: The id of the snake.
         """
         return self.pid
+
+    def update_leftover(self, n):
+        """
+        Add n to the length that the snake is yet to grow
+        :param n:
+        :return:
+        """
+        self.leftover_counter += n
 
     # def check_closed(self):
     #     """

@@ -50,6 +50,7 @@ class Game:
         self._players_dict = dict()
         self._food = set()
         self._turn_number = 0
+        self._dead = []
         self.init_players(players)
         self.update_food()
         self.update_board()
@@ -59,13 +60,11 @@ class Game:
         Factory method that initializes player instances.
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
-        num_players = sum(players.values())
-        i = np.floor(self._w / (num_players + 1))
         pid = 1
         for player in players:
             n = players[player]
             for k in range(n):
-                head = (self._h // 2, int(pid * i))
+                head = np.random.choice(np.where(self._state == 0))
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
                 elif player == GREEDY_PLAYER:
@@ -81,25 +80,18 @@ class Game:
     def get_players(self):
         return self._players_dict.values()
 
+    # TODO
+    # different kinds of food, eg. different scores, different resulting snake growth
     def update_food(self):
         """
         Fills the board with food tokens.
         The amount of food on the board in a given time is specified by FOOD_N.
         """
-        # TODO
-        # very very stupid impl.
         if len(self._food) < FOOD_N:
-            occupied = set()
-            for player in self.get_players():
-                occupied |= player.get_location_set()
-                occupied.add(player.get_head())
-            for i in range(len(self._food), FOOD_N):
-                x = np.random.choice(self._h)
-                y = np.random.choice(self._w)
-                while (x, y) in occupied:
-                    x = np.random.choice(self._h)
-                    y = np.random.choice(self._w)
-                self._food.add((x, y))
+            new_food = np.random.choice(np.where(self._state == 0))
+            self._food.add(new_food)
+        for food in self._food:
+            self._state[food] = FOOD
 
     def run(self, turns):
         """
@@ -120,8 +112,8 @@ class Game:
         self.move_players()
         self.check_collisions()
         # self.check_enclosure()
-        self.update_food()
         self.update_board()
+        self.update_food()
         self.post_turn()
         self._turn_number += 1
 
@@ -145,52 +137,51 @@ class Game:
         if player.get_head() in self._food:
             player.update_score(FOOD_PRIZE)
             self._food.remove(player.get_head())
-            return True
-        return False
+            return 1
+        return 0
 
     def check_collisions(self):
         """
         Checks whether two snakes have collided, if so, the colliding snake is pronounced dead.
         In head-on collision, the longer snake wins.
         """
-        # todo
-        # initiate new snake after death (with the previous score)?
         for p1 in self.get_players():
-            if p1.alive():
-                if p1.get_head() in p1.get_location_set():
-                    p1.dead()
-                    # todo
-                    # negative score
-                    break
-                for p2 in self.get_players():
-                    if p1 is not p2:
-                        if p2.alive():
-                            if p1.get_head() in p2.get_location_set():
-                                # todo
-                                # negative score to p1
-                                p1.dead()
-                                p2.update_score(p1.get_score())
-                            elif p1.get_head() == p2.get_head():
-                                # todo
-                                # in the case of head on collision of snakes of the same length:
-                                # currently an arbitrarily chosen snake dies
-                                smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
-                                other = p1 if smaller == p2 else p2
-                                smaller.dead()
-                                other.update_score(smaller.get_score())
+            if p1.get_head() in p1.get_location_set():
+                self._dead.append(p1)
+                break
+            for p2 in self.get_players():
+                if p1 is not p2:
+                    if p2.alive():
+                        if p1.get_head() in p2.get_location_set():
+                            self._dead.append(p1)
+                            p2.update_score(p1.get_score())
+                        elif p1.get_head() == p2.get_head():
+                            # todo
+                            # in the case of head on collision of snakes of the same length:
+                            # currently an arbitrarily chosen snake dies
+                            smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
+                            other = p1 if smaller == p2 else p2
+                            self._dead.append(smaller)
+                            other.update_score(smaller.get_score())
 
     def update_board(self):
         """
         Generates a numpy array corresponding to the current game state.
         """
         self._state = np.zeros((self._h, self._w))
-        for food in self._food:
-            self._state[food] = FOOD
         for pid, player in self._players_dict.items():
-            if player.alive():
+            if player not in self._dead:
                 for pos in player.get_locations():
                     self._state[pos] = pid
                 self._state[player.get_head()] = -pid
+        self.update_dead()
+
+    def update_dead(self):
+        for dead in self._dead:
+            new_head = np.random.choice(np.where(self._state == 0))
+            dead.dead(new_head)
+            self._state[new_head] = - dead.get_id()
+        self._dead = []
 
     def post_turn(self):
         for player in self.get_players():
