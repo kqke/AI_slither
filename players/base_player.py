@@ -50,10 +50,10 @@ class BasePlayer:
     #     self.locations_set = set(self.locations)
     #     self.locations = [self.head] + self.locations
 
-    def move(self, new_pos):
+    def move(self, new_loc):
         """
         Advances the snake by one move.
-        :param new_pos: New location of the head.
+        :param new_loc: New location of the head.
         """
         # TODO
         # check if valid position
@@ -66,9 +66,9 @@ class BasePlayer:
 
         self.locations_set = set(self.locations)
 
-        self.locations = [new_pos] + self.locations
+        self.locations = [new_loc] + self.locations
 
-        self.set_head(new_pos)
+        self.set_head(new_loc)
         self.set_tail(self.locations[-1])
 
     def get_location_set(self):

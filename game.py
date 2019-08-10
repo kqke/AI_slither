@@ -45,7 +45,7 @@ class Game:
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
         self._h, self._w = height, width
-        self._state = np.zeros((height, width))
+        self._state = np.full((height, width), FREE_SQUARE)
         self._check = self._state.copy()
         self._players_dict = dict()
         self._food = set()
@@ -172,19 +172,19 @@ class Game:
         """
         Generates a numpy array corresponding to the current game state.
         """
-        self._state = np.zeros((self._h, self._w))
+        self._state = np.full((self._h, self._w), FREE_SQUARE)
         for pid, player in self._players_dict.items():
             if player not in self._dead:
-                for pos in player.get_locations():
-                    self._state[pos] = pid
-                self._state[player.get_head()] = -pid
+                for loc in player.get_locations():
+                    self._state[loc] = pid
+                self._state[player.get_head()] = self.get_head_mark(pid)
         self.update_dead()
 
     def update_dead(self):
         for dead in self._dead:
             new_head = sample_bool_matrix(self._state)
             dead.dead(new_head)
-            self._state[new_head] = - dead.get_id()
+            self._state[new_head] = self.get_head_mark(dead.get_id())
         self._dead = []
 
     def post_turn(self):
@@ -201,9 +201,10 @@ class Game:
 
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
-        n_x, n_y = self.get_next_location(player.get_head(), direction)
+        n_y, n_x = self.get_next_location(player.get_head(), direction)
         player.update_leftover(food)
-        player.move((n_x, n_y))
+        new_loc = (n_y, n_x)
+        player.move(new_loc)
 
     def get_state(self):
         """
@@ -213,9 +214,6 @@ class Game:
         return self._state.copy()
 
     def score_func(self):
-        """
-        Barak?
-        """
         return self._turn_number * SCORE_MULTIPLIER
 
     def __str__(self):
@@ -261,7 +259,6 @@ class Game:
 
         return ret
 
-
     @staticmethod
     def convert_action_to_direction(action, cur_direction):
         """
@@ -291,8 +288,8 @@ class Game:
                 return RIGHT
 
     def get_next_location(self, loc, direction):
-        x, y = loc
-        n_x, n_y = x, y
+        y, x = loc
+        n_y, n_x = y, x
         if direction == UP:
             n_x = (x - 1) % self._h
         elif direction == DOWN:
@@ -304,8 +301,12 @@ class Game:
         # else:
         #     assert 0
 
-        next_loc = n_x, n_y
+        next_loc = n_y, n_x
         return next_loc
+
+    @staticmethod
+    def get_head_mark(pid):
+        return -pid
 
     # def check_enclosure(self):
     #     """
