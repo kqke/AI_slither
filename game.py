@@ -114,7 +114,6 @@ class Game:
         i = 0
         if PYGAME:
             play_gui(self)
-            pass
         while i < turns:
             if DISPLAY:
                 print(self)
