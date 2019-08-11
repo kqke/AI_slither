@@ -13,6 +13,7 @@ from os import system, name
 import numpy as np
 
 from players.cnn_player import CNNPlayer
+from players.nn_player import NNPlayer
 from players.greedy_player import GreedyPlayer
 from players.random_player import RandomPlayer
 from players.manual_player import ManualPlayer
@@ -69,6 +70,8 @@ class Game:
                 head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
+                if player == NN_PLAYER:
+                    self._players_dict[pid] = NNPlayer(pid, head)
                 elif player == GREEDY_PLAYER:
                     self._players_dict[pid] = GreedyPlayer(pid, head)
                 elif player == RANDOM_PLAYER:
@@ -84,6 +87,12 @@ class Game:
 
     def get_food(self):
         return self._food
+
+    def get_width(self):
+        return self._w
+
+    def get_height(self):
+        return self._h
 
     # TODO
     # different kinds of food, eg. different scores, different resulting snake growth
@@ -116,12 +125,7 @@ class Game:
                     print("{} iters".format(i))
                     ret = ""
                     for pid, player in self._players_dict.items():
-                        t = [str(pid), player.get_type(),
-                             SCORE_STR, str(player.get_score())]
-                        left_over = self._w - (sum([len(i) for i in t]) + 2)
-                        ret += " ".join(t[:2])
-                        ret += " " * left_over
-                        ret += " ".join(t[2:])
+                        ret += "{} {:10s} {:10d}".format(pid, player.get_type(), player.get_score())
                         ret += "\n"
                     print(ret)
 
@@ -197,11 +201,18 @@ class Game:
         Generates a numpy array corresponding to the current game state.
         """
         self._state = np.full((self._h, self._w), FREE_SQUARE_MARK)
+        # add player marks
         for pid, player in self._players_dict.items():
             if player not in self._dead:
                 for loc in player.get_locations():
                     self._state[loc] = pid
                 self._state[player.get_head()] = self.get_head_mark(pid)
+
+        # add food marks
+        for food in self._food:
+            self._state[food] = FOOD_MARK
+
+        # add new spawn snakes
         self.update_dead()
 
     def update_dead(self):

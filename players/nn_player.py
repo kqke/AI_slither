@@ -11,6 +11,7 @@ from constants import *
 from config import *
 from utils import get_greedy_action
 
+
 DIRECTION_TO_N_ROT90 = {
     UP: 0,
     RIGHT: 1,
@@ -19,10 +20,10 @@ DIRECTION_TO_N_ROT90 = {
 }
 
 
-class CNNPlayer(BasePlayer):
+class NNPlayer(BasePlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head)
-        self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
+        self.input_shape = (12,)
         self.model = self.build_model()
         self.prev_state = -1
         self.prev_score = -1
@@ -37,7 +38,7 @@ class CNNPlayer(BasePlayer):
 
     @staticmethod
     def get_type():
-        return CNN_PLAYER
+        return NN_PLAYER
 
     def pre_action(self, game):
         self.prev_state = self.extract_model_input(game)
@@ -54,6 +55,12 @@ class CNNPlayer(BasePlayer):
             action_index = np.argmax(q_values)
         self.action_index = action_index
         action = ACTIONS[action_index]
+
+        print(game.get_state())
+        print(q_values)
+        print(self.extract_model_input(game))
+        print()
+
         return action
 
         # # todo tmp
@@ -98,13 +105,7 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(4, (2, 2), strides=(1, 1), input_shape=self.input_shape))
-        model.add(Activation("relu"))
-        # model.add(Convolution2D(4, (2, 2), strides=(1, 1)))
-        # model.add(Activation("relu"))
-        model.add(Flatten())
-        model.add(Dense(16))
-        model.add(Dense(N_ACTIONS))
+        model.add(Dense(N_ACTIONS, input_shape=self.input_shape))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
         # print(model.summary())  # todo
@@ -118,75 +119,30 @@ class CNNPlayer(BasePlayer):
 
     def extract_model_input(self, game):
         aligned_state = self.align_state(game.get_state())
-        model_input = np.zeros(self.input_shape)
-        model_input[:, :, 0] = aligned_state == FOOD_MARK  # food
-        model_input[:, :, 1] = aligned_state == game.get_head_mark(self.pid)  # self head
-        # model_input[:, :, 2] = aligned_state == self.pid  # self body
-        # model_input[:, :, 3] = (aligned_state != FREE_SQUARE_MARK) & \
-        #                        (aligned_state != FOOD_MARK) & \
-        #                        (aligned_state != self.pid) & \
-        #                        (aligned_state != game.get_head_mark(self.pid))  # other players
+        y, x = np.where(aligned_state == game.get_head_mark(self.pid))
+        assert x.shape == y.shape == (1,)
+        y = y[0]
+        x = x[0]
+
+        model_input = np.zeros(self.input_shape[0])
+
+        model_input[0] = aligned_state[(x-1) % game.get_width(), y] == FREE_SQUARE_MARK
+        model_input[1] = aligned_state[x, (y-1) % game.get_height()] == FREE_SQUARE_MARK
+        model_input[2] = aligned_state[(x+1) % game.get_width(), y] == FREE_SQUARE_MARK
+
+        model_input[3] = aligned_state[(x-2) % game.get_width(), y] == FREE_SQUARE_MARK
+        model_input[4] = aligned_state[x, (y-2) % game.get_height()] == FREE_SQUARE_MARK
+        model_input[5] = aligned_state[(x+2) % game.get_width(), y] == FREE_SQUARE_MARK
+
+        model_input[6] = aligned_state[(x-1) % game.get_width(), y] == FOOD_MARK
+        model_input[7] = aligned_state[x, (y-1) % game.get_height()] == FOOD_MARK
+        model_input[8] = aligned_state[(x+1) % game.get_width(), y] == FOOD_MARK
+
+        model_input[9] = aligned_state[(x-2) % game.get_width(), y] == FOOD_MARK
+        model_input[10] = aligned_state[x, (y-2) % game.get_height()] == FOOD_MARK
+        model_input[11] = aligned_state[(x+2) % game.get_width(), y] == FOOD_MARK
+
         model_input = model_input[np.newaxis, :]
+
         return model_input
 
-
-
-# def stack_image(game_image):
-#     #Make image black and white
-#     x_t = skimage.color.rgb2gray(game_image)
-#     #Resize the image to 80x80 pixels
-#     x_t = skimage.transform.resize(x_t,(80,80))
-#     #Change the intensity of colors, maximizing the intensities.
-#     x_t = skimage.exposure.rescale_intensity(x_t,out_range=(0,255))
-#     # Stacking 2 images for the agent to get understanding of speed
-#     s_t = np.stack((x_t,x_t),axis=2)
-#     # Reshape to make keras like it
-#     s_t = s_t.reshape(1, s_t.shape[0], s_t.shape[1], s_t.shape[2])
-#     return s_t
-#
-# def train_network(model):
-#     game_state = game.Game() #Starting up a game
-#     game_state.set_start_state()
-#     game_image,score,game_lost = game_state.run(0) #The game is started but no action is performed
-#     s_t = stack_image(game_image)
-#     terminal = False
-#     t = 0
-#     d = []
-#     nb_epoch = 0
-#     while(True):
-#         loss = 0
-#         Q_sa = 0
-#         action_index = 4
-#         r_t = 0
-#         a_t = 'no nothing'
-#         if terminal:
-#             game_state.set_start_state()
-#         if t % NB_FRAMES == 0:
-#             if random.random() <= EPSILON:
-#                 action_index = random.randrange(NB_ACTIONS)
-#                 a_t = GAME_INPUT[action_index]
-#             else:
-#                 action_index = np.argmax(model.predict(s_t))
-#                 a_t = GAME_INPUT[action_index]
-#         #run the selected action and observed next state and reward
-# 	    x_t1_colored, r_t, terminal = game_state.run(a_t)
-# 	    s_t1 = stack_image(x_t1_colored)
-# 	    d.append((s_t, a_t, r_t, s_t1))
-#
-# if len(d)==BATCH:
-# 	        inputs = np.zeros((BATCH, s_t.shape[1], s_t.shape[2], s_t.shape[3]))
-# 	        targets = np.zeros((BATCH, NB_ACTIONS))
-# 	        i = 0
-# 	        for s,a,r,s_pred in d:
-# 	            inputs[i:i + 1] = s
-# 	            if r < 0:
-# 	                targets[i ,a] = r
-# 	            else:
-# 	                Q_sa = model.predict(s_pred)
-# 	                targets[i ,a] = r + GAMMA * np.max(Q_sa)
-# 	            i+=1
-# 	        loss += model.train_on_batch(inputs,targets)
-# 	        d.clear()
-# 	        #Exploration vs Exploitation
-# 	        if EPSILON > FINAL_EPSILON:
-# 	            EPSILON -= EPSILON/500

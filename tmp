@@ -1,0 +1,1547 @@
+/homes/roeec/envs/my_env/bin/python3.4 /homes/roeec/work/temp/snake/main.py
+Using TensorFlow backend.
+pygame 1.9.6
+Hello from the pygame community. https://www.pygame.org/contribute.html
+WARNING:tensorflow:From /homes/roeec/envs/my_env/lib/python3.4/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+2019-08-11 21:52:07.319193: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2019-08-11 21:52:07.322230: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3408310000 Hz
+2019-08-11 21:52:07.322452: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x335cae0 executing computations on platform Host. Devices:
+2019-08-11 21:52:07.322461: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+0 iters
+1 GREEDY              0
+2 RANDOM              0
+3 CNN                 0
+
+WARNING:tensorflow:From /homes/roeec/envs/my_env/lib/python3.4/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+20000 iters
+1 GREEDY           6233
+2 RANDOM          -6196
+3 CNN              5468
+
+loss = 0.087
+40000 iters
+1 GREEDY          11881
+2 RANDOM         -12831
+3 CNN             12046
+
+60000 iters
+1 GREEDY          17653
+2 RANDOM         -19361
+3 CNN             18343
+
+loss = 3.382
+80000 iters
+1 GREEDY          23733
+2 RANDOM         -26080
+3 CNN             24931
+
+loss = 1.209
+saving model: 2019-08-11-21-53-34
+100000 iters
+1 GREEDY          29687
+2 RANDOM         -32046
+3 CNN             30478
+
+120000 iters
+1 GREEDY          35633
+2 RANDOM         -38502
+3 CNN             36604
+
+loss = 1.056
+140000 iters
+1 GREEDY          41027
+2 RANDOM         -44708
+3 CNN             42898
+
+loss = 0.067
+160000 iters
+1 GREEDY          46716
+2 RANDOM         -50673
+3 CNN             48821
+
+180000 iters
+1 GREEDY          52701
+2 RANDOM         -57263
+3 CNN             54951
+
+loss = 0.074
+saving model: 2019-08-11-21-55-04
+200000 iters
+1 GREEDY          58548
+2 RANDOM         -63887
+3 CNN             61414
+
+220000 iters
+1 GREEDY          64764
+2 RANDOM         -71048
+3 CNN             67937
+
+loss = 0.047
+240000 iters
+1 GREEDY          70270
+2 RANDOM         -77256
+3 CNN             74167
+
+loss = 0.051
+260000 iters
+1 GREEDY          75930
+2 RANDOM         -83873
+3 CNN             80671
+
+280000 iters
+1 GREEDY          81843
+2 RANDOM         -90685
+3 CNN             87052
+
+loss = 1.048
+saving model: 2019-08-11-21-56-32
+300000 iters
+1 GREEDY          87893
+2 RANDOM         -97141
+3 CNN             93110
+
+loss = 4.281
+320000 iters
+1 GREEDY          93810
+2 RANDOM        -103786
+3 CNN             99610
+
+340000 iters
+1 GREEDY          99934
+2 RANDOM        -110591
+3 CNN            106010
+
+loss = 1.072
+360000 iters
+1 GREEDY         105411
+2 RANDOM        -116053
+3 CNN            111831
+
+380000 iters
+1 GREEDY         111390
+2 RANDOM        -122979
+3 CNN            118327
+
+loss = 4.526
+saving model: 2019-08-11-21-58-01
+400000 iters
+1 GREEDY         117662
+2 RANDOM        -129551
+3 CNN            124307
+
+loss = 1.004
+420000 iters
+1 GREEDY         123007
+2 RANDOM        -135727
+3 CNN            130725
+
+440000 iters
+1 GREEDY         129238
+2 RANDOM        -142205
+3 CNN            136389
+
+loss = 2.403
+460000 iters
+1 GREEDY         135713
+2 RANDOM        -148704
+3 CNN            141946
+
+loss = 1.169
+saving model: 2019-08-11-21-59-31
+480000 iters
+1 GREEDY         141358
+2 RANDOM        -155286
+3 CNN            148560
+
+500000 iters
+1 GREEDY         147465
+2 RANDOM        -161766
+3 CNN            154429
+
+loss = 1.052
+520000 iters
+1 GREEDY         153349
+2 RANDOM        -168004
+3 CNN            160360
+
+540000 iters
+1 GREEDY         159475
+2 RANDOM        -175083
+3 CNN            167071
+
+loss = 1.912
+560000 iters
+1 GREEDY         165013
+2 RANDOM        -181428
+3 CNN            173422
+
+loss = 4.351
+saving model: 2019-08-11-22-00-58
+580000 iters
+1 GREEDY         170850
+2 RANDOM        -187586
+3 CNN            179435
+
+600000 iters
+1 GREEDY         177042
+2 RANDOM        -194340
+3 CNN            185584
+
+loss = 0.038
+620000 iters
+1 GREEDY         183344
+2 RANDOM        -201073
+3 CNN            191677
+
+loss = 1.037
+640000 iters
+1 GREEDY         189217
+2 RANDOM        -207388
+3 CNN            197667
+
+660000 iters
+1 GREEDY         195351
+2 RANDOM        -214440
+3 CNN            204173
+
+loss = 0.037
+saving model: 2019-08-11-22-02-26
+680000 iters
+1 GREEDY         201616
+2 RANDOM        -221511
+3 CNN            210611
+
+700000 iters
+1 GREEDY         207290
+2 RANDOM        -227217
+3 CNN            216282
+
+loss = 1.051
+720000 iters
+1 GREEDY         213281
+2 RANDOM        -234046
+3 CNN            222558
+
+loss = 0.066
+740000 iters
+1 GREEDY         219867
+2 RANDOM        -241795
+3 CNN            229071
+
+760000 iters
+1 GREEDY         225614
+2 RANDOM        -248411
+3 CNN            235580
+
+loss = 0.036
+saving model: 2019-08-11-22-03-54
+780000 iters
+1 GREEDY         231673
+2 RANDOM        -254575
+3 CNN            241132
+
+loss = 0.040
+800000 iters
+1 GREEDY         237473
+2 RANDOM        -260826
+3 CNN            247195
+
+820000 iters
+1 GREEDY         242992
+2 RANDOM        -267331
+3 CNN            253557
+
+loss = 2.076
+840000 iters
+1 GREEDY         248518
+2 RANDOM        -274341
+3 CNN            260588
+
+860000 iters
+1 GREEDY         254805
+2 RANDOM        -280743
+3 CNN            266431
+
+loss = 2.163
+saving model: 2019-08-11-22-05-24
+880000 iters
+1 GREEDY         261164
+2 RANDOM        -288377
+3 CNN            273301
+
+loss = 0.918
+900000 iters
+1 GREEDY         266719
+2 RANDOM        -294495
+3 CNN            279413
+
+920000 iters
+1 GREEDY         272487
+2 RANDOM        -300519
+3 CNN            285189
+
+loss = 1.005
+940000 iters
+1 GREEDY         278565
+2 RANDOM        -307180
+3 CNN            291267
+
+loss = 8.240
+saving model: 2019-08-11-22-06-52
+960000 iters
+1 GREEDY         284344
+2 RANDOM        -313578
+3 CNN            297452
+
+980000 iters
+1 GREEDY         290248
+2 RANDOM        -320341
+3 CNN            303945
+
+loss = 1.039
+1000000 iters
+1 GREEDY         295913
+2 RANDOM        -326712
+3 CNN            310290
+
+1020000 iters
+1 GREEDY         301841
+2 RANDOM        -333691
+3 CNN            317003
+
+loss = 4.119
+1040000 iters
+1 GREEDY         307840
+2 RANDOM        -340050
+3 CNN            323157
+
+loss = 0.983
+saving model: 2019-08-11-22-08-23
+1060000 iters
+1 GREEDY         313471
+2 RANDOM        -346584
+3 CNN            329408
+
+1080000 iters
+1 GREEDY         319072
+2 RANDOM        -352615
+3 CNN            335588
+
+loss = 0.059
+1100000 iters
+1 GREEDY         325060
+2 RANDOM        -358821
+3 CNN            341360
+
+loss = 1.314
+1120000 iters
+1 GREEDY         330030
+2 RANDOM        -364988
+3 CNN            348107
+
+1140000 iters
+1 GREEDY         335844
+2 RANDOM        -371240
+3 CNN            354268
+
+loss = 0.268
+saving model: 2019-08-11-22-09-52
+1160000 iters
+1 GREEDY         341836
+2 RANDOM        -377852
+3 CNN            360466
+
+1180000 iters
+1 GREEDY         348236
+2 RANDOM        -385013
+3 CNN            366937
+
+loss = 0.046
+1200000 iters
+1 GREEDY         354144
+2 RANDOM        -391799
+3 CNN            373282
+
+loss = 0.043
+1220000 iters
+1 GREEDY         359887
+2 RANDOM        -397832
+3 CNN            379153
+
+1240000 iters
+1 GREEDY         366049
+2 RANDOM        -404424
+3 CNN            385159
+
+loss = 4.827
+saving model: 2019-08-11-22-11-20
+1260000 iters
+1 GREEDY         371663
+2 RANDOM        -410228
+3 CNN            391058
+
+loss = 0.073
+1280000 iters
+1 GREEDY         377283
+2 RANDOM        -416678
+3 CNN            397185
+
+1300000 iters
+1 GREEDY         383171
+2 RANDOM        -423564
+3 CNN            403857
+
+loss = 4.401
+1320000 iters
+1 GREEDY         389051
+2 RANDOM        -430495
+3 CNN            410415
+
+1340000 iters
+1 GREEDY         395371
+2 RANDOM        -437311
+3 CNN            416574
+
+loss = 0.096
+saving model: 2019-08-11-22-12-48
+1360000 iters
+1 GREEDY         401763
+2 RANDOM        -444246
+3 CNN            422465
+
+loss = 0.043
+1380000 iters
+1 GREEDY         408012
+2 RANDOM        -450839
+3 CNN            428433
+
+1400000 iters
+1 GREEDY         413673
+2 RANDOM        -456829
+3 CNN            434394
+
+loss = 1.037
+1420000 iters
+1 GREEDY         419518
+2 RANDOM        -463413
+3 CNN            440610
+
+loss = 0.948
+saving model: 2019-08-11-22-14-20
+1440000 iters
+1 GREEDY         425586
+2 RANDOM        -470200
+3 CNN            446889
+
+1460000 iters
+1 GREEDY         431654
+2 RANDOM        -476652
+3 CNN            452845
+
+loss = 1.059
+1480000 iters
+1 GREEDY         437017
+2 RANDOM        -482918
+3 CNN            459237
+
+1500000 iters
+1 GREEDY         442339
+2 RANDOM        -488776
+3 CNN            465484
+
+loss = 1.673
+1520000 iters
+1 GREEDY         448861
+2 RANDOM        -496183
+3 CNN            471975
+
+loss = 0.075
+saving model: 2019-08-11-22-15-51
+1540000 iters
+1 GREEDY         454484
+2 RANDOM        -502479
+3 CNN            478171
+
+1560000 iters
+1 GREEDY         460356
+2 RANDOM        -508535
+3 CNN            484041
+
+loss = 1.058
+1580000 iters
+1 GREEDY         466359
+2 RANDOM        -514440
+3 CNN            489433
+
+loss = 5.821
+1600000 iters
+1 GREEDY         471785
+2 RANDOM        -520476
+3 CNN            495761
+
+1620000 iters
+1 GREEDY         477656
+2 RANDOM        -527088
+3 CNN            502245
+
+loss = 1.002
+saving model: 2019-08-11-22-17-18
+1640000 iters
+1 GREEDY         483027
+2 RANDOM        -533787
+3 CNN            509252
+
+1660000 iters
+1 GREEDY         489041
+2 RANDOM        -541007
+3 CNN            516100
+
+loss = 0.055
+1680000 iters
+1 GREEDY         494910
+2 RANDOM        -547191
+3 CNN            522126
+
+loss = 0.857
+1700000 iters
+1 GREEDY         500934
+2 RANDOM        -553917
+3 CNN            528191
+
+1720000 iters
+1 GREEDY         507040
+2 RANDOM        -561362
+3 CNN            535225
+
+loss = 7.970
+saving model: 2019-08-11-22-18-46
+1740000 iters
+1 GREEDY         513106
+2 RANDOM        -567757
+3 CNN            541074
+
+loss = 0.155
+1760000 iters
+1 GREEDY         518724
+2 RANDOM        -574053
+3 CNN            547318
+
+1780000 iters
+1 GREEDY         524785
+2 RANDOM        -580523
+3 CNN            553242
+
+loss = 3.269
+1800000 iters
+1 GREEDY         530774
+2 RANDOM        -587513
+3 CNN            559840
+
+1820000 iters
+1 GREEDY         537208
+2 RANDOM        -594878
+3 CNN            566329
+
+loss = 1.672
+saving model: 2019-08-11-22-20-14
+1840000 iters
+1 GREEDY         543034
+2 RANDOM        -601106
+3 CNN            572376
+
+loss = 0.335
+1860000 iters
+1 GREEDY         549139
+2 RANDOM        -607497
+3 CNN            578307
+
+1880000 iters
+1 GREEDY         554985
+2 RANDOM        -613916
+3 CNN            584323
+
+loss = 0.523
+1900000 iters
+1 GREEDY         560967
+2 RANDOM        -620949
+3 CNN            591002
+
+loss = 0.927
+saving model: 2019-08-11-22-21-46
+1920000 iters
+1 GREEDY         567390
+2 RANDOM        -628005
+3 CNN            597331
+
+1940000 iters
+1 GREEDY         573487
+2 RANDOM        -634744
+3 CNN            603554
+
+loss = 1.139
+1960000 iters
+1 GREEDY         579726
+2 RANDOM        -641395
+3 CNN            609473
+
+1980000 iters
+1 GREEDY         585642
+2 RANDOM        -648274
+3 CNN            615938
+
+loss = 0.115
+2000000 iters
+1 GREEDY         591567
+2 RANDOM        -654853
+3 CNN            622219
+
+loss = 4.352
+saving model: 2019-08-11-22-23-14
+2020000 iters
+1 GREEDY         597532
+2 RANDOM        -660828
+3 CNN            628003
+
+2040000 iters
+1 GREEDY         603530
+2 RANDOM        -667319
+3 CNN            634050
+
+loss = 3.063
+2060000 iters
+1 GREEDY         609941
+2 RANDOM        -674640
+3 CNN            640471
+
+loss = 4.252
+2080000 iters
+1 GREEDY         615637
+2 RANDOM        -680567
+3 CNN            646328
+
+2100000 iters
+1 GREEDY         621630
+2 RANDOM        -687211
+3 CNN            652415
+
+loss = 2.141
+saving model: 2019-08-11-22-24-42
+2120000 iters
+1 GREEDY         627663
+2 RANDOM        -693761
+3 CNN            658593
+
+2140000 iters
+1 GREEDY         633528
+2 RANDOM        -700735
+3 CNN            665225
+
+loss = 0.881
+2160000 iters
+1 GREEDY         639296
+2 RANDOM        -706560
+3 CNN            670750
+
+loss = 2.259
+2180000 iters
+1 GREEDY         645477
+2 RANDOM        -713297
+3 CNN            676798
+
+2200000 iters
+1 GREEDY         651401
+2 RANDOM        -719674
+3 CNN            682870
+
+loss = 1.955
+saving model: 2019-08-11-22-26-09
+2220000 iters
+1 GREEDY         657272
+2 RANDOM        -726479
+3 CNN            689429
+
+loss = 0.856
+2240000 iters
+1 GREEDY         663687
+2 RANDOM        -733639
+3 CNN            695804
+
+2260000 iters
+1 GREEDY         669355
+2 RANDOM        -739779
+3 CNN            701890
+
+loss = 0.945
+2280000 iters
+1 GREEDY         675345
+2 RANDOM        -746068
+3 CNN            707860
+
+2300000 iters
+1 GREEDY         681309
+2 RANDOM        -752597
+3 CNN            714091
+
+loss = 1.250
+saving model: 2019-08-11-22-27-37
+2320000 iters
+1 GREEDY         687091
+2 RANDOM        -758875
+3 CNN            720397
+
+loss = 1.897
+2340000 iters
+1 GREEDY         692971
+2 RANDOM        -765855
+3 CNN            727231
+
+2360000 iters
+1 GREEDY         698812
+2 RANDOM        -772268
+3 CNN            733404
+
+loss = 0.883
+2380000 iters
+1 GREEDY         704745
+2 RANDOM        -779018
+3 CNN            739775
+
+loss = 0.717
+saving model: 2019-08-11-22-29-04
+2400000 iters
+1 GREEDY         710172
+2 RANDOM        -785528
+3 CNN            746442
+
+2420000 iters
+1 GREEDY         715994
+2 RANDOM        -791770
+3 CNN            752460
+
+loss = 0.045
+2440000 iters
+1 GREEDY         722315
+2 RANDOM        -798605
+3 CNN            758563
+
+2460000 iters
+1 GREEDY         727799
+2 RANDOM        -805046
+3 CNN            765046
+
+loss = 0.072
+2480000 iters
+1 GREEDY         733529
+2 RANDOM        -811335
+3 CNN            771244
+
+loss = 0.720
+saving model: 2019-08-11-22-30-32
+2500000 iters
+1 GREEDY         739967
+2 RANDOM        -818712
+3 CNN            777875
+
+2520000 iters
+1 GREEDY         745762
+2 RANDOM        -825705
+3 CNN            784702
+
+loss = 1.970
+2540000 iters
+1 GREEDY         751268
+2 RANDOM        -832098
+3 CNN            790965
+
+loss = 4.058
+2560000 iters
+1 GREEDY         757103
+2 RANDOM        -838853
+3 CNN            797271
+
+2580000 iters
+1 GREEDY         762728
+2 RANDOM        -845324
+3 CNN            803735
+
+loss = 0.293
+saving model: 2019-08-11-22-32-01
+2600000 iters
+1 GREEDY         768808
+2 RANDOM        -851765
+3 CNN            809816
+
+2620000 iters
+1 GREEDY         775274
+2 RANDOM        -858344
+3 CNN            815553
+
+loss = 0.280
+2640000 iters
+1 GREEDY         780365
+2 RANDOM        -864311
+3 CNN            821872
+
+loss = 1.125
+2660000 iters
+1 GREEDY         786482
+2 RANDOM        -870807
+3 CNN            827902
+
+2680000 iters
+1 GREEDY         792805
+2 RANDOM        -878333
+3 CNN            834828
+
+loss = 3.522
+saving model: 2019-08-11-22-33-31
+2700000 iters
+1 GREEDY         799569
+2 RANDOM        -885797
+3 CNN            841006
+
+loss = 0.895
+2720000 iters
+1 GREEDY         805197
+2 RANDOM        -891959
+3 CNN            847030
+
+2740000 iters
+1 GREEDY         810918
+2 RANDOM        -898101
+3 CNN            853181
+
+loss = 2.181
+2760000 iters
+1 GREEDY         816716
+2 RANDOM        -903981
+3 CNN            859006
+
+2780000 iters
+1 GREEDY         823441
+2 RANDOM        -910890
+3 CNN            865041
+
+loss = 0.896
+saving model: 2019-08-11-22-35-00
+2800000 iters
+1 GREEDY         829860
+2 RANDOM        -917589
+3 CNN            870967
+
+loss = 0.035
+2820000 iters
+1 GREEDY         835593
+2 RANDOM        -924190
+3 CNN            877448
+
+2840000 iters
+1 GREEDY         841416
+2 RANDOM        -930156
+3 CNN            883138
+
+loss = 0.020
+2860000 iters
+1 GREEDY         847681
+2 RANDOM        -937217
+3 CNN            889439
+
+loss = 0.863
+saving model: 2019-08-11-22-36-28
+2880000 iters
+1 GREEDY         853909
+2 RANDOM        -944533
+3 CNN            896144
+
+2900000 iters
+1 GREEDY         859678
+2 RANDOM        -951177
+3 CNN            902675
+
+loss = 6.614
+2920000 iters
+1 GREEDY         865836
+2 RANDOM        -957946
+3 CNN            908925
+
+2940000 iters
+1 GREEDY         871726
+2 RANDOM        -964471
+3 CNN            915159
+
+loss = 0.420
+2960000 iters
+1 GREEDY         877359
+2 RANDOM        -970825
+3 CNN            921431
+
+loss = 0.059
+saving model: 2019-08-11-22-37-55
+2980000 iters
+1 GREEDY         883315
+2 RANDOM        -977549
+3 CNN            928001
+
+3000000 iters
+1 GREEDY         889148
+2 RANDOM        -984321
+3 CNN            934702
+
+loss = 0.993
+3020000 iters
+1 GREEDY         895612
+2 RANDOM        -991232
+3 CNN            940866
+
+loss = 1.581
+3040000 iters
+1 GREEDY         901187
+2 RANDOM        -997798
+3 CNN            947456
+
+3060000 iters
+1 GREEDY         907028
+2 RANDOM       -1004602
+3 CNN            953991
+
+loss = 0.316
+saving model: 2019-08-11-22-39-23
+3080000 iters
+1 GREEDY         912673
+2 RANDOM       -1011587
+3 CNN            960821
+
+3100000 iters
+1 GREEDY         919152
+2 RANDOM       -1018714
+3 CNN            967098
+
+loss = 0.211
+3120000 iters
+1 GREEDY         925325
+2 RANDOM       -1025492
+3 CNN            973254
+
+loss = 3.513
+3140000 iters
+1 GREEDY         930460
+2 RANDOM       -1031537
+3 CNN            979660
+
+3160000 iters
+1 GREEDY         935983
+2 RANDOM       -1037766
+3 CNN            985985
+
+loss = 1.505
+saving model: 2019-08-11-22-40-53
+3180000 iters
+1 GREEDY         942078
+2 RANDOM       -1044367
+3 CNN            991902
+
+loss = 4.920
+3200000 iters
+1 GREEDY         947761
+2 RANDOM       -1050470
+3 CNN            997959
+
+3220000 iters
+1 GREEDY         953945
+2 RANDOM       -1056945
+3 CNN           1003925
+
+loss = 4.241
+3240000 iters
+1 GREEDY         959346
+2 RANDOM       -1063053
+3 CNN           1010143
+
+3260000 iters
+1 GREEDY         965794
+2 RANDOM       -1069876
+3 CNN           1016194
+
+loss = 4.364
+saving model: 2019-08-11-22-42-21
+3280000 iters
+1 GREEDY         971907
+2 RANDOM       -1076340
+3 CNN           1022064
+
+loss = 1.458
+3300000 iters
+1 GREEDY         977744
+2 RANDOM       -1082917
+3 CNN           1028245
+
+3320000 iters
+1 GREEDY         983382
+2 RANDOM       -1088715
+3 CNN           1034059
+
+loss = 0.331
+3340000 iters
+1 GREEDY         989146
+2 RANDOM       -1095422
+3 CNN           1040485
+
+loss = 2.346
+saving model: 2019-08-11-22-43-52
+3360000 iters
+1 GREEDY         995456
+2 RANDOM       -1102235
+3 CNN           1046608
+
+3380000 iters
+1 GREEDY        1001480
+2 RANDOM       -1108657
+3 CNN           1052579
+
+loss = 1.497
+3400000 iters
+1 GREEDY        1007551
+2 RANDOM       -1115463
+3 CNN           1058801
+
+3420000 iters
+1 GREEDY        1013387
+2 RANDOM       -1121893
+3 CNN           1064990
+
+loss = 1.559
+3440000 iters
+1 GREEDY        1019544
+2 RANDOM       -1128170
+3 CNN           1070669
+
+loss = 1.030
+saving model: 2019-08-11-22-45-21
+3460000 iters
+1 GREEDY        1025102
+2 RANDOM       -1135056
+3 CNN           1077701
+
+3480000 iters
+1 GREEDY        1031234
+2 RANDOM       -1142143
+3 CNN           1084259
+
+loss = 1.135
+3500000 iters
+1 GREEDY        1036805
+2 RANDOM       -1148243
+3 CNN           1090275
+
+loss = 2.288
+3520000 iters
+1 GREEDY        1042698
+2 RANDOM       -1155213
+3 CNN           1096729
+
+3540000 iters
+1 GREEDY        1048780
+2 RANDOM       -1161449
+3 CNN           1102447
+
+loss = 3.531
+saving model: 2019-08-11-22-46-49
+3560000 iters
+1 GREEDY        1055185
+2 RANDOM       -1168329
+3 CNN           1108505
+
+3580000 iters
+1 GREEDY        1061152
+2 RANDOM       -1175163
+3 CNN           1115095
+
+loss = 4.799
+3600000 iters
+1 GREEDY        1067437
+2 RANDOM       -1181367
+3 CNN           1120597
+
+loss = 0.037
+3620000 iters
+1 GREEDY        1073230
+2 RANDOM       -1187856
+3 CNN           1126939
+
+3640000 iters
+1 GREEDY        1079330
+2 RANDOM       -1195117
+3 CNN           1133647
+
+loss = 3.325
+saving model: 2019-08-11-22-48-16
+3660000 iters
+1 GREEDY        1085306
+2 RANDOM       -1201304
+3 CNN           1139352
+
+loss = 3.921
+3680000 iters
+1 GREEDY        1090853
+2 RANDOM       -1208207
+3 CNN           1146375
+
+3700000 iters
+1 GREEDY        1096815
+2 RANDOM       -1214810
+3 CNN           1152372
+
+loss = 1.013
+3720000 iters
+1 GREEDY        1102874
+2 RANDOM       -1221467
+3 CNN           1158647
+
+3740000 iters
+1 GREEDY        1108343
+2 RANDOM       -1227885
+3 CNN           1165108
+
+loss = 1.909
+saving model: 2019-08-11-22-49-45
+3760000 iters
+1 GREEDY        1114763
+2 RANDOM       -1235010
+3 CNN           1171404
+
+loss = 1.531
+3780000 iters
+1 GREEDY        1120827
+2 RANDOM       -1241575
+3 CNN           1177464
+
+3800000 iters
+1 GREEDY        1126401
+2 RANDOM       -1247970
+3 CNN           1183890
+
+loss = 3.781
+3820000 iters
+1 GREEDY        1132205
+2 RANDOM       -1254339
+3 CNN           1190234
+
+loss = 0.060
+saving model: 2019-08-11-22-51-13
+3840000 iters
+1 GREEDY        1137829
+2 RANDOM       -1260662
+3 CNN           1196531
+
+3860000 iters
+1 GREEDY        1143489
+2 RANDOM       -1267015
+3 CNN           1202784
+
+loss = 0.094
+3880000 iters
+1 GREEDY        1149881
+2 RANDOM       -1273872
+3 CNN           1208738
+
+3900000 iters
+1 GREEDY        1156021
+2 RANDOM       -1280266
+3 CNN           1214660
+
+loss = 2.779
+3920000 iters
+1 GREEDY        1161687
+2 RANDOM       -1286657
+3 CNN           1220959
+
+loss = 0.044
+saving model: 2019-08-11-22-52-43
+3940000 iters
+1 GREEDY        1167273
+2 RANDOM       -1292921
+3 CNN           1227076
+
+3960000 iters
+1 GREEDY        1173400
+2 RANDOM       -1299497
+3 CNN           1233204
+
+loss = 1.141
+3980000 iters
+1 GREEDY        1179000
+2 RANDOM       -1305209
+3 CNN           1238825
+
+loss = 1.399
+4000000 iters
+1 GREEDY        1185122
+2 RANDOM       -1311291
+3 CNN           1244467
+
+4020000 iters
+1 GREEDY        1190721
+2 RANDOM       -1318083
+3 CNN           1251174
+
+loss = 4.031
+saving model: 2019-08-11-22-54-12
+4040000 iters
+1 GREEDY        1197204
+2 RANDOM       -1324988
+3 CNN           1257127
+
+4060000 iters
+1 GREEDY        1203118
+2 RANDOM       -1331504
+3 CNN           1263367
+
+loss = 1.221
+4080000 iters
+1 GREEDY        1209066
+2 RANDOM       -1338335
+3 CNN           1269897
+
+loss = 1.708
+4100000 iters
+1 GREEDY        1215055
+2 RANDOM       -1345585
+3 CNN           1276773
+
+4120000 iters
+1 GREEDY        1221507
+2 RANDOM       -1352295
+3 CNN           1282500
+
+loss = 2.002
+saving model: 2019-08-11-22-55-40
+4140000 iters
+1 GREEDY        1227920
+2 RANDOM       -1359407
+3 CNN           1288772
+
+loss = 0.049
+4160000 iters
+1 GREEDY        1234466
+2 RANDOM       -1366678
+3 CNN           1295096
+
+4180000 iters
+1 GREEDY        1240440
+2 RANDOM       -1373655
+3 CNN           1301597
+
+loss = 0.270
+4200000 iters
+1 GREEDY        1246289
+2 RANDOM       -1380212
+3 CNN           1307957
+
+4220000 iters
+1 GREEDY        1252047
+2 RANDOM       -1387042
+3 CNN           1314685
+
+loss = 0.042
+saving model: 2019-08-11-22-57-08
+4240000 iters
+1 GREEDY        1257295
+2 RANDOM       -1392774
+3 CNN           1320767
+
+loss = 0.838
+4260000 iters
+1 GREEDY        1263286
+2 RANDOM       -1398790
+3 CNN           1326413
+
+4280000 iters
+1 GREEDY        1269354
+2 RANDOM       -1405067
+3 CNN           1332175
+
+loss = 0.094
+4300000 iters
+1 GREEDY        1275206
+2 RANDOM       -1412427
+3 CNN           1339201
+
+loss = 0.092
+saving model: 2019-08-11-22-58-38
+4320000 iters
+1 GREEDY        1281606
+2 RANDOM       -1419319
+3 CNN           1345263
+
+4340000 iters
+1 GREEDY        1287178
+2 RANDOM       -1425443
+3 CNN           1351449
+
+loss = 1.623
+4360000 iters
+1 GREEDY        1293190
+2 RANDOM       -1431094
+3 CNN           1356887
+
+4380000 iters
+1 GREEDY        1299232
+2 RANDOM       -1437184
+3 CNN           1362613
+
+loss = 0.028
+4400000 iters
+1 GREEDY        1305089
+2 RANDOM       -1443457
+3 CNN           1368798
+
+loss = 0.274
+saving model: 2019-08-11-23-00-07
+4420000 iters
+1 GREEDY        1311009
+2 RANDOM       -1449233
+3 CNN           1374129
+
+4440000 iters
+1 GREEDY        1316499
+2 RANDOM       -1456310
+3 CNN           1381300
+
+loss = 1.179
+4460000 iters
+1 GREEDY        1322214
+2 RANDOM       -1462664
+3 CNN           1387585
+
+loss = 4.715
+4480000 iters
+1 GREEDY        1328351
+2 RANDOM       -1468986
+3 CNN           1393386
+
+4500000 iters
+1 GREEDY        1334463
+2 RANDOM       -1475712
+3 CNN           1399789
+
+loss = 1.398
+saving model: 2019-08-11-23-01-35
+4520000 iters
+1 GREEDY        1340424
+2 RANDOM       -1482618
+3 CNN           1406429
+
+4540000 iters
+1 GREEDY        1346666
+2 RANDOM       -1489678
+3 CNN           1412821
+
+loss = 0.050
+4560000 iters
+1 GREEDY        1352518
+2 RANDOM       -1496294
+3 CNN           1419220
+
+loss = 0.239
+4580000 iters
+1 GREEDY        1357821
+2 RANDOM       -1502011
+3 CNN           1425185
+
+4600000 iters
+1 GREEDY        1364140
+2 RANDOM       -1508252
+3 CNN           1430516
+
+loss = 0.060
+saving model: 2019-08-11-23-03-02
+4620000 iters
+1 GREEDY        1369837
+2 RANDOM       -1514597
+3 CNN           1436734
+
+loss = 1.063
+4640000 iters
+1 GREEDY        1376133
+2 RANDOM       -1521816
+3 CNN           1443421
+
+4660000 iters
+1 GREEDY        1382153
+2 RANDOM       -1528148
+3 CNN           1449359
+
+loss = 0.914
+4680000 iters
+1 GREEDY        1388326
+2 RANDOM       -1535143
+3 CNN           1455718
+
+4700000 iters
+1 GREEDY        1393942
+2 RANDOM       -1541299
+3 CNN           1461687
+
+loss = 0.734
+saving model: 2019-08-11-23-04-31
+4720000 iters
+1 GREEDY        1399739
+2 RANDOM       -1547562
+3 CNN           1467621
+
+loss = 2.835
+4740000 iters
+1 GREEDY        1405997
+2 RANDOM       -1554735
+3 CNN           1474180
+
+4760000 iters
+1 GREEDY        1412146
+2 RANDOM       -1562055
+3 CNN           1481102
+
+loss = 1.583
+4780000 iters
+1 GREEDY        1418051
+2 RANDOM       -1568814
+3 CNN           1487847
+
+loss = 1.292
+saving model: 2019-08-11-23-05-58
+4800000 iters
+1 GREEDY        1423559
+2 RANDOM       -1575508
+3 CNN           1494527
+
+4820000 iters
+1 GREEDY        1429310
+2 RANDOM       -1581634
+3 CNN           1500572
+
+loss = 2.354
+4840000 iters
+1 GREEDY        1435205
+2 RANDOM       -1587865
+3 CNN           1506418
+
+4860000 iters
+1 GREEDY        1441205
+2 RANDOM       -1594846
+3 CNN           1512980
+
+loss = 0.046
+4880000 iters
+1 GREEDY        1447048
+2 RANDOM       -1601493
+3 CNN           1519322
+
+loss = 0.071
+saving model: 2019-08-11-23-07-25
+4900000 iters
+1 GREEDY        1453394
+2 RANDOM       -1608241
+3 CNN           1525353
+
+4920000 iters
+1 GREEDY        1459780
+2 RANDOM       -1615419
+3 CNN           1531805
+
+loss = 1.032
+4940000 iters
+1 GREEDY        1465081
+2 RANDOM       -1621109
+3 CNN           1537805
+
+loss = 1.107
+4960000 iters
+1 GREEDY        1470886
+2 RANDOM       -1627549
+3 CNN           1543965
+
+4980000 iters
+1 GREEDY        1477167
+2 RANDOM       -1634413
+3 CNN           1550068
+
+loss = 1.391
+saving model: 2019-08-11-23-08-53
+5000000 iters
+1 GREEDY        1482476
+2 RANDOM       -1639916
+3 CNN           1555700
+
+5020000 iters
+1 GREEDY        1488724
+2 RANDOM       -1646362
+3 CNN           1561146
+
+loss = 0.420
+5040000 iters
+1 GREEDY        1494655
+2 RANDOM       -1653132
+3 CNN           1567698
+
+loss = 0.076
+5060000 iters
+1 GREEDY        1499730
+2 RANDOM       -1658931
+3 CNN           1573923
+
+5080000 iters
+1 GREEDY        1505179
+2 RANDOM       -1664881
+3 CNN           1580093
+
+loss = 1.067
+saving model: 2019-08-11-23-10-23
+5100000 iters
+1 GREEDY        1511910
+2 RANDOM       -1672273
+3 CNN           1586422
+
+loss = 0.123
+5120000 iters
+1 GREEDY        1517987
+2 RANDOM       -1679097
+3 CNN           1592773
+
+5140000 iters
+1 GREEDY        1523679
+2 RANDOM       -1685400
+3 CNN           1599023
+
+loss = 2.038
+5160000 iters
+1 GREEDY        1529615
+2 RANDOM       -1692264
+3 CNN           1605550
+
+5180000 iters
+1 GREEDY        1535563
+2 RANDOM       -1699338
+3 CNN           1612211
+
+loss = 1.707
+saving model: 2019-08-11-23-11-53
+5200000 iters
+1 GREEDY        1541655
+2 RANDOM       -1706297
+3 CNN           1618904
+
+loss = 1.017
+5220000 iters
+1 GREEDY        1547585
+2 RANDOM       -1712457
+3 CNN           1624770
+
+5240000 iters
+1 GREEDY        1553869
+2 RANDOM       -1719676
+3 CNN           1631219
+
+loss = 0.132
