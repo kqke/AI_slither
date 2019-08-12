@@ -36,17 +36,6 @@ SNAKE_COLORS = {
 }
 
 
-def random_color():
-    import random
-    rgb = ()
-    for _ in range(3):
-        rgb += (random.randint(0, 255), )
-    return rgb
-
-
-SNAKE_COLORS[RANDOM_PLAYER] = random_color()
-
-
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
