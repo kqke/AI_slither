@@ -88,6 +88,12 @@ class Game:
     def get_players(self):
         return self._players_dict.values()
 
+    def get_player(self, pid):
+        return self._players_dict[pid]
+
+    def get_player_type(self, pid):
+        return self._players_dict[pid].get_type()
+
     def get_food(self):
         return self._food
 
