@@ -21,6 +21,10 @@ class BasePlayer:
         self.score = 0
         self.leftover_counter = leftover
 
+        self.n_food_eaten = 0
+        self.n_died = 0
+        self.n_killed = 0
+
     @staticmethod
     def get_type():
         pass
@@ -123,14 +127,24 @@ class BasePlayer:
     #     """
     #     return self.is_alive
 
+    def eat(self):
+        self.n_food_eaten += 1
+        self.score += SCORE_FOOD
+        self.leftover_counter += FOOD_SIZE_INC
+
     def dead(self, new_head):
         """
         Pronounce the snake dead.
         """
+        self.n_died += 1
         self.score += SCORE_DEAD
         self.head = new_head
         self.locations = [self.head]
         self.leftover_counter = STARTING_LENGTH
+
+    def kill(self):
+        self.n_killed += 1
+        self.score += SCORE_KILLING
 
     def get_score(self):
         """

@@ -23,6 +23,8 @@ class CNNPlayer(BasePlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head)
         self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
+        self.center_y = GAME_HEIGHT // 2
+        self.center_x = GAME_WIDTH // 2
         self.model = self.build_model()
         self.prev_state = -1
         self.prev_score = -1
@@ -88,6 +90,20 @@ class CNNPlayer(BasePlayer):
             if self.n_batches % PRINT_LOSS_BATCH_ITERATIONS == 0:
                 print("loss = {:.3f}".format(loss))
 
+            if self.n_batches % SCORE_SUMMARY_BATCH_ITERATION == 0:
+                print("---------")
+                print("{} iters, {} batches".format(game.get_turn_number(), self.n_batches))
+                n = game.get_turn_number()
+                for pid, player in game.get_id_player_pairs():
+                    print("{} {:5s} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                        pid,
+                        player.get_type(),
+                        player.score / n,
+                        player.n_food_eaten / n,
+                        player.n_died / n,
+                        player.n_killed / n))
+                print("---------")
+
             if SAVE_MODEL:
                 if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
                     # todo tmp
@@ -98,34 +114,43 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(4, (2, 2), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Convolution2D(1, (2, 2), strides=(1, 1), input_shape=self.input_shape))
         model.add(Activation("relu"))
         # model.add(Convolution2D(4, (2, 2), strides=(1, 1)))
         # model.add(Activation("relu"))
         model.add(Flatten())
-        model.add(Dense(16))
+        # model.add(Dense(8))
         model.add(Dense(N_ACTIONS))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
         # print(model.summary())  # todo
         return model
 
-    def align_state(self, state):
-        # todo validate
+    def normalize_state(self, game):
+        # align state
         n_rot90 = DIRECTION_TO_N_ROT90[self.direction]
-        aligned_state = np.rot90(state, n_rot90)
-        return aligned_state
+        aligned_state = np.rot90(game.get_state(), n_rot90)
+
+        # roll s.t. head is in center
+        y, x = np.where(aligned_state == game.get_head_mark(self.pid))
+        assert x.shape == y.shape == (1,)
+        head_y = y[0]
+        head_x = x[0]
+        norm_state = np.roll(np.roll(aligned_state, self.center_y-head_y, axis=0), self.center_x-head_x, axis=1)
+        return norm_state
 
     def extract_model_input(self, game):
-        aligned_state = self.align_state(game.get_state())
+        # aligning and centering head
+        norm_state = self.normalize_state(game)
+
+        # head isn't modeled since it's centered
         model_input = np.zeros(self.input_shape)
-        model_input[:, :, 0] = aligned_state == FOOD_MARK  # food
-        model_input[:, :, 1] = aligned_state == game.get_head_mark(self.pid)  # self head
-        # model_input[:, :, 2] = aligned_state == self.pid  # self body
-        # model_input[:, :, 3] = (aligned_state != FREE_SQUARE_MARK) & \
-        #                        (aligned_state != FOOD_MARK) & \
-        #                        (aligned_state != self.pid) & \
-        #                        (aligned_state != game.get_head_mark(self.pid))  # other players
+        model_input[:, :, 0] = norm_state == FOOD_MARK  # food
+        model_input[:, :, 1] = norm_state == self.pid  # self body
+        # model_input[:, :, 2] = (norm_state != FREE_SQUARE_MARK) & \
+        #                        (norm_state != FOOD_MARK) & \
+        #                        (norm_state != self.pid) & \
+        #                        (norm_state != game.get_head_mark(self.pid))  # other players
         model_input = model_input[np.newaxis, :]
         return model_input
 
