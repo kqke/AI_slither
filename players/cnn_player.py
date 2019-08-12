@@ -49,6 +49,8 @@ class CNNPlayer(BasePlayer):
         q_values = self.model.predict(self.prev_state)
         self.prev_q_values = q_values
 
+        # print("q: {}".format(q_values))
+
         rand = np.random.random()
         if rand < EPSILON_GREEDY:
             action_index = np.random.randint(N_ACTIONS)
@@ -133,6 +135,12 @@ class CNNPlayer(BasePlayer):
 
         # roll s.t. head is in center
         y, x = np.where(aligned_state == game.get_head_mark(self.pid))
+        if not (x.shape == y.shape == (1,)):
+            print(self.pid)
+            print(game.get_head_mark(self.pid))
+            print(x)
+            print(y)
+            print(aligned_state)
         assert x.shape == y.shape == (1,)
         head_y = y[0]
         head_x = x[0]
