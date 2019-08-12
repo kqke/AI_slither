@@ -119,7 +119,7 @@ class Game:
         """
         i = 0
         if PYGAME:
-            play_gui(self)
+            play_gui(self, turns)
             pass
         while i < turns:
             if DISPLAY:
@@ -339,6 +339,8 @@ class Game:
     @staticmethod
     def get_head_mark(pid):
         return -pid
+
+
 
     # def check_enclosure(self):
     #     """
