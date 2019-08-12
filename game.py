@@ -52,7 +52,7 @@ class Game:
         self._check = self._state.copy()
         self._players_dict = dict()
         self._food = set()
-        self._turn_number = 0
+        self._turn_number = 1
         self._dead = []
         self.init_players(players)
         self.update_board()
@@ -70,7 +70,7 @@ class Game:
                 head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
-                if player == NN_PLAYER:
+                elif player == NN_PLAYER:
                     self._players_dict[pid] = NNPlayer(pid, head)
                 elif player == GREEDY_PLAYER:
                     self._players_dict[pid] = GreedyPlayer(pid, head)
@@ -81,6 +81,9 @@ class Game:
                 else:
                     assert 0
                 pid += 1
+
+    def get_id_player_pairs(self):
+        return self._players_dict.items()
 
     def get_players(self):
         return self._players_dict.values()
@@ -94,11 +97,8 @@ class Game:
     def get_height(self):
         return self._h
 
-    def get_player_type(self, pid):
-        return self._players_dict[pid].get_type()
-
-    def get_player(self, pid):
-        return self._players_dict[pid]
+    def get_turn_number(self):
+        return self._turn_number
 
     # TODO
     # different kinds of food, eg. different scores, different resulting snake growth
@@ -117,24 +117,15 @@ class Game:
         """
         Runs the game for max_turns (specified in constructor) turns.
         """
-        if PYGAME:
-            play_gui(self, turns)
-            pass
         i = 0
+        if PYGAME:
+            play_gui(self)
+            pass
         while i < turns:
             if DISPLAY:
                 print(self)
                 sleep(RENDER_DELAY)
                 # clear()  # todo
-            else:
-                if i % NO_DISPLAY_ITERATION_SUMMARY == 0:
-                    print("{} iters".format(i))
-                    ret = ""
-                    for pid, player in self._players_dict.items():
-                        ret += "{} {:10s} {:10d}".format(pid, player.get_type(), player.get_score())
-                        ret += "\n"
-                    print(ret)
-
             i += 1
             self.play_turn()
 
@@ -170,9 +161,8 @@ class Game:
         :return:
         """
         if player.get_head() in self._food:
-            player.update_score(SCORE_FOOD)
+            player.eat()
             self._food.remove(player.get_head())
-            player.update_leftover(1)
 
     def check_collisions(self):
         """
@@ -190,7 +180,7 @@ class Game:
                     # head to body collision
                     if p1.get_head() in p2.get_location_set():
                         self._dead.append(p1)
-                        p2.update_score(SCORE_KILLING)
+                        p2.kill()
                     # head to head collision
                     elif p1.get_head() == p2.get_head():
                         # todo
@@ -199,7 +189,7 @@ class Game:
                         smaller = p1 if len(p1.get_locations()) > len(p2.get_locations()) else p2
                         other = p1 if smaller == p2 else p2
                         self._dead.append(smaller)
-                        other.update_score(SCORE_KILLING)
+                        other.kill()
 
     def update_board(self):
         """
@@ -349,15 +339,6 @@ class Game:
     @staticmethod
     def get_head_mark(pid):
         return -pid
-
-
-def t():
-    players = {"RANDOM": 1, "GREEDY": 1}
-    g = Game(24, 24, players)
-    g.run(200)
-
-t()
-
 
     # def check_enclosure(self):
     #     """
