@@ -94,6 +94,12 @@ class Game:
     def get_height(self):
         return self._h
 
+    def get_player_type(self, pid):
+        return self._players_dict[pid].get_type()
+
+    def get_player(self, pid):
+        return self._players_dict[pid]
+
     # TODO
     # different kinds of food, eg. different scores, different resulting snake growth
     def update_food(self):
@@ -111,10 +117,10 @@ class Game:
         """
         Runs the game for max_turns (specified in constructor) turns.
         """
-        i = 0
         if PYGAME:
-            play_gui(self)
+            play_gui(self, turns)
             pass
+        i = 0
         while i < turns:
             if DISPLAY:
                 print(self)
@@ -131,7 +137,6 @@ class Game:
 
             i += 1
             self.play_turn()
-
 
     def play_turn(self):
         """
@@ -344,6 +349,15 @@ class Game:
     @staticmethod
     def get_head_mark(pid):
         return -pid
+
+
+def t():
+    players = {"RANDOM": 1, "GREEDY": 1}
+    g = Game(24, 24, players)
+    g.run(200)
+
+t()
+
 
     # def check_enclosure(self):
     #     """

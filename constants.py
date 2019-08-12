@@ -24,3 +24,38 @@ NN_PLAYER = "NN"
 GREEDY_PLAYER = "GREEDY"
 RANDOM_PLAYER = "RANDOM"
 MANUAL_PLAYER = "MANUAL"
+
+
+SNAKE_COLORS = {
+
+    CNN_PLAYER: (255, 0, 0),
+    NN_PLAYER: (255, 255, 0),
+    GREEDY_PLAYER: (0, 0, 255),
+    MANUAL_PLAYER: (128, 128, 128)
+
+}
+
+
+def random_color():
+    import random
+    rgb = ()
+    for _ in range(3):
+        rgb += (random.randint(0, 255), )
+    return rgb
+
+
+SNAKE_COLORS[RANDOM_PLAYER] = random_color()
+
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+
+SNAKE_FONT = 'fonts/snake_font.ttf'
+SNAKE_FONT_SZ = 100
+SLITHER = 'Slither'
+
+SCORE_FONT = 'fonts/score_font.ttf'
+SCORE_FONT_SZ = 20
+
+PID_FONT_SZ = 15
