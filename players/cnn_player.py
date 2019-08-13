@@ -138,7 +138,7 @@ class CNNPlayer(BasePlayer):
         model = Sequential()
         model.add(Convolution2D(16, (5, 5), strides=(1, 1), padding="same", input_shape=self.input_shape))
         model.add(Activation("relu"))
-        # model.add(Convolution2D(1, (5, 5), strides=(1, 1), padding="same"))
+        # model.add(Convolution2D(8, (5, 5), strides=(1, 1), padding="same"))
         # model.add(Activation("relu"))
         model.add(Flatten())
         model.add(Dense(64))

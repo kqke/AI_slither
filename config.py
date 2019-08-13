@@ -44,3 +44,6 @@ LOAD_MODEL_FILE_NAME = "2019-08-13-05-05-45.h5"
 # if dead, pehaps change q target to reward w.o. q of next state?
 # go over todos
 # rm prints or organize them
+# think about framework
+# game sometimes crashes when starts
+# no need for greedy epsilon since game is already quiet stochastic
