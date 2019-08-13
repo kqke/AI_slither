@@ -32,6 +32,10 @@ class CNNPlayer(BasePlayer):
         self.action_index = -1
         self.batch = []
         self.n_batches = 0
+        self.others_head_marks = set()
+        self.others_body_marks = set()
+
+        self.tmp = -1   # todo rm
 
         if LOAD_MODEL:
             print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
@@ -41,7 +45,15 @@ class CNNPlayer(BasePlayer):
     def get_type():
         return CNN_PLAYER
 
+    def init(self, game):
+        self.others_head_marks = game.get_head_marks()
+        self.others_head_marks.remove(game.get_head_mark(self.pid))
+
+        self.others_body_marks = game.get_body_marks()
+        self.others_body_marks.remove(self.pid)
+
     def pre_action(self, game):
+        self.tmp = game.get_state()   # todo rm
         self.prev_state = self.extract_model_input(game)
         self.prev_score = self.get_score()
 
@@ -95,15 +107,23 @@ class CNNPlayer(BasePlayer):
             if self.n_batches % SCORE_SUMMARY_BATCH_ITERATION == 0:
                 print("---------")
                 print("{} iters, {} batches".format(game.get_turn_number(), self.n_batches))
-                n = game.get_turn_number()
+                n = SCORE_SUMMARY_BATCH_ITERATION * BATCH_SIZE
+                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i"))
                 for pid, player in game.get_id_player_pairs():
-                    print("{} {:5s} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f}".format(
                         pid,
                         player.get_type(),
                         player.score / n,
                         player.n_food_eaten / n,
                         player.n_died / n,
                         player.n_killed / n))
+
+                    # todo reset function
+                    # todo move to another place?
+                    player.score = 0
+                    player.n_food_eaten = 0
+                    player.n_died = 0
+                    player.n_killed = 0
                 print("---------")
 
             if SAVE_MODEL:
@@ -116,12 +136,13 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(1, (2, 2), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Convolution2D(16, (5, 5), strides=(1, 1), padding="same", input_shape=self.input_shape))
         model.add(Activation("relu"))
-        # model.add(Convolution2D(4, (2, 2), strides=(1, 1)))
+        # model.add(Convolution2D(8, (5, 5), strides=(1, 1), padding="same"))
         # model.add(Activation("relu"))
         model.add(Flatten())
-        # model.add(Dense(8))
+        model.add(Dense(64))
+        model.add(Activation("relu"))
         model.add(Dense(N_ACTIONS))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
@@ -135,6 +156,7 @@ class CNNPlayer(BasePlayer):
 
         # roll s.t. head is in center
         y, x = np.where(aligned_state == game.get_head_mark(self.pid))
+        # todo rm
         if not (x.shape == y.shape == (1,)):
             print(self.pid)
             print(game.get_head_mark(self.pid))
@@ -155,14 +177,17 @@ class CNNPlayer(BasePlayer):
         model_input = np.zeros(self.input_shape)
         model_input[:, :, 0] = norm_state == FOOD_MARK  # food
         model_input[:, :, 1] = norm_state == self.pid  # self body
-        # model_input[:, :, 2] = (norm_state != FREE_SQUARE_MARK) & \
-        #                        (norm_state != FOOD_MARK) & \
-        #                        (norm_state != self.pid) & \
-        #                        (norm_state != game.get_head_mark(self.pid))  # other players
+        model_input[:, :, 2] = np.isin(norm_state, self.others_head_marks)  # other heads
+        model_input[:, :, 3] = np.isin(norm_state, self.others_body_marks)  # other bodys
+        # todo add another map of other heads
         model_input = model_input[np.newaxis, :]
         return model_input
 
-
+    # todo rm
+    # def dead(self, new_head):
+    #     super(CNNPlayer, self).dead(new_head)
+    #     print(self.tmp)
+    #     print("#############")
 
 # def stack_image(game_image):
 #     #Make image black and white
