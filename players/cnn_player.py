@@ -107,7 +107,7 @@ class CNNPlayer(BasePlayer):
             if self.n_batches % SCORE_SUMMARY_BATCH_ITERATION == 0:
                 print("---------")
                 print("{} iters, {} batches".format(game.get_turn_number(), self.n_batches))
-                n = game.get_turn_number()
+                n = SCORE_SUMMARY_BATCH_ITERATION * BATCH_SIZE
                 print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i"))
                 for pid, player in game.get_id_player_pairs():
                     print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f}".format(
@@ -117,6 +117,13 @@ class CNNPlayer(BasePlayer):
                         player.n_food_eaten / n,
                         player.n_died / n,
                         player.n_killed / n))
+
+                    # todo reset function
+                    # todo move to another place?
+                    player.score = 0
+                    player.n_food_eaten = 0
+                    player.n_died = 0
+                    player.n_killed = 0
                 print("---------")
 
             if SAVE_MODEL:
@@ -129,12 +136,12 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(4, (3, 3), strides=(1, 1), padding="same", input_shape=self.input_shape))
+        model.add(Convolution2D(16, (5, 5), strides=(1, 1), padding="same", input_shape=self.input_shape))
         model.add(Activation("relu"))
-        # model.add(Convolution2D(8, (3, 3), strides=(1, 1)))
+        # model.add(Convolution2D(1, (5, 5), strides=(1, 1), padding="same"))
         # model.add(Activation("relu"))
         model.add(Flatten())
-        model.add(Dense(32))
+        model.add(Dense(64))
         model.add(Activation("relu"))
         model.add(Dense(N_ACTIONS))
         adam = Adam(lr=LEARNING_RATE)
@@ -149,6 +156,7 @@ class CNNPlayer(BasePlayer):
 
         # roll s.t. head is in center
         y, x = np.where(aligned_state == game.get_head_mark(self.pid))
+        # todo rm
         if not (x.shape == y.shape == (1,)):
             print(self.pid)
             print(game.get_head_mark(self.pid))
