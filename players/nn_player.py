@@ -23,7 +23,7 @@ DIRECTION_TO_N_ROT90 = {
 class NNPlayer(BasePlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head)
-        self.input_shape = (12,)
+        self.input_shape = (9,)
         self.model = self.build_model()
         self.prev_state = -1
         self.prev_score = -1
@@ -56,10 +56,15 @@ class NNPlayer(BasePlayer):
         self.action_index = action_index
         action = ACTIONS[action_index]
 
-        print(game.get_state())
-        print(q_values)
-        print(self.extract_model_input(game))
-        print()
+        # print("state")
+        # print(game.get_state())
+        # print("aligned state")
+        # print(self.align_state(game.get_state()))
+        # print("q values")
+        # print(q_values)
+        # print("model input")
+        # mi = self.extract_model_input(game)[0]
+        # print(mi)
 
         return action
 
@@ -125,24 +130,30 @@ class NNPlayer(BasePlayer):
         x = x[0]
 
         model_input = np.zeros(self.input_shape[0])
+        w = game.get_width()
+        h = game.get_height()
 
-        model_input[0] = aligned_state[(x-1) % game.get_width(), y] == FREE_SQUARE_MARK
-        model_input[1] = aligned_state[x, (y-1) % game.get_height()] == FREE_SQUARE_MARK
-        model_input[2] = aligned_state[(x+1) % game.get_width(), y] == FREE_SQUARE_MARK
+        model_input[0] = aligned_state[y, (x-1)%w] == FREE_SQUARE_MARK
+        model_input[1] = aligned_state[(y-1)%h, x] == FREE_SQUARE_MARK
+        model_input[2] = aligned_state[(x+1)%w, y] == FREE_SQUARE_MARK
 
-        model_input[3] = aligned_state[(x-2) % game.get_width(), y] == FREE_SQUARE_MARK
-        model_input[4] = aligned_state[x, (y-2) % game.get_height()] == FREE_SQUARE_MARK
-        model_input[5] = aligned_state[(x+2) % game.get_width(), y] == FREE_SQUARE_MARK
+        model_input[3] = aligned_state[y, (x-1)%w] == FOOD_MARK
+        model_input[4] = aligned_state[(y-1)%h, x] == FOOD_MARK
+        model_input[5] = aligned_state[y, (x+1)%w] == FOOD_MARK
 
-        model_input[6] = aligned_state[(x-1) % game.get_width(), y] == FOOD_MARK
-        model_input[7] = aligned_state[x, (y-1) % game.get_height()] == FOOD_MARK
-        model_input[8] = aligned_state[(x+1) % game.get_width(), y] == FOOD_MARK
-
-        model_input[9] = aligned_state[(x-2) % game.get_width(), y] == FOOD_MARK
-        model_input[10] = aligned_state[x, (y-2) % game.get_height()] == FOOD_MARK
-        model_input[11] = aligned_state[(x+2) % game.get_width(), y] == FOOD_MARK
+        model_input[6] = self.is_food_ahead(aligned_state, h, w, y, x, 0, -1, w)
+        model_input[7] = self.is_food_ahead(aligned_state, h, w, y, x, -1, 0, h)
+        model_input[8] = self.is_food_ahead(aligned_state, h, w, y, x, 0, 1, w)
 
         model_input = model_input[np.newaxis, :]
 
         return model_input
 
+    def is_food_ahead(self, aligned_state, h, w, y, x, dy, dx, n):
+        for i in range(1, n):
+            val = aligned_state[(y+i*dy)%h, (x+i*dx)%w]
+            if val == FOOD_MARK:
+                return 1
+            elif val != FREE_SQUARE_MARK:
+                return 0
+        return 0

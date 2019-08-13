@@ -29,6 +29,9 @@ class BasePlayer:
     def get_type():
         pass
 
+    def init(self, game):
+        pass
+
     # virtual
     def pre_action(self, game):
         pass
