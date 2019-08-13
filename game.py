@@ -131,27 +131,10 @@ class Game:
 
         direction = self.convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
-        n_y, n_x = self.get_next_location(player.get_head(), direction)
+        n_y, n_x = self.get_next_location(player.get_head(), direction, self._h, self._w)
         new_loc = (n_y, n_x)
         # print("{}: {} -> {} ({})".format(player.get_id(), player.get_head(), new_loc, direction))  # todo verbose
         player.move(new_loc)
-
-    def get_next_location(self, loc, direction):
-        y, x = loc
-        n_y, n_x = y, x
-        if direction == UP:
-            n_y = (y - 1) % self._h
-        elif direction == DOWN:
-            n_y = (y + 1) % self._h
-        elif direction == RIGHT:
-            n_x = (x + 1) % self._w
-        elif direction == LEFT:
-            n_x = (x - 1) % self._w
-        # else:
-        #     assert 0
-
-        next_loc = n_y, n_x
-        return next_loc
 
     def check_food(self, player):
         """
@@ -166,7 +149,7 @@ class Game:
     def check_collisions(self):
         """
         Checks whether two snakes have collided, if so, the colliding snake is pronounced dead.
-        In head-on collision, the longer snake wins.
+        In head-on collision, both snakes die.
         """
         players = list(self.get_players())
         n_players = len(players)
@@ -217,11 +200,11 @@ class Game:
         self.update_dead()
 
     def update_dead(self):
-        for dead in self._dead:
+        for player in self._dead:
             # print("{} is dead!".format(dead.get_id()))  # todo verbose
             new_head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
-            dead.dead(new_head)
-            self._state[new_head] = self.get_head_mark(dead.get_id())
+            player.dead(new_head)
+            self._state[new_head] = self.get_head_mark(player.get_id())
         self._dead = set()
 
     def update_food(self):
@@ -251,9 +234,9 @@ class Game:
         for i in range(self._h):
             ret += "|"
             for j in range(self._w):
-                if self._state[i, j] == 100:
+                if self._state[i, j] == FOOD_MARK:
                     ret += '*'
-                elif self._state[i, j] == 0:
+                elif self._state[i, j] == FREE_SQUARE_MARK:
                     ret += " "
                 elif self._state[i, j] < 0:
                     direction = self._players_dict[int(abs(self._state[i, j]))].get_direction()
@@ -325,6 +308,10 @@ class Game:
         return self.body_marks.copy()
 
     @staticmethod
+    def get_head_mark(pid):
+        return -pid
+
+    @staticmethod
     def convert_action_to_direction(action, cur_direction):
         """
         Gives an updated direction, given action and current direction
@@ -353,68 +340,19 @@ class Game:
                 return RIGHT
 
     @staticmethod
-    def get_head_mark(pid):
-        return -pid
+    def get_next_location(loc, direction, h, w):
+        y, x = loc
+        n_y, n_x = y, x
+        if direction == UP:
+            n_y = (y - 1) % h
+        elif direction == DOWN:
+            n_y = (y + 1) % h
+        elif direction == RIGHT:
+            n_x = (x + 1) % w
+        elif direction == LEFT:
+            n_x = (x - 1) % w
+        # else:
+        #     assert 0
 
-
-
-    # def check_enclosure(self):
-    #     """
-    #     Checks whether a snake has been caught in the enclosure of another snake, if so,
-    #     the enclosed snake is pronounced dead.
-    #     """
-    #     enclosures = []
-    #     for player in self._game_players:
-    #         if player.check_closed():
-    #             enclosures.append(player.get_enclosure())
-    #     for enclosure in enclosures:
-    #         for player in self._game_players:
-    #             if self.check_in_enclosure(player.get_head(), enclosure):
-    #                 player.dead()
-    # circles_to_check = []
-    # for player in self._game_players:
-    #     if player_info[IN_PLAY]:
-    #         self.do_action(player, player.get_action(self))
-    #         closed, pos = self.check_closed(player_info[HEAD_POS], player_info[TAIL_POS], player_info[DIRECTION])
-    #         if closed:
-    #             circles_to_check.append(set(player_info[LOCATION][0:player_info[LOCATION].index(pos)]))
-
-    # def check_in_enclosure(self, point, enclosure):
-    #     """
-    #
-    #     :param point:
-    #     :param enclosure:
-    #     :return:
-    #     """
-    #     pass
-
-    # def check_closed(self, head_pos, tail_pos, direction):
-    #     # not sure if necessary
-    #     hx = head_pos[0]
-    #     tx = tail_pos[0]
-    #     ty = tail_pos[1]
-    #     hy = head_pos[1]
-    #     xs = [-1, 0, 1]
-    #     ys = [-1, 0, 1]
-    #     count = 0
-    #     for x in xs:
-    #         if direction == RIGHT:
-    #             xs.remove(-1)
-    #         elif direction == LEFT:
-    #             xs.remove(1)
-    #
-    #         for y in ys:
-    #             if direction == UP:
-    #                 xs.remove(-1)
-    #             elif direction == DOWN:
-    #                 xs.remove(1)
-    #
-    #             if y == 0 and x == 0:
-    #                 continue
-    #             elif y == ty and x == tx:
-    #                 if not(self._state[hx, hy] >= 100):
-    #                     continue
-    #
-    #             if self._state[hx + x, hy + y] == self._state[hx, hy]:
-    #                     return True, [x, y]
-    #     return False, []
+        next_loc = n_y, n_x
+        return next_loc

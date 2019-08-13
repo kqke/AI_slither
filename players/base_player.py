@@ -44,26 +44,11 @@ class BasePlayer:
     def post_action(self, game):
         pass
 
-    # probably not necessary
-    # def init_snake(self):
-    #     """
-    #     Initializes the starting position of the snake.
-    #     """
-    #     counter = 1
-    #     hx, hy = self.head
-    #     while counter < STARTING_LENGTH:
-    #         self.locations.append((hx + counter, hy))
-    #         counter += 1
-    #     self.locations_set = set(self.locations)
-    #     self.locations = [self.head] + self.locations
-
     def move(self, new_loc):
         """
         Advances the snake by one move.
         :param new_loc: New location of the head.
         """
-        # TODO
-        # check if valid position
 
         if self.leftover_counter == 0:
             self.locations.pop()
@@ -123,13 +108,6 @@ class BasePlayer:
         """
         return self.tail
 
-    # def alive(self):
-    #     """
-    #     Is the snake alive?
-    #     :return: True if yes, False otherwise.
-    #     """
-    #     return self.is_alive
-
     def eat(self):
         self.n_food_eaten += 1
         self.score += SCORE_FOOD
@@ -181,17 +159,3 @@ class BasePlayer:
         :return:
         """
         self.leftover_counter += n
-
-    # def check_closed(self):
-    #     """
-    #
-    #     :return:
-    #     """
-    #     return self.head in self.locations_set
-    #
-    # def get_enclosure(self):
-    #     """
-    #
-    #     :return:
-    #     """
-    #     pass
