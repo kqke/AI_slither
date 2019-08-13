@@ -3,9 +3,9 @@ import numpy as np
 from players.base_player import BasePlayer
 from constants import *
 
-FORWARD_ACTION_P = 0.80
+FORWARD_ACTION_P = 0.7
 OTHER_ACTION_P = (1 - FORWARD_ACTION_P) / 2
-ACTION_DISTRIBUTION = [OTHER_ACTION_P, OTHER_ACTION_P, FORWARD_ACTION_P]
+ACTION_DISTRIBUTION = [FORWARD_ACTION_P, OTHER_ACTION_P, OTHER_ACTION_P]
 
 
 class RandomPlayer(BasePlayer):
