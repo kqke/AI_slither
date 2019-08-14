@@ -27,6 +27,8 @@ class NNPlayer(DeepQPlayer):
         return NN_PLAYER
 
     # NN impl.
+    # todo
+    # not ready yet
     def build_model(self):
         model = Sequential()
         model.add(Dense(N_ACTIONS, input_shape=self.input_shape))
