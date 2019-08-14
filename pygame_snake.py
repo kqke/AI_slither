@@ -63,6 +63,17 @@ def draw_logo(screen, loc):
     screen.blit(text, loc)
 
 
+def draw_names(screen, game):
+    x = game.get_width() * BLOCK_SIZE + BORDER + SCORE_X_OFFSET
+    y = BORDER + SCORE_Y_OFFSET
+    score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
+    for player in game.get_players():
+        score = '%d %s' % (player.get_id(), player.get_type())
+        text = score_font.render(score, False, WHITE)
+        screen.blit(text, (x, y))
+        y += SCORE_Y_SPACE
+
+
 def draw_board(screen, game):
     h = game.get_height()
     w = game.get_width()
@@ -70,9 +81,9 @@ def draw_board(screen, game):
     for y in range(h):
         for x in range(w):
             rect = pygame.Rect(BORDER + x * BLOCK_SIZE, BORDER + y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
-            if state[y, x] == 100:
+            if state[y, x] == FOOD_MARK:
                 pygame.draw.rect(screen, GREEN, rect)
-            elif state[y, x] == 0:
+            elif state[y, x] == FREE_SQUARE_MARK:
                 pygame.draw.rect(screen, WHITE, rect)
             elif state[y, x] < 0:
                 pid = int(abs(state[y, x]))
@@ -118,17 +129,6 @@ def draw_head(screen, player, rect):
     screen.blit(text, (x, y))
 
 
-def draw_names(screen, game):
-    x = game.get_width() * BLOCK_SIZE + BORDER + SCORE_X_OFFSET
-    y = BORDER + SCORE_Y_OFFSET
-    score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
-    for player in game.get_players():
-        score = '%d %s' % (player.get_id(), player.get_type())
-        text = score_font.render(score, False, WHITE)
-        screen.blit(text, (x, y))
-        y += SCORE_Y_SPACE
-
-
 def draw_scores(screen, game):
     w, h = pygame.display.get_surface().get_size()
     players = game.get_players()
@@ -136,8 +136,9 @@ def draw_scores(screen, game):
     score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
     for player in players:
         score = str(player.get_score())
-        rect = pygame.Rect(w - (BORDER + (len(score) * SCORE_FONT_W)), y, (BORDER + (len(score) * SCORE_FONT_W)), SCORE_Y_SPACE)
+        x = w - (BORDER + (len(score) * SCORE_FONT_W))
+        rect = pygame.Rect(x, y, BORDER + (len(score) * SCORE_FONT_W), SCORE_Y_SPACE)
         pygame.draw.rect(screen, BLACK, rect)
         text = score_font.render(score, False, WHITE)
-        screen.blit(text, (w - (BORDER + (len(score) * SCORE_FONT_W)), y))
+        screen.blit(text, (x, y))
         y += SCORE_Y_SPACE
