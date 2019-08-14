@@ -34,7 +34,7 @@ def get_greedy_action(game, head, direction):
     actions_and_distances = []
     for action in ACTIONS:
         action_direction = game.convert_action_to_direction(action, direction)
-        action_loc = game.get_next_location(head, action_direction)
+        action_loc = game.get_next_location(head, action_direction, game.get_height(), game.get_width())
 
         # avoid obvious collisions
         if state[action_loc] in [FOOD_MARK, FREE_SQUARE_MARK]:

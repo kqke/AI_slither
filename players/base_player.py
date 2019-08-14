@@ -71,7 +71,7 @@ class BasePlayer:
 
     def get_locations(self):
         """
-        :return: THe list of locations of the snake.
+        :return: The list of locations of the snake.
         """
         return self.locations
 
