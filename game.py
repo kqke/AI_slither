@@ -62,10 +62,12 @@ class Game:
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
         pid = 1
+        init_state = self.get_state()
         for player in players:
             n = players[player]
             for k in range(n):
-                head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
+                head = sample_bool_matrix(init_state == FREE_SQUARE_MARK)
+                init_state[head] = FREE_SQUARE_MARK - 1  # not equal to FREE_SQUARE_MARK
                 if player == CNN_PLAYER:
                     self._players_dict[pid] = CNNPlayer(pid, head)
                 elif player == NN_PLAYER:

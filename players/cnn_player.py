@@ -36,6 +36,7 @@ class CNNPlayer(BasePlayer):
         self.others_body_marks = set()
 
         self.tmp = -1   # todo rm
+        self.greedy = False   # todo rm
 
         if LOAD_MODEL:
             print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
@@ -63,6 +64,7 @@ class CNNPlayer(BasePlayer):
 
         # print("q: {}".format(q_values))
 
+        # todo uc
         rand = np.random.random()
         if rand < EPSILON_GREEDY:
             action_index = np.random.randint(N_ACTIONS)
@@ -73,7 +75,9 @@ class CNNPlayer(BasePlayer):
         return action
 
         # # todo tmp
+        # self.greedy = True  # todo rm
         # greedy_action = get_greedy_action(game, self.head, self.direction)
+        # self.action_index = ACTIONS.index(greedy_action)
         # return greedy_action
 
     def post_action(self, game):
@@ -95,7 +99,15 @@ class CNNPlayer(BasePlayer):
 
                 x[i] = state_t
                 y[i] = self.prev_q_values  # loss is affected only by action_index value
-                y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
+
+                # todo tmp
+                # y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
+
+                # todo review
+                if reward < 0:  # snake is dead
+                    y[i, action_index] = reward
+                else:
+                    y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
 
             loss = self.model.train_on_batch(x, y)
             self.batch = []
@@ -124,6 +136,8 @@ class CNNPlayer(BasePlayer):
                     player.n_food_eaten = 0
                     player.n_died = 0
                     player.n_killed = 0
+                if self.greedy:
+                    print("!!! GREEDY ACTIONS !!!")
                 print("---------")
 
             if SAVE_MODEL:
@@ -136,17 +150,17 @@ class CNNPlayer(BasePlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(16, (5, 5), strides=(1, 1), padding="same", input_shape=self.input_shape))
+        model.add(Convolution2D(32, (7, 7), strides=(1, 1), input_shape=self.input_shape))
         model.add(Activation("relu"))
-        # model.add(Convolution2D(8, (5, 5), strides=(1, 1), padding="same"))
-        # model.add(Activation("relu"))
+        model.add(Convolution2D(8, (7, 7), strides=(1, 1)))
+        model.add(Activation("relu"))
         model.add(Flatten())
-        model.add(Dense(64))
+        model.add(Dense(32))
         model.add(Activation("relu"))
         model.add(Dense(N_ACTIONS))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
-        # print(model.summary())  # todo
+        print(model.summary())  # todo
         return model
 
     def normalize_state(self, game):
