@@ -13,8 +13,8 @@ from config import *
 class CNNPlayer(DeepQPlayer):
 
     def __init__(self, pid, head):
-        super().__init__(pid, head)
-        self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
+        input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
+        super().__init__(pid, head, input_shape)
 
     @staticmethod
     def get_type():
@@ -50,6 +50,5 @@ class CNNPlayer(DeepQPlayer):
         model_input[:, :, 1] = norm_state == self.pid  # self body
         model_input[:, :, 2] = np.isin(norm_state, self.others_head_marks)  # other heads
         model_input[:, :, 3] = np.isin(norm_state, self.others_body_marks)  # other bodys
-        # todo add another map of other heads
         model_input = model_input[np.newaxis, :]
         return model_input

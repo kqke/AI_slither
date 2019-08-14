@@ -20,14 +20,14 @@ DIRECTION_TO_N_ROT90 = {
 
 
 class DeepQPlayer(BasePlayer):
-    def __init__(self, pid, head):
+    def __init__(self, pid, head, input_shape):
         super().__init__(pid, head)
 
         # todo
         # maybe not so good...
         # this attribute is changed in inheriting classes,
         # but is used in post_action func
-        self.input_shape = (0, )
+        self.input_shape = input_shape
 
         self.center_y = GAME_HEIGHT // 2
         self.center_x = GAME_WIDTH // 2
