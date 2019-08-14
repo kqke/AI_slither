@@ -22,7 +22,13 @@ DIRECTION_TO_N_ROT90 = {
 class DeepQPlayer(BasePlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head)
-        self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
+
+        # todo
+        # maybe not so good...
+        # this attribute is changed in inheriting classes,
+        # but is used in post_action func
+        self.input_shape = (0, )
+
         self.center_y = GAME_HEIGHT // 2
         self.center_x = GAME_WIDTH // 2
         self.model = self.build_model()
@@ -44,6 +50,10 @@ class DeepQPlayer(BasePlayer):
 
     # virtual
     def build_model(self):
+        pass
+
+    # virtual
+    def extract_model_input(self, game):
         pass
 
     def init(self, game):
@@ -166,20 +176,6 @@ class DeepQPlayer(BasePlayer):
         head_x = x[0]
         norm_state = np.roll(np.roll(aligned_state, self.center_y - head_y, axis=0), self.center_x - head_x, axis=1)
         return norm_state
-
-    def extract_model_input(self, game):
-        # aligning and centering head
-        norm_state = self.normalize_state(game)
-
-        # head isn't modeled since it's centered
-        model_input = np.zeros(self.input_shape)
-        model_input[:, :, 0] = norm_state == FOOD_MARK  # food
-        model_input[:, :, 1] = norm_state == self.pid  # self body
-        model_input[:, :, 2] = np.isin(norm_state, self.others_head_marks)  # other heads
-        model_input[:, :, 3] = np.isin(norm_state, self.others_body_marks)  # other bodys
-        # todo add another map of other heads
-        model_input = model_input[np.newaxis, :]
-        return model_input
 
     # todo rm
     # def dead(self, new_head):

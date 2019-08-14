@@ -18,7 +18,7 @@ SCORE_KILLING = 0  # todo
 TRAIN = 1
 
 EPSILON_GREEDY = 0  # 0.05 if TRAIN else 0  # todo
-GAMMA = .9  # todo was .9
+GAMMA = .95  # todo was .9
 
 LEARNING_RATE = .001  # todo
 BATCH_SIZE = 64
@@ -33,6 +33,12 @@ SAVE_MODEL_BATCH_ITERATIONS = 3000
 
 LOAD_MODEL = 1
 LOAD_MODEL_FILE_NAME = "2019-08-14-03-17-11.h5"
+
+
+# NN
+
+N_FEATURES = 3
+NN_INPUT_SHAPE = (1, N_FEATURES)
 
 
 
