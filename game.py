@@ -8,9 +8,9 @@
 # if reaching end state - don't update cnn player
 # check if CNN can handle width != height, maybe enforce width = height
 
-from time import sleep
-from os import system, name
+import os
 import numpy as np
+from pickle import dump
 
 from players.cnn_player import CNNPlayer
 from players.nn_player import NNPlayer
@@ -42,6 +42,8 @@ class Game:
         :param height: Height of the board.
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
+        self.clean_records()
+
         self._h, self._w = height, width
         self._state = np.full((height, width), FREE_SQUARE_MARK)
         self._check = self._state.copy()
@@ -110,6 +112,7 @@ class Game:
         self.update_board()
         self.update_food()
         self.post_turn()
+        self.update_players_records()
         self._turn_number += 1
 
     def pre_turn(self):
@@ -203,7 +206,7 @@ class Game:
 
     def update_dead(self):
         for player in self._dead:
-            # print("{} is dead!".format(dead.get_id()))  # todo verbose
+            # print("{} is dead!".format(dead.get_id()))  # todo verbose - print state to learn how to avoid
             new_head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
             player.dead(new_head)
             self._state[new_head] = self.get_head_mark(player.get_id())
@@ -223,6 +226,58 @@ class Game:
     def post_turn(self):
         for player in self.get_players():
             player.post_action(self)
+
+    def update_players_records(self):
+        if self._turn_number % BATCH_SIZE == 0:
+            for player in self.get_players():
+                player.update_records()
+
+        if self._turn_number % (SAVE_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0:
+            print("saving players records.")
+            for player in self.get_players():
+                fn = "{}_{}.pkl".format(player.get_type(), player.get_id())
+                dump(player.get_records(), open(os.path.join(RECORDS_DIR, fn), "wb"))
+
+        if PRINT_RECORDS:
+            if self._turn_number % (PRINT_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0:
+                print("---------")
+
+                print("TOTAL - {} batches".format(int(self._turn_number / BATCH_SIZE)))
+                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+                for pid, player in self.get_id_player_pairs():
+                    records = player.get_records()
+                    den = len(records["score"]) * BATCH_SIZE  # normalization factor
+                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                        pid,
+                        player.get_type(),
+                        records["score"][-1] / den,
+                        records["n_food"][-1] / den,
+                        records["n_died"][-1] / den,
+                        records["n_killed"][-1] / den,
+                        np.mean(records["loss"]) if "loss" in records else 0))
+
+                print()
+
+                last_n = PRINT_RECORDS_BATCH_ITERATIONS
+                last_den = last_n * BATCH_SIZE  # normalization factor
+
+                def last_n_mean(arr):
+                    return (arr[-1] - (arr[-last_n-1] if len(arr) > last_n else 0)) / last_den
+
+                print("LAST UPDATE - {} batches".format(last_n))
+                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+                for pid, player in self.get_id_player_pairs():
+                    records = player.get_records()
+                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                        pid,
+                        player.get_type(),
+                        last_n_mean(records["score"]),
+                        last_n_mean(records["n_food"]),
+                        last_n_mean(records["n_died"]),
+                        last_n_mean(records["n_killed"]),
+                        np.mean(records["loss"][-last_n:]) if "loss" in records else 0))
+
+                print("---------")
 
     def __str__(self):
         """
@@ -358,3 +413,9 @@ class Game:
 
         next_loc = n_y, n_x
         return next_loc
+
+    @staticmethod
+    def clean_records():
+        for fn in os.listdir(RECORDS_DIR):
+            fp = os.path.join(RECORDS_DIR, fn)
+            os.unlink(fp)

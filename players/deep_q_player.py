@@ -22,18 +22,24 @@ DIRECTION_TO_N_ROT90 = {
 class DeepQPlayer(BasePlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head)
-        self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
         self.center_y = GAME_HEIGHT // 2
         self.center_x = GAME_WIDTH // 2
+
+        self.input_shape = (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS)
         self.model = self.build_model()
+
         self.prev_state = -1
         self.prev_score = -1
         self.prev_q_values = -1
         self.action_index = -1
         self.batch = []
         self.n_batches = 0
+
         self.others_head_marks = set()
         self.others_body_marks = set()
+
+        self.records["loss"] = []
+        self.loss = -999
 
         self.tmp = -1  # todo rm
         self.greedy = False  # todo rm
@@ -81,9 +87,6 @@ class DeepQPlayer(BasePlayer):
         # return greedy_action
 
     def post_action(self, game):
-        if not TRAIN_MODEL:
-            return
-
         cur_state = self.extract_model_input(game)
         reward = self.get_score() - self.prev_score
         sample = (self.prev_state, self.action_index, reward, cur_state)
@@ -109,36 +112,12 @@ class DeepQPlayer(BasePlayer):
                 else:
                     y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
 
-            loss = self.model.train_on_batch(x, y)
+            # todo redesign
+            if TRAIN_MODEL:
+                self.loss = self.model.train_on_batch(x, y)
+
             self.batch = []
             self.n_batches += 1
-
-            if self.n_batches % PRINT_LOSS_BATCH_ITERATIONS == 0:
-                print("loss = {:.3f}".format(loss))
-
-            if self.n_batches % SCORE_SUMMARY_BATCH_ITERATION == 0:
-                print("---------")
-                print("{} iters, {} batches".format(game.get_turn_number(), self.n_batches))
-                n = SCORE_SUMMARY_BATCH_ITERATION * BATCH_SIZE
-                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i"))
-                for pid, player in game.get_id_player_pairs():
-                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f}".format(
-                        pid,
-                        player.get_type(),
-                        player.score / n,
-                        player.n_food_eaten / n,
-                        player.n_died / n,
-                        player.n_killed / n))
-
-                    # todo reset function
-                    # todo move to another place?
-                    player.score = 0
-                    player.n_food_eaten = 0
-                    player.n_died = 0
-                    player.n_killed = 0
-                if self.greedy:
-                    print("!!! GREEDY ACTIONS !!!")
-                print("---------")
 
             if SAVE_MODEL:
                 if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
@@ -146,6 +125,11 @@ class DeepQPlayer(BasePlayer):
                     print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
                     model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
                     self.model.save(os.path.join(MODELS_DIR, model_fn))
+
+    def update_records(self):
+        super().update_records()
+        if TRAIN_MODEL:
+            self.records["loss"].append(self.loss)
 
     def normalize_state(self, game):
         # align state

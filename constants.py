@@ -17,8 +17,9 @@ N_DIRECTIONS = len(DIRECTIONS)
 FOOD_MARK = 100
 FREE_SQUARE_MARK = 0
 
-# model
+# dirs
 MODELS_DIR = "models"
+RECORDS_DIR = "records"
 
 # players
 CNN_PLAYER = "CNN"

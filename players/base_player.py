@@ -21,14 +21,21 @@ class BasePlayer:
         self.score = 0
         self.leftover_counter = leftover
 
-        self.n_food_eaten = 0
+        self.n_food = 0
         self.n_died = 0
         self.n_killed = 0
+        self.records = {
+            "score": [],
+            "n_food": [],
+            "n_died": [],
+            "n_killed": [],
+        }
 
     @staticmethod
     def get_type():
         pass
 
+    # virtual
     def init(self, game):
         pass
 
@@ -43,6 +50,13 @@ class BasePlayer:
     # virtual
     def post_action(self, game):
         pass
+
+    # virtual
+    def update_records(self):
+        self.records["score"].append(self.score)
+        self.records["n_food"].append(self.n_food)
+        self.records["n_died"].append(self.n_died)
+        self.records["n_killed"].append(self.n_killed)
 
     def move(self, new_loc):
         """
@@ -109,7 +123,7 @@ class BasePlayer:
         return self.tail
 
     def eat(self):
-        self.n_food_eaten += 1
+        self.n_food += 1
         self.score += SCORE_FOOD
         self.leftover_counter += FOOD_SIZE_INC
 
@@ -151,6 +165,9 @@ class BasePlayer:
         :return: The id of the snake.
         """
         return self.pid
+
+    def get_records(self):
+        return self.records
 
     def update_leftover(self, n):
         """
