@@ -17,10 +17,10 @@ def sample_bool_matrix(mat):
     return loc
 
 
-def get_greedy_action(game, head, direction):
+def get_greedy_action_index(game, head, direction):
     food = game.get_food()
     if len(food) == 0:
-        return FORWARD_ACTION
+        return ACTIONS.index(FORWARD_ACTION)
 
     # find the nearest food
     food_and_distances = []
@@ -31,8 +31,8 @@ def get_greedy_action(game, head, direction):
 
     # find the action which get us closest the the nearest food
     state = game.get_state()
-    actions_and_distances = []
-    for action in ACTIONS:
+    actions_indices_and_distances = []
+    for i, action in enumerate(ACTIONS):
         action_direction = game.convert_action_to_direction(action, direction)
         action_loc = game.get_next_location(head, action_direction, game.get_height(), game.get_width())
 
@@ -42,7 +42,7 @@ def get_greedy_action(game, head, direction):
         else:  # snake's body or another snake
             dist = float("inf")
 
-        actions_and_distances.append((action, dist))
+        actions_indices_and_distances.append((i, dist))
 
-    greedy_action = min(actions_and_distances, key=lambda ad: ad[1])[0]
-    return greedy_action
+    greedy_action_index = min(actions_indices_and_distances, key=lambda ad: ad[1])[0]
+    return greedy_action_index

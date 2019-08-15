@@ -1,0 +1,17 @@
+    # CNN impl.
+    def build_model(self):
+        model = Sequential()
+        model.add(Convolution2D(32, (7, 7), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Activation("relu"))
+        model.add(Convolution2D(8, (7, 7), strides=(1, 1)))
+        model.add(Activation("relu"))
+        model.add(Flatten())
+        model.add(Dense(32))
+        model.add(Activation("relu"))
+        model.add(Dense(N_ACTIONS))
+        adam = Adam(lr=LEARNING_RATE)
+        model.compile(loss="mean_squared_error", optimizer=adam)
+        print(model.summary())  # todo
+        return model
+
+model: 2019-08-14-20-45-53.h5
