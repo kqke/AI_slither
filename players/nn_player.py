@@ -2,6 +2,7 @@ from keras import Sequential
 from keras.layers import Convolution2D, Activation, Dense, Flatten
 from keras.optimizers import Adam
 from keras.models import load_model
+from sklearn.cluster import MeanShift
 import numpy as np
 import time
 import os
@@ -48,18 +49,20 @@ class NNPlayer(DeepQPlayer):
 
     def extract_model_input(self, game):
         food_dist = self.get_closest_food(game)
+        food_cluster_dist = self.get_cluster_dist(game)
         coll_dist = self.get_closest_collision(game)
-        eat = self.is_food_eaten()
-        return np.array([food_dist, coll_dist, eat])
+        # eat = self.is_food_eaten(game)
+        return np.array([food_dist, food_cluster_dist, coll_dist]).reshape(NN_INPUT_SHAPE)
 
     def get_closest_food(self, game):
         foods = game.get_food()
-        min_dist = (np.inf, np.inf)
-        for food in foods:
-            dist = l1_distance(self.head, food)
-            if dist < min_dist:
-                min_dist = food
-        return min_dist
+        return min(l1_distance(self.head, food) for food in foods)
+
+    def get_cluster_dist(self, game):
+        food = np.asarray(list(game.get_food()))
+        clusters = MeanShift().fit(food)
+        centers = clusters.cluster_centers_
+        return min(l1_distance(self.head, center) for center in centers)
 
     def get_closest_collision(self, game):
         players = game.get_players()
@@ -72,6 +75,6 @@ class NNPlayer(DeepQPlayer):
                     min_dist = location
         return min_dist
 
-    def is_food_eaten(self, game):
-        # not sure about impl.
-        return True
+    # def is_food_eaten(self, game):
+    #     # not sure about impl.
+    #     return True

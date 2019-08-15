@@ -27,7 +27,8 @@ class DeepQPlayer(BasePlayer):
         # maybe not so good...
         # this attribute is changed in inheriting classes,
         # but is used in post_action func
-        self.input_shape = (0, )
+        # self.input_shape = (0, )
+        self.input_shape = NN_INPUT_SHAPE
 
         self.center_y = GAME_HEIGHT // 2
         self.center_x = GAME_WIDTH // 2
