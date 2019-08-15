@@ -23,21 +23,17 @@ class CNNPlayer(DeepQPlayer):
     # CNN impl.
     def build_model(self):
         model = Sequential()
-        model.add(Convolution2D(32, (3, 3), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Convolution2D(32, (7, 7), strides=(1, 1), input_shape=self.input_shape))
         model.add(Activation("relu"))
-        model.add(Convolution2D(8, (3, 3), strides=(1, 1)))
-        model.add(Activation("relu"))
-        model.add(Convolution2D(8, (3, 3), strides=(1, 1)))
-        model.add(Activation("relu"))
-        model.add(Convolution2D(8, (3, 3), strides=(1, 1)))
+        model.add(Convolution2D(8, (7, 7), strides=(1, 1)))
         model.add(Activation("relu"))
         model.add(Flatten())
-        model.add(Dense(16))
+        model.add(Dense(32))
         model.add(Activation("relu"))
         model.add(Dense(N_ACTIONS))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
-        print(model.summary())  # todo
+        model.summary()
         return model
 
     def extract_model_input(self, game):
@@ -46,9 +42,12 @@ class CNNPlayer(DeepQPlayer):
 
         # head isn't modeled since it's centered
         model_input = np.zeros(self.input_shape)
-        model_input[:, :, 0] = norm_state == FOOD_MARK  # food
-        model_input[:, :, 1] = norm_state == self.pid  # self body
+
+        # todo uc
+        model_input[:, :, 0] = (norm_state == FOOD_MARK)  # food
+        model_input[:, :, 1] = (norm_state == self.pid)  # self body
         model_input[:, :, 2] = np.isin(norm_state, self.others_head_marks)  # other heads
         model_input[:, :, 3] = np.isin(norm_state, self.others_body_marks)  # other bodys
+
         model_input = model_input[np.newaxis, :]
         return model_input

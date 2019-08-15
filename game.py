@@ -218,8 +218,10 @@ class Game:
         The amount of food on the board in a given time is specified by FOOD_N.
         """
         if len(self._food) < N_FOOD:
-            new_food = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
-            self._food.add(new_food)
+            free_squares = (self._state == FREE_SQUARE_MARK)
+            if np.any(free_squares):
+                new_food = sample_bool_matrix(free_squares)
+                self._food.add(new_food)
         for food in self._food:
             self._state[food] = FOOD_MARK
 
@@ -232,52 +234,51 @@ class Game:
             for player in self.get_players():
                 player.update_records()
 
-        if self._turn_number % (SAVE_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0:
+        if SAVE_RECORDS and (self._turn_number % (SAVE_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0):
             print("saving players records.")
             for player in self.get_players():
                 fn = "{}_{}.pkl".format(player.get_type(), player.get_id())
                 dump(player.get_records(), open(os.path.join(RECORDS_DIR, fn), "wb"))
 
-        if PRINT_RECORDS:
-            if self._turn_number % (PRINT_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0:
-                print("---------")
+        if PRINT_RECORDS and (self._turn_number % (PRINT_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0):
+            print("---------")
 
-                print("TOTAL - {} batches".format(int(self._turn_number / BATCH_SIZE)))
-                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
-                for pid, player in self.get_id_player_pairs():
-                    records = player.get_records()
-                    den = len(records["score"]) * BATCH_SIZE  # normalization factor
-                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
-                        pid,
-                        player.get_type(),
-                        records["score"][-1] / den,
-                        records["n_food"][-1] / den,
-                        records["n_died"][-1] / den,
-                        records["n_killed"][-1] / den,
-                        np.mean(records["loss"]) if "loss" in records else 0))
+            print("TOTAL - {} batches".format(int(self._turn_number / BATCH_SIZE)))
+            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+            for pid, player in self.get_id_player_pairs():
+                records = player.get_records()
+                den = len(records["score"]) * BATCH_SIZE  # normalization factor
+                print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                    pid,
+                    player.get_type(),
+                    records["score"][-1] / den,
+                    records["n_food"][-1] / den,
+                    records["n_died"][-1] / den,
+                    records["n_killed"][-1] / den,
+                    np.mean(records["loss"]) if "loss" in records else 0))
 
-                print()
+            print()
 
-                last_n = PRINT_RECORDS_BATCH_ITERATIONS
-                last_den = last_n * BATCH_SIZE  # normalization factor
+            last_n = PRINT_RECORDS_BATCH_ITERATIONS
+            last_den = last_n * BATCH_SIZE  # normalization factor
 
-                def last_n_mean(arr):
-                    return (arr[-1] - (arr[-last_n-1] if len(arr) > last_n else 0)) / last_den
+            def last_n_mean(arr):
+                return (arr[-1] - (arr[-last_n-1] if len(arr) > last_n else 0)) / last_den
 
-                print("LAST UPDATE - {} batches".format(last_n))
-                print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
-                for pid, player in self.get_id_player_pairs():
-                    records = player.get_records()
-                    print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
-                        pid,
-                        player.get_type(),
-                        last_n_mean(records["score"]),
-                        last_n_mean(records["n_food"]),
-                        last_n_mean(records["n_died"]),
-                        last_n_mean(records["n_killed"]),
-                        np.mean(records["loss"][-last_n:]) if "loss" in records else 0))
+            print("LAST UPDATE - {} batches".format(last_n))
+            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+            for pid, player in self.get_id_player_pairs():
+                records = player.get_records()
+                print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
+                    pid,
+                    player.get_type(),
+                    last_n_mean(records["score"]),
+                    last_n_mean(records["n_food"]),
+                    last_n_mean(records["n_died"]),
+                    last_n_mean(records["n_killed"]),
+                    np.mean(records["loss"][-last_n:]) if "loss" in records else 0))
 
-                print("---------")
+            print("---------")
 
     def __str__(self):
         """

@@ -9,7 +9,7 @@ import os
 from players.base_player import BasePlayer
 from constants import *
 from config import *
-from utils import get_greedy_action
+from utils import get_greedy_action_index
 
 DIRECTION_TO_N_ROT90 = {
     UP: 0,
@@ -45,7 +45,6 @@ class DeepQPlayer(BasePlayer):
         self.loss = -999
 
         self.tmp = -1  # todo rm
-        self.greedy = False  # todo rm
 
         if LOAD_MODEL:
             print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
@@ -77,21 +76,16 @@ class DeepQPlayer(BasePlayer):
 
         # print("q: {}".format(q_values))
 
-        # todo uc
+        # # todo uc
         rand = np.random.random()
         if rand < EPSILON_GREEDY:
             action_index = np.random.randint(N_ACTIONS)
         else:
             action_index = np.argmax(q_values)
+            # action_index = get_greedy_action_index(game, self.head, self.direction)
         self.action_index = action_index
         action = ACTIONS[action_index]
         return action
-
-        # # todo tmp
-        # self.greedy = True  # todo rm
-        # greedy_action = get_greedy_action(game, self.head, self.direction)
-        # self.action_index = ACTIONS.index(greedy_action)
-        # return greedy_action
 
     def post_action(self, game):
         cur_state = self.extract_model_input(game)
