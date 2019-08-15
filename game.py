@@ -19,7 +19,7 @@ from players.random_player import RandomPlayer
 from players.manual_player import ManualPlayer
 from constants import *
 from config import *
-from utils import sample_bool_matrix
+from utils import *
 from pygame_snake import play_gui
 
 SCORE_MULTIPLIER = 2
@@ -35,17 +35,14 @@ class Game:
     Game class
     """
 
-    def __init__(self, width, height, players):
+    def __init__(self, players):
         """
         Initialize game.
         :param width: Width of the board.
         :param height: Height of the board.
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
-        self.clean_records()
-
-        self._h, self._w = height, width
-        self._state = np.full((height, width), FREE_SQUARE_MARK)
+        self._state = np.full(GAME_SHAPE, FREE_SQUARE_MARK)
         self._check = self._state.copy()
         self._players_dict = dict()
         self._food = set()
@@ -88,15 +85,15 @@ class Game:
         for player in self.get_players():
             player.init(self)
 
-    def run(self, turns):
+    def run(self):
         """
         Runs the game for max_turns (specified in constructor) turns.
         """
         if GUI:
-            play_gui(self, turns)
+            play_gui(self, N_ITERATIONS)
         else:
             i = 0
-            while i < turns:
+            while i < N_ITERATIONS:
                 # print(self)
                 i += 1
                 self.play_turn()
@@ -134,9 +131,9 @@ class Game:
         """
         action = player.get_action(self)
 
-        direction = self.convert_action_to_direction(action, player.get_direction())
+        direction = convert_action_to_direction(action, player.get_direction())
         player.set_direction(direction)
-        n_y, n_x = self.get_next_location(player.get_head(), direction, self._h, self._w)
+        n_y, n_x = get_next_location(player.get_head(), direction)
         new_loc = (n_y, n_x)
         # print("{}: {} -> {} ({})".format(player.get_id(), player.get_head(), new_loc, direction))  # todo verbose
         player.move(new_loc)
@@ -189,7 +186,7 @@ class Game:
         """
         Generates a numpy array corresponding to the current game state.
         """
-        self._state = np.full((self._h, self._w), FREE_SQUARE_MARK)
+        self._state = np.full(GAME_SHAPE, FREE_SQUARE_MARK)
         # add player marks
         for pid, player in self._players_dict.items():
             if player not in self._dead:
@@ -287,11 +284,11 @@ class Game:
         ret = ""
         ret += "{} iters\n".format(self._turn_number)
         ret += " "
-        ret += "_" * self._w
+        ret += "_" * GAME_WIDTH
         ret += '\n'
-        for i in range(self._h):
+        for i in range(GAME_HEIGHT):
             ret += "|"
-            for j in range(self._w):
+            for j in range(GAME_WIDTH):
                 if self._state[i, j] == FOOD_MARK:
                     ret += '*'
                 elif self._state[i, j] == FREE_SQUARE_MARK:
@@ -311,13 +308,13 @@ class Game:
             ret += "|"
             ret += '\n'
         ret += " "
-        ret += "_" * self._w
+        ret += "_" * GAME_WIDTH
         ret += '\n'
         for pid, player in self._players_dict.items():
             ret += " "
             t = [str(pid), player.get_type(),
                  "SCORE", str(player.get_score())]
-            left_over = self._w - (sum([len(i) for i in t]) + 2)
+            left_over = GAME_WIDTH - (sum([len(i) for i in t]) + 2)
             ret += " ".join(t[:2])
             ret += " " * left_over
             ret += " ".join(t[2:])
@@ -343,12 +340,6 @@ class Game:
     def get_food(self):
         return self._food
 
-    def get_width(self):
-        return self._w
-
-    def get_height(self):
-        return self._h
-
     def get_turn_number(self):
         return self._turn_number
 
@@ -368,55 +359,3 @@ class Game:
     @staticmethod
     def get_head_mark(pid):
         return -pid
-
-    @staticmethod
-    def convert_action_to_direction(action, cur_direction):
-        """
-        Gives an updated direction, given action and current direction
-        """
-        if action == FORWARD_ACTION:
-            return cur_direction
-
-        elif action == RIGHT_ACTION:
-            if cur_direction == UP:
-                return RIGHT
-            elif cur_direction == RIGHT:
-                return DOWN
-            elif cur_direction == LEFT:
-                return UP
-            elif cur_direction == DOWN:
-                return LEFT
-
-        elif action == LEFT_ACTION:
-            if cur_direction == UP:
-                return LEFT
-            elif cur_direction == RIGHT:
-                return UP
-            elif cur_direction == LEFT:
-                return DOWN
-            elif cur_direction == DOWN:
-                return RIGHT
-
-    @staticmethod
-    def get_next_location(loc, direction, h, w):
-        y, x = loc
-        n_y, n_x = y, x
-        if direction == UP:
-            n_y = (y - 1) % h
-        elif direction == DOWN:
-            n_y = (y + 1) % h
-        elif direction == RIGHT:
-            n_x = (x + 1) % w
-        elif direction == LEFT:
-            n_x = (x - 1) % w
-        # else:
-        #     assert 0
-
-        next_loc = n_y, n_x
-        return next_loc
-
-    @staticmethod
-    def clean_records():
-        for fn in os.listdir(RECORDS_DIR):
-            fp = os.path.join(RECORDS_DIR, fn)
-            os.unlink(fp)

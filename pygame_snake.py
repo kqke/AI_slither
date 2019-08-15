@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 from constants import *
+from config import *
 from pygame.locals import *
 
 
@@ -27,7 +28,7 @@ def play_gui(game, turns):
     s = init_screen(game)
     clock = pygame.time.Clock()
     while i < turns:
-        clock.tick(10)
+        clock.tick(20)
         for e in pygame.event.get():
             if e.type == QUIT:
                 sys.exit(0)
@@ -45,12 +46,12 @@ def play_gui(game, turns):
 def init_screen(game):
     pygame.init()
     pygame.font.init()
-    w = game.get_width() * BLOCK_SIZE + SCORE_BOARD + (2 * BORDER)
-    h = game.get_height() * BLOCK_SIZE + (2 * BORDER)
+    w = GAME_WIDTH * BLOCK_SIZE + SCORE_BOARD + (2 * BORDER)
+    h = GAME_HEIGHT * BLOCK_SIZE + (2 * BORDER)
     s = pygame.display.set_mode((w, h))
     pygame.display.set_caption(SLITHER)
     s.fill(BLACK)
-    x = game.get_width() * BLOCK_SIZE + BORDER + TITLE_X_OFFSET
+    x = GAME_WIDTH * BLOCK_SIZE + BORDER + TITLE_X_OFFSET
     y = BORDER + TITLE_Y_OFFSET
     draw_logo(s, (x, y))
     draw_names(s, game)
@@ -64,7 +65,7 @@ def draw_logo(screen, loc):
 
 
 def draw_names(screen, game):
-    x = game.get_width() * BLOCK_SIZE + BORDER + SCORE_X_OFFSET
+    x = GAME_WIDTH * BLOCK_SIZE + BORDER + SCORE_X_OFFSET
     y = BORDER + SCORE_Y_OFFSET
     score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
     for player in game.get_players():
@@ -75,8 +76,8 @@ def draw_names(screen, game):
 
 
 def draw_board(screen, game):
-    h = game.get_height()
-    w = game.get_width()
+    h = GAME_HEIGHT
+    w = GAME_WIDTH
     state = game.get_state()
     for y in range(h):
         for x in range(w):
