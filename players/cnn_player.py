@@ -107,7 +107,6 @@ class CNNPlayer(BasePlayer):
             action_index = np.random.randint(N_ACTIONS)
         else:
             q_values = self.predict_q_values(self.prev_model_inputs)
-            # print("q: {}".format(q_values))  # todo rm
 
             action_index = np.argmax(q_values)
             # action_index = get_greedy_action_index(game, self.head, self.direction)
@@ -157,4 +156,3 @@ class CNNPlayer(BasePlayer):
         super().update_records()
         if TRAIN_MODEL:
             self.records["loss"].append(self.loss)
-

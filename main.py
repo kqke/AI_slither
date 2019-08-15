@@ -3,7 +3,6 @@ from config import *
 from utils import *
 from game import Game
 
-
 clean_records()
 
 players = {

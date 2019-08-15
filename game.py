@@ -203,7 +203,6 @@ class Game:
 
     def update_dead(self):
         for player in self._dead:
-            # print("{} is dead!".format(dead.get_id()))  # todo verbose - print state to learn how to avoid
             new_head = sample_bool_matrix(self._state == FREE_SQUARE_MARK)
             player.dead(new_head)
             self._state[new_head] = self.get_head_mark(player.get_id())
