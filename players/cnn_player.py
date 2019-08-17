@@ -49,10 +49,26 @@ class CNNPlayer(BasePlayer):
 
     # CNN impl.
     def build_model(self):
+        # 15x15 game, 15 food
+        # model = Sequential()
+        # model.add(Convolution2D(32, (7, 7), strides=(1, 1), input_shape=self.input_shape))
+        # model.add(Activation("relu"))
+        # model.add(Convolution2D(8, (7, 7), strides=(1, 1)))
+        # model.add(Activation("relu"))
+        # model.add(Flatten())
+        # model.add(Dense(16))
+        # model.add(Activation("relu"))
+        # model.add(Dense(1))
+        # adam = Adam(lr=LEARNING_RATE)
+        # model.compile(loss="mean_squared_error", optimizer=adam)
+        # model.summary()
+        # return model
+
+        # 21x21 game, 15 food
         model = Sequential()
-        model.add(Convolution2D(32, (7, 7), strides=(1, 1), input_shape=self.input_shape))
+        model.add(Convolution2D(64, (9, 9), strides=(1, 1), input_shape=self.input_shape))
         model.add(Activation("relu"))
-        model.add(Convolution2D(8, (7, 7), strides=(1, 1)))
+        model.add(Convolution2D(8, (9, 9), strides=(1, 1)))
         model.add(Activation("relu"))
         model.add(Flatten())
         model.add(Dense(16))
