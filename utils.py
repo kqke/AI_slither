@@ -124,7 +124,6 @@ def get_next_location(loc, direction):
     next_loc = n_y, n_x
     return next_loc
 
-
 # records util
 def clean_records():
     for fn in os.listdir(RECORDS_DIR):

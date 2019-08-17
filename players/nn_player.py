@@ -1,15 +1,8 @@
 from keras import Sequential
-from keras.layers import Convolution2D, Activation, Dense, Flatten
+from keras.layers import Activation, Dense
 from keras.optimizers import Adam
-from keras.models import load_model
-from sklearn.cluster import MeanShift
-import numpy as np
-import time
-import os
 
 from players.deep_q_player import DeepQPlayer
-from constants import *
-from config import *
 from utils import *
 
 
@@ -20,61 +13,46 @@ DIRECTION_TO_N_ROT90 = {
     LEFT: 3
 }
 
-# FEATURES:
-# - closest food/food cluster / distances to food
-# - closest collision / number of collisions 1 step away
-# - whether food is eaten
-
-
 class NNPlayer(DeepQPlayer):
 
     def __init__(self, pid, head):
-        super().__init__(pid, head)
-        self.input_shape = NN_INPUT_SHAPE
+        super().__init__(pid, head, NN_INPUT_SHAPE)
+        self.others_marks = self.others_body_marks | self.others_head_marks
 
     @staticmethod
     def get_type():
         return NN_PLAYER
 
-    # NN impl.
-    # todo
-    # not ready yet
     def build_model(self):
         model = Sequential()
-        model.add(Dense(N_ACTIONS, input_shape=self.input_shape))
+        model.add(Dense(32, input_shape=self.input_shape))
+        model.add(Activation('relu'))
+        model.add(Dense(1))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
         # print(model.summary())  # todo
         return model
 
-    def extract_model_input(self, game):
-        food_dist = self.get_closest_food(game)
-        food_cluster_dist = self.get_cluster_dist(game)
-        coll_dist = self.get_closest_collision(game)
-        # eat = self.is_food_eaten(game)
-        return np.array([food_dist, food_cluster_dist, coll_dist]).reshape(NN_INPUT_SHAPE)
+    def extract_model_inputs(self, state):
+        centered_state = center_state(state, self.head)
+        model_inputs = []
+        for action in ACTIONS:
+            a_direction = convert_action_to_direction(action, self.direction)
+            a_state = rotate_state(centered_state, a_direction)
+            a_model_input = self.extract_model_input(state, a_state, a_direction)
+            model_inputs.append(a_model_input)
+        return model_inputs
 
-    def get_closest_food(self, game):
-        foods = game.get_food()
-        return min(l1_distance(self.head, food) for food in foods)
-
-    def get_cluster_dist(self, game):
-        food = np.asarray(list(game.get_food()))
-        clusters = MeanShift().fit(food)
-        centers = clusters.cluster_centers_
-        return min(l1_distance(self.head, center) for center in centers)
-
-    def get_closest_collision(self, game):
-        players = game.get_players()
-        min_dist = (np.inf, np.inf)
-        for player in players:
-            locations = player.get_locations()
-            for location in locations:
-                dist = l1_distance(self.head, location)
-                if dist < min_dist:
-                    min_dist = location
-        return min_dist
-
-    # def is_food_eaten(self, game):
-    #     # not sure about impl.
-    #     return True
+    def extract_model_input(self, reg_state, rot_state, direction):
+        n_loc = get_next_location(self.head, direction)
+        food, block = 0, 0
+        if reg_state[n_loc] == FOOD_MARK:
+            food = 1
+        elif reg_state[n_loc] != FREE_SQUARE_MARK:
+            block = 1
+        food_sum = np.sum(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_Y + RADIUS)] == FOOD_MARK)
+        block_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_X + RADIUS)],
+                                   self.others_marks))
+        model_input = np.array([food, block, food_sum, block_sum]).reshape(NN_INPUT_SHAPE)
+        model_input = model_input[np.newaxis, :]
+        return model_input

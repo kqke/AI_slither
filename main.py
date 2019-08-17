@@ -6,10 +6,10 @@ from game import Game
 clean_records()
 
 players = {
-    CNN_PLAYER: 1,
-    # NN_PLAYER: 1,
+    # CNN_PLAYER: 1,
+    NN_PLAYER: 1,
     GREEDY_PLAYER: 1,
-    RANDOM_PLAYER: 1,
+    # RANDOM_PLAYER: 1,
     # MANUAL_PLAYER: 1,
 }
 

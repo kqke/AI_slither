@@ -23,28 +23,21 @@ class DeepQPlayer(BasePlayer):
     def __init__(self, pid, head, input_shape):
         super().__init__(pid, head)
 
-        # todo
-        # maybe not so good...
-        # this attribute is changed in inheriting classes,
-        # but is used in post_action func
         self.input_shape = input_shape
 
-        self.center_y = GAME_HEIGHT // 2
-        self.center_x = GAME_WIDTH // 2
         self.model = self.build_model()
-        self.prev_state = -1
+
         self.prev_score = -1
-        self.prev_q_values = -1
-        self.action_index = -1
+        self.prev_model_inputs = []
+        self.prev_model_input = -1
         self.batch = []
         self.n_batches = 0
+
         self.others_head_marks = set()
         self.others_body_marks = set()
 
         self.records["loss"] = []
         self.loss = -999
-
-        self.tmp = -1  # todo rm
 
         if LOAD_MODEL:
             print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
@@ -55,7 +48,7 @@ class DeepQPlayer(BasePlayer):
         pass
 
     # virtual
-    def extract_model_input(self, game):
+    def extract_model_inputs(self, game):
         pass
 
     def init(self, game):
@@ -66,52 +59,55 @@ class DeepQPlayer(BasePlayer):
         self.others_body_marks.remove(self.pid)
 
     def pre_action(self, game):
-        self.tmp = game.get_state()  # todo rm
-        self.prev_state = self.extract_model_input(game)
         self.prev_score = self.get_score()
+        state = game.get_state()
+        self.prev_model_inputs = self.extract_model_inputs(state)
 
     def get_action(self, game):
-        q_values = self.model.predict(self.prev_state)
-        self.prev_q_values = q_values
-
-        # print("q: {}".format(q_values))
-
-        # # todo uc
         rand = np.random.random()
         if rand < EPSILON_GREEDY:
             action_index = np.random.randint(N_ACTIONS)
         else:
+            q_values = self.predict_q_values(self.prev_model_inputs)
+
             action_index = np.argmax(q_values)
             # action_index = get_greedy_action_index(game, self.head, self.direction)
-        self.action_index = action_index
+
+        self.prev_model_input = self.prev_model_inputs[action_index]
         action = ACTIONS[action_index]
         return action
 
+    def predict_q_values(self, model_inputs):
+        assert len(model_inputs) == N_ACTIONS
+
+        q_values = []
+        for model_input in model_inputs:
+            a_q_value = self.model.predict(model_input)
+            q_values.append(a_q_value)
+        return q_values
+
     def post_action(self, game):
-        cur_state = self.extract_model_input(game)
+        state = game.get_state()
+        cur_model_inputs = self.extract_model_inputs(state)
         reward = self.get_score() - self.prev_score
-        sample = (self.prev_state, self.action_index, reward, cur_state)
+        sample = (self.prev_model_input, reward, cur_model_inputs)
         self.batch.append(sample)
 
         if len(self.batch) == BATCH_SIZE:
             x = np.zeros((BATCH_SIZE,) + self.input_shape)
-            y = np.zeros((BATCH_SIZE, N_ACTIONS))
+            y = np.zeros(BATCH_SIZE)
 
             for i in range(len(self.batch)):
-                state_t, action_index, reward, state_t1 = self.batch[i]
-                q_values_t1 = self.model.predict(state_t1)
+                prev_model_input, reward, cur_model_inputs = self.batch[i]
+                cur_q_values = self.predict_q_values(cur_model_inputs)
 
-                x[i] = state_t
-                y[i] = self.prev_q_values  # loss is affected only by action_index value
-
-                # todo tmp
-                # y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
+                x[i] = prev_model_input
 
                 # todo review
                 if reward < 0:  # snake is dead
-                    y[i, action_index] = reward
+                    y[i] = reward
                 else:
-                    y[i, action_index] = reward + GAMMA * np.max(q_values_t1)
+                    y[i] = reward + GAMMA * np.max(cur_q_values)
 
             # todo redesign
             if TRAIN_MODEL:
@@ -131,23 +127,3 @@ class DeepQPlayer(BasePlayer):
         super().update_records()
         if TRAIN_MODEL:
             self.records["loss"].append(self.loss)
-
-    def normalize_state(self, game):
-        # align state
-        n_rot90 = DIRECTION_TO_N_ROT90[self.direction]
-        aligned_state = np.rot90(game.get_state(), n_rot90)
-
-        # roll s.t. head is in center
-        y, x = np.where(aligned_state == game.get_head_mark(self.pid))
-        # todo rm
-        if not (x.shape == y.shape == (1,)):
-            print(self.pid)
-            print(game.get_head_mark(self.pid))
-            print(x)
-            print(y)
-            print(aligned_state)
-        assert x.shape == y.shape == (1,)
-        head_y = y[0]
-        head_x = x[0]
-        norm_state = np.roll(np.roll(aligned_state, self.center_y - head_y, axis=0), self.center_x - head_x, axis=1)
-        return norm_state

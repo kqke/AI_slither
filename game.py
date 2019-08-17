@@ -8,8 +8,6 @@
 # if reaching end state - don't update cnn player
 # check if CNN can handle width != height, maybe enforce width = height
 
-import os
-import numpy as np
 from pickle import dump
 
 from players.cnn_player import CNNPlayer
@@ -17,12 +15,9 @@ from players.nn_player import NNPlayer
 from players.greedy_player import GreedyPlayer
 from players.random_player import RandomPlayer
 from players.manual_player import ManualPlayer
-from constants import *
-from config import *
 from utils import *
 from pygame_snake import play_gui
 
-SCORE_MULTIPLIER = 2
 DIRECTION = 6
 PLAYER = 5
 HEAD_POS = 4
@@ -38,8 +33,6 @@ class Game:
     def __init__(self, players):
         """
         Initialize game.
-        :param width: Width of the board.
-        :param height: Height of the board.
         :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
         """
         self._state = np.full(GAME_SHAPE, FREE_SQUARE_MARK)
@@ -213,11 +206,13 @@ class Game:
         Fills the board with food tokens.
         The amount of food on the board in a given time is specified by FOOD_N.
         """
-        if len(self._food) < N_FOOD:
+        while len(self._food) < N_FOOD:
             free_squares = (self._state == FREE_SQUARE_MARK)
             if np.any(free_squares):
                 new_food = sample_bool_matrix(free_squares)
                 self._food.add(new_food)
+            else:
+                break
         for food in self._food:
             self._state[food] = FOOD_MARK
 
@@ -240,7 +235,8 @@ class Game:
             print("---------")
 
             print("TOTAL - {} batches".format(int(self._turn_number / BATCH_SIZE)))
-            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}"
+                  .format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
             for pid, player in self.get_id_player_pairs():
                 records = player.get_records()
                 den = len(records["score"]) * BATCH_SIZE  # normalization factor
@@ -262,7 +258,8 @@ class Game:
                 return (arr[-1] - (arr[-last_n-1] if len(arr) > last_n else 0)) / last_den
 
             print("LAST UPDATE - {} batches".format(last_n))
-            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}".format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
+            print("{:^3s} {:^8s} {:^5s} {:^5s} {:^5s} {:^5s} {:^5s}"
+                  .format("pid", "type", "s/i", "f/i", "d/i", "k/i", "l/i"))
             for pid, player in self.get_id_player_pairs():
                 records = player.get_records()
                 print("{:^3d} {:^8s} {:.3f} {:.3f} {:.3f} {:.3f} {:.3f}".format(
