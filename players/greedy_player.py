@@ -1,8 +1,6 @@
-import numpy as np
-
 from players.base_player import BasePlayer
 from constants import *
-from utils import l1_distance, get_greedy_action_index
+from utils import get_greedy_action_index
 
 
 class GreedyPlayer(BasePlayer):

@@ -1,3 +1,4 @@
+from keras.models import load_model
 from keras import Sequential
 from keras.layers import Activation, Dense
 from keras.optimizers import Adam
@@ -21,6 +22,9 @@ class NNPlayer(DeepQPlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head, NN_INPUT_SHAPE)
         self.others_marks = self.others_body_marks | self.others_head_marks
+        if LOAD_MODEL:
+            print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
+            self.model = load_model(os.path.join(NN_MODELS_DIR, LOAD_MODEL_FILE_NAME))
 
     @staticmethod
     def get_type():

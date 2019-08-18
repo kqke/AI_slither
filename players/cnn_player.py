@@ -1,9 +1,8 @@
+from keras.models import load_model
 from keras import Sequential
 from keras.layers import Convolution2D, Activation, Dense, Flatten
 from keras.optimizers import Adam
-from keras.models import load_model
-import numpy as np
-import os
+
 import time
 
 from players.deep_q_player import DeepQPlayer
@@ -15,6 +14,9 @@ from config import *
 class CNNPlayer(DeepQPlayer):
     def __init__(self, pid, head):
         super().__init__(pid, head, (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS))
+        if LOAD_MODEL:
+            print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
+            self.model = load_model(os.path.join(CNN_MODELS_DIR, LOAD_MODEL_FILE_NAME))
 
     @staticmethod
     def get_type():

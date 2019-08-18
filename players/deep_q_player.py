@@ -1,9 +1,5 @@
-from keras import Sequential
-from keras.layers import Convolution2D, Activation, Dense, Flatten
-from keras.optimizers import Adam
-from keras.models import load_model
 import numpy as np
-import time
+
 import os
 
 from players.base_player import BasePlayer
@@ -38,10 +34,6 @@ class DeepQPlayer(BasePlayer):
 
         self.records["loss"] = []
         self.loss = -999
-
-        if LOAD_MODEL:
-            print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
-            self.model = load_model(os.path.join(MODELS_DIR, LOAD_MODEL_FILE_NAME))
 
     # virtual
     def build_model(self):
@@ -115,8 +107,6 @@ class DeepQPlayer(BasePlayer):
 
             self.batch = []
             self.n_batches += 1
-
-
 
     def update_records(self):
         super().update_records()
