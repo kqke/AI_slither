@@ -14,6 +14,6 @@ class RandomPlayer(BasePlayer):
     def get_type():
         return RANDOM_PLAYER
 
-    def get_action(self, player):
+    def get_action(self, game):
         action = np.random.choice(ACTIONS, p=ACTION_DISTRIBUTION)
         return action

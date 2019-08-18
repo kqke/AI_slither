@@ -6,32 +6,21 @@ from config import *
 from pygame.locals import *
 
 
-BLOCK_SIZE = 20
-SCORE_BOARD = 200
-BORDER = 20
-
-TITLE_X_OFFSET = 40
-TITLE_Y_OFFSET = 5
-SCORE_X_OFFSET = TITLE_X_OFFSET - 25
-SCORE_Y_OFFSET = 100
-SCORE_X_SPACE = 2
-SCORE_Y_SPACE = SCORE_FONT_SZ
-
-HEAD_X_OFFSET = 5
-HEAD_Y_OFFSET = 5
-
-SCORE_FONT_W = 12
-
-
 def play_gui(game, turns):
     i = 0
     s = init_screen(game)
     clock = pygame.time.Clock()
     while i < turns:
-        clock.tick(20)
+        clock.tick(GUI_DELAY)
         for e in pygame.event.get():
             if e.type == QUIT:
-                sys.exit(0)
+                pygame.quit()
+                quit()
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_SPACE:
+                    pause(s)
+                elif e.key == pygame.K_p:
+                    capture(s)
         draw_board(s, game)
         draw_scores(s, game)
         pygame.display.update()
@@ -73,6 +62,44 @@ def draw_names(screen, game):
         text = score_font.render(score, False, WHITE)
         screen.blit(text, (x, y))
         y += SCORE_Y_SPACE
+
+
+def pause(screen):
+    # draw_pause(screen)
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_SPACE:
+                    return
+                elif e.key == pygame.K_p:
+                    capture(screen)
+
+
+# todo
+# finish
+# maybe add some indicator that a screen shot was taken
+def capture(screen):
+    rect = pygame.Rect(BORDER, BORDER, GAME_WIDTH * BLOCK_SIZE, GAME_HEIGHT * BLOCK_SIZE)
+    sub = screen.subsurface(rect)
+    pygame.image.save(sub, SCREEN_SHOT_DIR + "/screen_shot.jpg")
+
+
+# doesn't work...
+# probably not necessary
+# it's possible to do something nice here though
+def draw_pause(screen):
+    x = (GAME_WIDTH - 2) * BLOCK_SIZE
+    y = (GAME_HEIGHT - 2) * BLOCK_SIZE
+    # x = GAME_CENTER_X
+    # y = GAME_CENTER_Y
+    b_d = BLOCK_SIZE // 3
+    rect_1 = pygame.Rect(x, y, b_d, BLOCK_SIZE)
+    rect_2 = pygame.Rect(x + 2 * b_d, y, b_d, BLOCK_SIZE)
+    pygame.draw.rect(screen, BLACK, rect_1)
+    pygame.draw.rect(screen, BLACK, rect_2)
 
 
 def draw_board(screen, game):
@@ -137,8 +164,9 @@ def draw_scores(screen, game):
     score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
     for player in players:
         score = str(player.get_score())
-        x = w - (BORDER + (len(score) * SCORE_FONT_W))
-        rect = pygame.Rect(x, y, BORDER + (len(score) * SCORE_FONT_W), SCORE_Y_SPACE)
+        width = (len(score) + 1) * SCORE_FONT_W
+        x = w - (BORDER + width)
+        rect = pygame.Rect(x, y, BORDER + width, SCORE_Y_SPACE)
         pygame.draw.rect(screen, BLACK, rect)
         text = score_font.render(score, False, WHITE)
         screen.blit(text, (x, y))

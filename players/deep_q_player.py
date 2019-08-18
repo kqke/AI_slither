@@ -1,7 +1,5 @@
 import numpy as np
 
-import os
-
 from players.base_player import BasePlayer
 from constants import *
 from config import *
