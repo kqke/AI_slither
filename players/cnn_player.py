@@ -75,3 +75,12 @@ class CNNPlayer(DeepQPlayer):
 
         model_input = model_input[np.newaxis, :]
         return model_input
+
+    def post_action(self, game):
+        super().post_action(game)
+        if SAVE_MODEL:
+            if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
+                # todo tmp
+                print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
+                model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
+                self.model.save(os.path.join(CNN_MODELS_DIR, model_fn))

@@ -1,0 +1,4 @@
+- score/iteration as a function of iterations in an empty environment
+- advanced metrics (s/i, f/i, d/i, k/i) in a mixed environment (what kind?)
+- examples of cnn player learning strategies beyond the heuristics of the greedy player
+- before/after results of specific learning (specialization)

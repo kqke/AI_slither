@@ -19,7 +19,8 @@ FOOD_MARK = 100
 FREE_SQUARE_MARK = 0
 
 # dirs
-MODELS_DIR = "models"
+CNN_MODELS_DIR = "cnn_models"
+NN_MODELS_DIR = "nn_models"
 RECORDS_DIR = "records"
 
 # players

@@ -116,12 +116,7 @@ class DeepQPlayer(BasePlayer):
             self.batch = []
             self.n_batches += 1
 
-            if SAVE_MODEL:
-                if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
-                    # todo tmp
-                    print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
-                    model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
-                    self.model.save(os.path.join(MODELS_DIR, model_fn))
+
 
     def update_records(self):
         super().update_records()

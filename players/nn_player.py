@@ -5,6 +5,8 @@ from keras.optimizers import Adam
 from players.deep_q_player import DeepQPlayer
 from utils import *
 
+import time
+
 
 DIRECTION_TO_N_ROT90 = {
     UP: 0,
@@ -12,6 +14,7 @@ DIRECTION_TO_N_ROT90 = {
     DOWN: 2,
     LEFT: 3
 }
+
 
 class NNPlayer(DeepQPlayer):
 
@@ -30,7 +33,7 @@ class NNPlayer(DeepQPlayer):
         model.add(Dense(1))
         adam = Adam(lr=LEARNING_RATE)
         model.compile(loss="mean_squared_error", optimizer=adam)
-        # print(model.summary())  # todo
+        model.summary()  # todo
         return model
 
     def extract_model_inputs(self, state):
@@ -50,9 +53,18 @@ class NNPlayer(DeepQPlayer):
             food = 1
         elif reg_state[n_loc] != FREE_SQUARE_MARK:
             block = 1
-        food_sum = np.sum(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_Y + RADIUS)] == FOOD_MARK)
-        block_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_X + RADIUS)],
-                                   self.others_marks))
-        model_input = np.array([food, block, food_sum, block_sum]).reshape(NN_INPUT_SHAPE)
+        food_sum = np.sum(rot_state[:GAME_CENTER_Y] == FOOD_MARK)
+        block_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_marks))
+        my_sum = np.sum(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_X + RADIUS)] == self.pid)
+        model_input = np.array([food, block, food_sum, block_sum, my_sum]).reshape(NN_INPUT_SHAPE)
         model_input = model_input[np.newaxis, :]
         return model_input
+
+    def post_action(self, game):
+        super().post_action(game)
+        if SAVE_MODEL:
+            if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
+                # todo tmp
+                print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
+                model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
+                self.model.save(os.path.join(NN_MODELS_DIR, model_fn))
