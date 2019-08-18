@@ -21,7 +21,6 @@ class NNPlayer(DeepQPlayer):
 
     def __init__(self, pid, head):
         super().__init__(pid, head, NN_INPUT_SHAPE)
-        self.others_marks = self.others_body_marks | self.others_head_marks
         if LOAD_MODEL:
             print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
             self.model = load_model(os.path.join(NN_MODELS_DIR, LOAD_MODEL_FILE_NAME))
@@ -58,9 +57,10 @@ class NNPlayer(DeepQPlayer):
         elif reg_state[n_loc] != FREE_SQUARE_MARK:
             block = 1
         food_sum = np.sum(rot_state[:GAME_CENTER_Y] == FOOD_MARK)
-        block_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_marks))
+        block_body_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_body_marks))
+        block_head_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_head_marks))
         my_sum = np.sum(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_X + RADIUS)] == self.pid)
-        model_input = np.array([food, block, food_sum, block_sum, my_sum]).reshape(NN_INPUT_SHAPE)
+        model_input = np.array([food, block, food_sum, block_body_sum, block_head_sum, my_sum]).reshape(NN_INPUT_SHAPE)
         model_input = model_input[np.newaxis, :]
         return model_input
 
