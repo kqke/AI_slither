@@ -58,7 +58,7 @@ def draw_names(screen, game):
     y = BORDER + SCORE_Y_OFFSET
     score_font = pygame.font.Font(SCORE_FONT, SCORE_FONT_SZ)
     for player in game.get_players():
-        score = '%d %s' % (player.get_id(), player.get_type())
+        score = '%d %s' % (player.get_id(), player.get_name())
         text = score_font.render(score, False, WHITE)
         screen.blit(text, (x, y))
         y += SCORE_Y_SPACE

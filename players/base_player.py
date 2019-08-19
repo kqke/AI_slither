@@ -167,6 +167,9 @@ class BasePlayer:
         """
         return self.pid
 
+    def get_name(self):
+        return self.name
+
     def get_records(self):
         return self.records
 
