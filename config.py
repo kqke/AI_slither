@@ -30,9 +30,9 @@ CNN_PARAMS = {
     "n_input_channels": 4,
     "train_model": 1,
     "save_model": 0,
-    "save_model_batch_iterations": 100,
+    "save_model_batch_iterations": 20,
     "load_model": 1,
-    "load_model_fn": "CNN_2019-08-20-01-33-24.h5",
+    "load_model_fn": "EVO_2019-08-20-01-46-38.h5",
 }
 
 NN_PARAMS = {
