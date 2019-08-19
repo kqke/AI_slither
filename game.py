@@ -33,7 +33,7 @@ class Game:
     def __init__(self, players):
         """
         Initialize game.
-        :param players: A dict that contains key-value pairs thar correspond to player type and their amount.
+        :param players: A dict that contains key-value pairs thar correspond to player type and their names.
         """
         self._state = np.full(GAME_SHAPE, FREE_SQUARE_MARK)
         self._check = self._state.copy()
@@ -55,24 +55,22 @@ class Game:
         """
         pid = 1
         init_state = self.get_state()
-        for player in players:
-            n = players[player]
-            for k in range(n):
-                head = sample_bool_matrix(init_state == FREE_SQUARE_MARK)
-                init_state[head] = FREE_SQUARE_MARK - 1  # not equal to FREE_SQUARE_MARK
-                if player == CNN_PLAYER:
-                    self._players_dict[pid] = CNNPlayer(pid, head)
-                elif player == NN_PLAYER:
-                    self._players_dict[pid] = NNPlayer(pid, head)
-                elif player == GREEDY_PLAYER:
-                    self._players_dict[pid] = GreedyPlayer(pid, head)
-                elif player == RANDOM_PLAYER:
-                    self._players_dict[pid] = RandomPlayer(pid, head)
-                elif player == MANUAL_PLAYER:
-                    self._players_dict[pid] = ManualPlayer(pid, head)
-                else:
-                    assert 0
-                pid += 1
+        for player_type, name in players.items():
+            head = sample_bool_matrix(init_state == FREE_SQUARE_MARK)
+            init_state[head] = FREE_SQUARE_MARK - 1  # not equal to FREE_SQUARE_MARK, to avoid sampling head over head
+            if player_type == CNN_PLAYER:
+                self._players_dict[pid] = CNNPlayer(name, pid, head)
+            elif player_type == NN_PLAYER:
+                self._players_dict[pid] = NNPlayer(name, pid, head)
+            elif player_type == GREEDY_PLAYER:
+                self._players_dict[pid] = GreedyPlayer(name, pid, head)
+            elif player_type == RANDOM_PLAYER:
+                self._players_dict[pid] = RandomPlayer(name, pid, head)
+            elif player_type == MANUAL_PLAYER:
+                self._players_dict[pid] = ManualPlayer(name, pid, head)
+            else:
+                assert 0
+            pid += 1
 
     def init_players(self):
         for player in self.get_players():

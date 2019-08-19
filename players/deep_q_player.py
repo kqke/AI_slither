@@ -1,9 +1,12 @@
 import numpy as np
+import time
+import os
+from keras.models import load_model
 
 from players.base_player import BasePlayer
 from constants import *
 from config import *
-from utils import get_greedy_action_index
+from utils import get_greedy_action
 
 DIRECTION_TO_N_ROT90 = {
     UP: 0,
@@ -14,10 +17,11 @@ DIRECTION_TO_N_ROT90 = {
 
 
 class DeepQPlayer(BasePlayer):
-    def __init__(self, pid, head, input_shape):
-        super().__init__(pid, head)
+    def __init__(self, name, pid, head, input_shape, params):
+        super().__init__(name, pid, head)
 
         self.input_shape = input_shape
+        self.params = params
 
         self.model = self.build_model()
 
@@ -27,11 +31,15 @@ class DeepQPlayer(BasePlayer):
         self.batch = []
         self.n_batches = 0
 
-        self.others_head_marks = set()
-        self.others_body_marks = set()
+        self.others_head_marks = []
+        self.others_body_marks = []
 
         self.records["loss"] = []
         self.loss = -999
+
+        if self.params["load_model"]:
+            print("loading model: {}".format(self.params["load_model_fn"]))
+            self.model = load_model(os.path.join(MODELS_DIR, self.params["load_model_fn"]))
 
     # virtual
     def build_model(self):
@@ -55,7 +63,7 @@ class DeepQPlayer(BasePlayer):
 
     def get_action(self, game):
         rand = np.random.random()
-        if rand < EPSILON_GREEDY:
+        if rand < self.params["epsilon_greedy"]:
             action_index = np.random.randint(N_ACTIONS)
         else:
             q_values = self.predict_q_values(self.prev_model_inputs)
@@ -97,16 +105,23 @@ class DeepQPlayer(BasePlayer):
                 if reward < 0:  # snake is dead
                     y[i] = reward
                 else:
-                    y[i] = reward + GAMMA * np.max(cur_q_values)
+                    y[i] = reward + self.params["gamma"] * np.max(cur_q_values)
 
             # todo redesign
-            if TRAIN_MODEL:
+            if self.params["train_model"]:
                 self.loss = self.model.train_on_batch(x, y)
 
             self.batch = []
             self.n_batches += 1
 
+            if self.params["save_model"]:
+                if self.n_batches % self.params["save_model_batch_iterations"] == 0:
+                    time_str = time.strftime("%Y-%m-%d-%H-%M-%S")
+                    print("saving model: {}".format(time_str))
+                    model_fn = "{}_{}.h5".format(self.name, time_str)
+                    self.model.save(os.path.join(MODELS_DIR, model_fn))
+
     def update_records(self):
         super().update_records()
-        if TRAIN_MODEL:
+        if self.params["train_model"]:
             self.records["loss"].append(self.loss)

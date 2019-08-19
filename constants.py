@@ -19,8 +19,7 @@ FOOD_MARK = 100
 FREE_SQUARE_MARK = 0
 
 # dirs
-CNN_MODELS_DIR = "cnn_models"
-NN_MODELS_DIR = "nn_models"
+MODELS_DIR = "models"
 RECORDS_DIR = "records"
 SCREEN_SHOT_DIR = "screen_shots"
 

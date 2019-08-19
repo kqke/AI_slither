@@ -7,11 +7,12 @@ class BasePlayer:
     Player object that the game holds for each player.
     """
 
-    def __init__(self, pid, head, leftover=STARTING_LENGTH):
+    def __init__(self, name, pid, head, leftover=STARTING_LENGTH):
         """
         Initiates a new GamePlayer object, identified by pid
         :param pid: Player identifier
         """
+        self.name = name
         self.locations_set = set()
         self.head = head
         self.locations = [self.head]

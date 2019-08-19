@@ -5,6 +5,8 @@ from keras.optimizers import Adam
 
 import time
 
+from pylint.test.functional.name_styles import bad_class_name
+
 from players.deep_q_player import DeepQPlayer
 from utils import *
 from constants import *
@@ -12,11 +14,9 @@ from config import *
 
 
 class CNNPlayer(DeepQPlayer):
-    def __init__(self, pid, head):
-        super().__init__(pid, head, (GAME_HEIGHT, GAME_WIDTH, N_INPUT_CHANNELS))
-        if LOAD_MODEL:
-            print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
-            self.model = load_model(os.path.join(CNN_MODELS_DIR, LOAD_MODEL_FILE_NAME))
+    def __init__(self, name, pid, head):
+        input_shape = (GAME_HEIGHT, GAME_WIDTH, CNN_PARAMS["n_input_channels"])
+        super().__init__(name, pid, head, input_shape, CNN_PARAMS)
 
     @staticmethod
     def get_type():
@@ -49,7 +49,7 @@ class CNNPlayer(DeepQPlayer):
         model.add(Dense(16))
         model.add(Activation("relu"))
         model.add(Dense(1))
-        adam = Adam(lr=LEARNING_RATE)
+        adam = Adam(lr=CNN_PARAMS["learning_rate"])
         model.compile(loss="mean_squared_error", optimizer=adam)
         model.summary()
         return model
@@ -77,12 +77,3 @@ class CNNPlayer(DeepQPlayer):
 
         model_input = model_input[np.newaxis, :]
         return model_input
-
-    def post_action(self, game):
-        super().post_action(game)
-        if SAVE_MODEL:
-            if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
-                # todo tmp
-                print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
-                model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
-                self.model.save(os.path.join(CNN_MODELS_DIR, model_fn))

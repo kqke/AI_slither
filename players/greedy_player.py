@@ -1,6 +1,6 @@
 from players.base_player import BasePlayer
 from constants import *
-from utils import get_greedy_action_index
+from utils import get_greedy_action
 
 
 class GreedyPlayer(BasePlayer):
@@ -9,6 +9,5 @@ class GreedyPlayer(BasePlayer):
         return GREEDY_PLAYER
 
     def get_action(self, game):
-        greedy_action_index = get_greedy_action_index(game, self.head, self.direction)
-        greedy_action = ACTIONS[greedy_action_index]
+        greedy_action = get_greedy_action(game, self.head, self.direction)
         return greedy_action

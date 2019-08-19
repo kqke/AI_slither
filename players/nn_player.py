@@ -1,4 +1,3 @@
-from keras.models import load_model
 from keras import Sequential
 from keras.layers import Activation, Dense
 from keras.optimizers import Adam
@@ -18,12 +17,9 @@ DIRECTION_TO_N_ROT90 = {
 
 
 class NNPlayer(DeepQPlayer):
-
-    def __init__(self, pid, head):
-        super().__init__(pid, head, NN_INPUT_SHAPE)
-        if LOAD_MODEL:
-            print("loading model: {}".format(LOAD_MODEL_FILE_NAME))
-            self.model = load_model(os.path.join(NN_MODELS_DIR, LOAD_MODEL_FILE_NAME))
+    def __init__(self, name, pid, head):
+        input_shape = (NN_PARAMS["n_features"],)
+        super().__init__(name, pid, head, input_shape, NN_PARAMS)
 
     @staticmethod
     def get_type():
@@ -34,7 +30,7 @@ class NNPlayer(DeepQPlayer):
         model.add(Dense(32, input_shape=self.input_shape))
         model.add(Activation('relu'))
         model.add(Dense(1))
-        adam = Adam(lr=LEARNING_RATE)
+        adam = Adam(lr=self.params["learning_rate"])
         model.compile(loss="mean_squared_error", optimizer=adam)
         model.summary()  # todo
         return model
@@ -49,26 +45,20 @@ class NNPlayer(DeepQPlayer):
             model_inputs.append(a_model_input)
         return model_inputs
 
-    def extract_model_input(self, reg_state, rot_state, direction):
+    def extract_model_input(self, reg_state, norm_state, direction):
+
+        r = self.params["radius"]
+        window = norm_state[GAME_CENTER_Y-2*r-1:GAME_CENTER_Y, GAME_CENTER_X-r:GAME_CENTER_X+r+1]
         n_loc = get_next_location(self.head, direction)
-        food, block = 0, 0
-        if reg_state[n_loc] == FOOD_MARK:
-            food = 1
-        elif reg_state[n_loc] != FREE_SQUARE_MARK:
-            block = 1
-        food_sum = np.sum(rot_state[:GAME_CENTER_Y] == FOOD_MARK)
-        block_body_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_body_marks))
-        block_head_sum = np.sum(np.isin(rot_state[:GAME_CENTER_Y], self.others_head_marks))
-        my_sum = np.sum(rot_state[:GAME_CENTER_Y, (GAME_CENTER_X - RADIUS):(GAME_CENTER_X + RADIUS)] == self.pid)
-        model_input = np.array([food, block, food_sum, block_body_sum, block_head_sum, my_sum]).reshape(NN_INPUT_SHAPE)
+        n_square = reg_state[n_loc]
+
+        model_input = np.zeros(self.input_shape)
+        model_input[0] = n_square == FOOD_MARK
+        model_input[1] = (n_square != FOOD_MARK) & (n_square != FREE_SQUARE_MARK)
+        model_input[2] = np.sum(window == FOOD_MARK)
+        model_input[3] = np.sum(np.isin(window, self.others_body_marks + self.others_head_marks + [self.pid]))
+        # block_head_sum = np.sum(np.isin(window, self.others_head_marks))
+        # my_sum = np.sum(window == self.pid)
+        # model_input = np.array([food, block, food_sum, block_body_sum, block_head_sum, my_sum]).reshape(self.input_shape)
         model_input = model_input[np.newaxis, :]
         return model_input
-
-    def post_action(self, game):
-        super().post_action(game)
-        if SAVE_MODEL:
-            if self.n_batches % SAVE_MODEL_BATCH_ITERATIONS == 0:
-                # todo tmp
-                print("saving model: {}".format(time.strftime("%Y-%m-%d-%H-%M-%S")))  # todo rm
-                model_fn = "{}.h5".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
-                self.model.save(os.path.join(NN_MODELS_DIR, model_fn))
