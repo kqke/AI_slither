@@ -105,7 +105,7 @@ class DeepQPlayer(BasePlayer):
                 if reward < 0:  # snake is dead
                     y[i] = reward
                 else:
-                    y[i] = reward + self.params["gamma"] * np.max(cur_q_values)
+                    y[i] = reward + GAMMA * np.max(cur_q_values)
 
             # todo redesign
             if self.params["train_model"]:
