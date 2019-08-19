@@ -1,6 +1,6 @@
 # GAME
 GUI = 1
-GUI_DELAY = 7
+GUI_DELAY = 15
 N_ITERATIONS = 10000000
 STARTING_LENGTH = 3
 
@@ -16,8 +16,8 @@ FOOD_SIZE_INC = 1
 
 # RL params
 SCORE_FOOD = 1
-SCORE_DEAD = -3
-SCORE_KILLING = 5
+SCORE_DEAD = -5
+SCORE_KILLING = 3
 
 GAMMA = .95
 
@@ -30,9 +30,9 @@ CNN_PARAMS = {
     "n_input_channels": 4,
     "train_model": 1,
     "save_model": 0,
-    "save_model_batch_iterations": 1000,
+    "save_model_batch_iterations": 100,
     "load_model": 1,
-    "load_model_fn": "CNN_2019-08-19-16-24-29.h5",
+    "load_model_fn": "CNN_2019-08-20-01-33-24.h5",
 }
 
 NN_PARAMS = {
@@ -49,6 +49,6 @@ NN_PARAMS = {
 
 # records
 PRINT_RECORDS = True
-PRINT_RECORDS_BATCH_ITERATIONS = 200
+PRINT_RECORDS_BATCH_ITERATIONS = 20
 SAVE_RECORDS = True
-SAVE_RECORDS_BATCH_ITERATIONS = 500
+SAVE_RECORDS_BATCH_ITERATIONS = 1000

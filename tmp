@@ -1,5 +1,669 @@
-LAST UPDATE - 200 batches
+C:\Users\Roee\Anaconda3\python.exe C:/Users/Roee/PycharmProjects/AI/project/snake/main.py
+Using TensorFlow backend.
+WARNING: Logging before flag parsing goes to stderr.
+pygame 1.9.6
+Hello from the pygame community. https://www.pygame.org/contribute.html
+W0820 01:32:47.800483  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+W0820 01:32:47.813095  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0820 01:32:47.814091  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0820 01:32:47.863320  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+W0820 01:32:47.871308  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:2741: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0820 01:32:47.871308  8692 deprecation_wrapper.py:119] From C:\Users\Roee\Anaconda3\lib\site-packages\keras\backend\tensorflow_backend.py:174: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+
+2019-08-20 01:32:47.875051: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+conv2d_1 (Conv2D)            (None, 13, 13, 64)        20800
+_________________________________________________________________
+activation_1 (Activation)    (None, 13, 13, 64)        0
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 5, 5, 8)           41480
+_________________________________________________________________
+activation_2 (Activation)    (None, 5, 5, 8)           0
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 200)               0
+_________________________________________________________________
+dense_1 (Dense)              (None, 16)                3216
+_________________________________________________________________
+activation_3 (Activation)    (None, 16)                0
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 17
+=================================================================
+Total params: 65,513
+Trainable params: 65,513
+Non-trainable params: 0
+_________________________________________________________________
+---------
+TOTAL - 20 batches
 pid   type    s/i   f/i   d/i   k/i   l/i
- 1    CNN    0.235 0.194 0.003 0.010 0.425
- 2     NN    0.177 0.192 0.010 0.003 0.414
- 3   GREEDY  0.136 0.165 0.012 0.001 0.000
+ 1    CNN    -0.037 0.049 0.019 0.002 0.456
+ 2   GREEDY  0.200 0.216 0.008 0.008 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    -0.037 0.049 0.019 0.002 0.456
+ 2   GREEDY  0.200 0.216 0.008 0.008 0.000
+---------
+---------
+TOTAL - 40 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    -0.018 0.052 0.015 0.002 0.373
+ 2   GREEDY  0.207 0.211 0.005 0.008 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.002 0.054 0.011 0.001 0.289
+ 2   GREEDY  0.215 0.207 0.003 0.008 0.000
+---------
+---------
+TOTAL - 60 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    -0.000 0.061 0.013 0.002 0.335
+ 2   GREEDY  0.196 0.210 0.007 0.007 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.035 0.079 0.010 0.002 0.259
+ 2   GREEDY  0.174 0.207 0.009 0.005 0.000
+---------
+---------
+TOTAL - 80 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.010 0.066 0.012 0.002 0.319
+ 2   GREEDY  0.193 0.211 0.007 0.006 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.042 0.082 0.009 0.002 0.271
+ 2   GREEDY  0.181 0.212 0.009 0.004 0.000
+---------
+saving model: 2019-08-20-01-33-24
+---------
+TOTAL - 100 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.021 0.073 0.012 0.002 0.308
+ 2   GREEDY  0.192 0.209 0.007 0.006 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.062 0.100 0.009 0.002 0.266
+ 2   GREEDY  0.188 0.205 0.006 0.005 0.000
+---------
+---------
+TOTAL - 120 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.034 0.082 0.011 0.002 0.299
+ 2   GREEDY  0.191 0.206 0.006 0.005 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.099 0.128 0.006 0.001 0.254
+ 2   GREEDY  0.187 0.191 0.003 0.004 0.000
+---------
+---------
+TOTAL - 140 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.044 0.091 0.010 0.002 0.311
+ 2   GREEDY  0.188 0.204 0.007 0.005 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.108 0.143 0.009 0.004 0.379
+ 2   GREEDY  0.168 0.193 0.008 0.005 0.000
+---------
+---------
+TOTAL - 160 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.059 0.103 0.010 0.002 0.314
+ 2   GREEDY  0.183 0.202 0.007 0.005 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.159 0.187 0.008 0.004 0.339
+ 2   GREEDY  0.149 0.184 0.009 0.004 0.000
+---------
+---------
+TOTAL - 180 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.073 0.114 0.010 0.003 0.316
+ 2   GREEDY  0.179 0.200 0.007 0.005 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.191 0.205 0.005 0.005 0.333
+ 2   GREEDY  0.148 0.186 0.009 0.003 0.000
+---------
+saving model: 2019-08-20-01-34-02
+---------
+TOTAL - 200 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.087 0.125 0.009 0.002 0.319
+ 2   GREEDY  0.179 0.200 0.007 0.005 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.205 0.228 0.005 0.002 0.345
+ 2   GREEDY  0.178 0.202 0.006 0.002 0.000
+---------
+---------
+TOTAL - 220 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.096 0.133 0.009 0.002 0.318
+ 2   GREEDY  0.176 0.199 0.007 0.004 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.191 0.212 0.005 0.001 0.306
+ 2   GREEDY  0.152 0.180 0.007 0.002 0.000
+---------
+---------
+TOTAL - 240 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.103 0.139 0.008 0.002 0.309
+ 2   GREEDY  0.174 0.197 0.007 0.004 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.179 0.198 0.005 0.002 0.212
+ 2   GREEDY  0.153 0.186 0.007 0.001 0.000
+---------
+---------
+TOTAL - 260 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.110 0.144 0.008 0.002 0.303
+ 2   GREEDY  0.172 0.196 0.007 0.004 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.195 0.207 0.005 0.004 0.230
+ 2   GREEDY  0.140 0.177 0.008 0.001 0.000
+---------
+---------
+TOTAL - 280 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.116 0.148 0.008 0.002 0.294
+ 2   GREEDY  0.170 0.195 0.007 0.004 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.191 0.199 0.004 0.004 0.176
+ 2   GREEDY  0.145 0.179 0.008 0.002 0.000
+---------
+saving model: 2019-08-20-01-34-40
+---------
+TOTAL - 300 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.120 0.151 0.008 0.003 0.291
+ 2   GREEDY  0.167 0.193 0.007 0.004 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.184 0.194 0.004 0.003 0.243
+ 2   GREEDY  0.128 0.170 0.009 0.002 0.000
+---------
+---------
+TOTAL - 320 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.125 0.154 0.007 0.002 0.284
+ 2   GREEDY  0.164 0.192 0.007 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.188 0.196 0.003 0.002 0.187
+ 2   GREEDY  0.124 0.169 0.009 0.001 0.000
+---------
+---------
+TOTAL - 340 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.128 0.156 0.007 0.003 0.279
+ 2   GREEDY  0.162 0.190 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.179 0.185 0.003 0.003 0.190
+ 2   GREEDY  0.123 0.163 0.009 0.001 0.000
+---------
+---------
+TOTAL - 360 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.131 0.158 0.007 0.002 0.269
+ 2   GREEDY  0.161 0.189 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.188 0.195 0.002 0.002 0.113
+ 2   GREEDY  0.143 0.180 0.008 0.001 0.000
+---------
+---------
+TOTAL - 380 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.135 0.160 0.007 0.003 0.265
+ 2   GREEDY  0.161 0.189 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.195 0.198 0.004 0.005 0.191
+ 2   GREEDY  0.154 0.186 0.008 0.002 0.000
+---------
+saving model: 2019-08-20-01-35-19
+---------
+TOTAL - 400 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.137 0.162 0.007 0.003 0.264
+ 2   GREEDY  0.161 0.189 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.178 0.195 0.005 0.002 0.234
+ 2   GREEDY  0.166 0.195 0.008 0.003 0.000
+---------
+---------
+TOTAL - 420 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.139 0.163 0.006 0.003 0.259
+ 2   GREEDY  0.159 0.188 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.186 0.197 0.003 0.002 0.158
+ 2   GREEDY  0.134 0.165 0.006 0.000 0.000
+---------
+---------
+TOTAL - 440 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.142 0.165 0.006 0.003 0.258
+ 2   GREEDY  0.158 0.187 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.195 0.202 0.004 0.004 0.238
+ 2   GREEDY  0.127 0.161 0.008 0.002 0.000
+---------
+---------
+TOTAL - 460 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.144 0.168 0.006 0.003 0.255
+ 2   GREEDY  0.158 0.186 0.007 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.205 0.225 0.005 0.002 0.198
+ 2   GREEDY  0.148 0.172 0.006 0.002 0.000
+---------
+---------
+TOTAL - 480 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.146 0.169 0.006 0.003 0.251
+ 2   GREEDY  0.157 0.186 0.007 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.193 0.206 0.003 0.001 0.150
+ 2   GREEDY  0.150 0.187 0.008 0.001 0.000
+---------
+saving model: 2019-08-20-01-35-57
+---------
+TOTAL - 500 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.148 0.170 0.006 0.003 0.250
+ 2   GREEDY  0.157 0.186 0.007 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.183 0.195 0.005 0.004 0.228
+ 2   GREEDY  0.140 0.168 0.007 0.002 0.000
+---------
+---------
+TOTAL - 520 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.149 0.171 0.006 0.003 0.246
+ 2   GREEDY  0.155 0.185 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.191 0.191 0.002 0.004 0.148
+ 2   GREEDY  0.130 0.168 0.009 0.002 0.000
+---------
+---------
+TOTAL - 540 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.150 0.171 0.006 0.003 0.242
+ 2   GREEDY  0.154 0.184 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.173 0.176 0.002 0.003 0.141
+ 2   GREEDY  0.127 0.167 0.009 0.001 0.000
+---------
+---------
+TOTAL - 560 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.152 0.173 0.006 0.003 0.240
+ 2   GREEDY  0.154 0.184 0.007 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.198 0.206 0.003 0.002 0.178
+ 2   GREEDY  0.148 0.171 0.005 0.002 0.000
+---------
+---------
+TOTAL - 580 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.154 0.174 0.006 0.003 0.239
+ 2   GREEDY  0.154 0.184 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.204 0.213 0.005 0.005 0.216
+ 2   GREEDY  0.143 0.179 0.009 0.002 0.000
+---------
+saving model: 2019-08-20-01-36-35
+---------
+TOTAL - 600 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.155 0.175 0.006 0.003 0.238
+ 2   GREEDY  0.153 0.183 0.008 0.003 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.200 0.195 0.002 0.005 0.212
+ 2   GREEDY  0.125 0.166 0.009 0.001 0.000
+---------
+---------
+TOTAL - 620 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.157 0.175 0.005 0.003 0.237
+ 2   GREEDY  0.151 0.182 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.207 0.191 0.002 0.008 0.213
+ 2   GREEDY  0.108 0.164 0.012 0.001 0.000
+---------
+---------
+TOTAL - 640 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.158 0.176 0.005 0.003 0.235
+ 2   GREEDY  0.151 0.182 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.189 0.187 0.002 0.005 0.164
+ 2   GREEDY  0.133 0.181 0.010 0.001 0.000
+---------
+---------
+TOTAL - 660 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.159 0.176 0.005 0.003 0.234
+ 2   GREEDY  0.150 0.182 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.198 0.202 0.002 0.002 0.200
+ 2   GREEDY  0.134 0.169 0.007 0.000 0.000
+---------
+---------
+TOTAL - 680 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.161 0.178 0.005 0.003 0.233
+ 2   GREEDY  0.149 0.181 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.219 0.227 0.003 0.002 0.197
+ 2   GREEDY  0.113 0.156 0.009 0.000 0.000
+---------
+saving model: 2019-08-20-01-37-14
+---------
+TOTAL - 700 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.163 0.179 0.005 0.003 0.233
+ 2   GREEDY  0.148 0.181 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.214 0.217 0.004 0.005 0.254
+ 2   GREEDY  0.105 0.161 0.013 0.002 0.000
+---------
+---------
+TOTAL - 720 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.164 0.180 0.005 0.003 0.231
+ 2   GREEDY  0.148 0.180 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.209 0.213 0.002 0.002 0.143
+ 2   GREEDY  0.138 0.167 0.006 0.001 0.000
+---------
+---------
+TOTAL - 740 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.165 0.181 0.005 0.003 0.230
+ 2   GREEDY  0.147 0.180 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.203 0.208 0.002 0.002 0.186
+ 2   GREEDY  0.125 0.160 0.007 0.000 0.000
+---------
+---------
+TOTAL - 760 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.166 0.181 0.005 0.003 0.228
+ 2   GREEDY  0.147 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.192 0.205 0.003 0.001 0.181
+ 2   GREEDY  0.130 0.151 0.005 0.001 0.000
+---------
+---------
+TOTAL - 780 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.167 0.183 0.005 0.003 0.227
+ 2   GREEDY  0.147 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.216 0.232 0.005 0.002 0.170
+ 2   GREEDY  0.145 0.175 0.007 0.002 0.000
+---------
+saving model: 2019-08-20-01-37-58
+---------
+TOTAL - 800 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.167 0.183 0.005 0.003 0.226
+ 2   GREEDY  0.146 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.187 0.188 0.004 0.006 0.210
+ 2   GREEDY  0.133 0.177 0.010 0.002 0.000
+---------
+---------
+TOTAL - 820 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.168 0.183 0.005 0.003 0.224
+ 2   GREEDY  0.146 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.187 0.198 0.003 0.002 0.135
+ 2   GREEDY  0.136 0.177 0.009 0.001 0.000
+---------
+---------
+TOTAL - 840 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.169 0.183 0.005 0.003 0.224
+ 2   GREEDY  0.145 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.214 0.194 0.002 0.009 0.210
+ 2   GREEDY  0.094 0.164 0.014 0.000 0.000
+---------
+---------
+TOTAL - 860 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.169 0.184 0.005 0.003 0.223
+ 2   GREEDY  0.145 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.185 0.195 0.004 0.003 0.196
+ 2   GREEDY  0.150 0.184 0.008 0.002 0.000
+---------
+---------
+TOTAL - 880 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.170 0.184 0.005 0.003 0.223
+ 2   GREEDY  0.145 0.179 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.193 0.190 0.003 0.006 0.206
+ 2   GREEDY  0.135 0.182 0.009 0.000 0.000
+---------
+saving model: 2019-08-20-01-38-36
+---------
+TOTAL - 900 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.171 0.184 0.005 0.003 0.221
+ 2   GREEDY  0.144 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.202 0.211 0.003 0.002 0.155
+ 2   GREEDY  0.120 0.158 0.009 0.002 0.000
+---------
+---------
+TOTAL - 920 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.171 0.185 0.005 0.003 0.221
+ 2   GREEDY  0.144 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.195 0.212 0.004 0.001 0.218
+ 2   GREEDY  0.159 0.184 0.006 0.002 0.000
+---------
+---------
+TOTAL - 940 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.171 0.185 0.005 0.003 0.220
+ 2   GREEDY  0.144 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.187 0.195 0.003 0.002 0.138
+ 2   GREEDY  0.134 0.172 0.009 0.002 0.000
+---------
+---------
+TOTAL - 960 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.172 0.186 0.005 0.003 0.218
+ 2   GREEDY  0.144 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.198 0.209 0.003 0.002 0.168
+ 2   GREEDY  0.121 0.159 0.009 0.002 0.000
+---------
+---------
+TOTAL - 980 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.173 0.186 0.005 0.003 0.218
+ 2   GREEDY  0.143 0.177 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.212 0.216 0.003 0.004 0.200
+ 2   GREEDY  0.131 0.164 0.007 0.001 0.000
+---------
+saving model: 2019-08-20-01-39-13
+saving players records.
+---------
+TOTAL - 1000 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.173 0.187 0.005 0.003 0.217
+ 2   GREEDY  0.143 0.178 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.206 0.211 0.002 0.002 0.165
+ 2   GREEDY  0.131 0.184 0.011 0.001 0.000
+---------
+---------
+TOTAL - 1020 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.174 0.187 0.005 0.003 0.215
+ 2   GREEDY  0.143 0.177 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.189 0.202 0.003 0.001 0.108
+ 2   GREEDY  0.135 0.172 0.008 0.001 0.000
+---------
+---------
+TOTAL - 1040 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.174 0.188 0.004 0.003 0.214
+ 2   GREEDY  0.143 0.177 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.210 0.207 0.003 0.006 0.161
+ 2   GREEDY  0.127 0.172 0.009 0.001 0.000
+---------
+---------
+TOTAL - 1060 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.175 0.187 0.004 0.003 0.213
+ 2   GREEDY  0.142 0.177 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.180 0.183 0.002 0.003 0.172
+ 2   GREEDY  0.126 0.157 0.006 0.000 0.000
+---------
+---------
+TOTAL - 1080 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.175 0.187 0.004 0.003 0.213
+ 2   GREEDY  0.142 0.176 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.187 0.186 0.003 0.005 0.194
+ 2   GREEDY  0.098 0.144 0.010 0.002 0.000
+---------
+saving model: 2019-08-20-01-39-50
+---------
+TOTAL - 1100 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.175 0.187 0.004 0.003 0.211
+ 2   GREEDY  0.141 0.176 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.186 0.191 0.002 0.001 0.127
+ 2   GREEDY  0.126 0.161 0.007 0.000 0.000
+---------
+---------
+TOTAL - 1120 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.175 0.187 0.004 0.003 0.210
+ 2   GREEDY  0.141 0.176 0.008 0.002 0.000
+
+LAST UPDATE - 20 batches
+pid   type    s/i   f/i   d/i   k/i   l/i
+ 1    CNN    0.180 0.174 0.002 0.005 0.163
+ 2   GREEDY  0.116 0.169 0.011 0.001 0.000
+---------
