@@ -5,7 +5,6 @@ from keras.optimizers import Adam
 
 import time
 
-from pylint.test.functional.name_styles import bad_class_name
 
 from players.deep_q_player import DeepQPlayer
 from utils import *
