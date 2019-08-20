@@ -1,8 +1,10 @@
 # snake
-AI Project - Slither
+A.I. Project - Slither
 
-Project Members:
-Roee Cates - 
+Project Members:    
+- Roee Cates - 308298827
+- Carl Veksler - 724637420 
+- Barak Rabenou - 203284682
 
 
 ==============           
