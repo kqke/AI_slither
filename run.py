@@ -6,6 +6,7 @@ you can change the type of players and train players by changing the relevant li
 """
 if __name__ == '__main__':
     os.system("pip3 install numpy")
-    os.system("pip3 install keras")
     os.system("pip3 install pygame")
+    os.system("pip3 install tensorflow")
+    os.system("pip3 install keras")
     os.system("python3 main.py")

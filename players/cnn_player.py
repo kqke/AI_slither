@@ -1,10 +1,6 @@
-from keras.models import load_model
 from keras import Sequential
 from keras.layers import Convolution2D, Activation, Dense, Flatten
 from keras.optimizers import Adam
-
-import time
-
 
 from players.deep_q_player import DeepQPlayer
 from utils import *
@@ -68,7 +64,6 @@ class CNNPlayer(DeepQPlayer):
         # head isn't modeled since it's centered
         model_input = np.zeros(self.input_shape)
 
-        # todo uc
         model_input[:, :, 0] = (norm_state == FOOD_MARK)  # food
         model_input[:, :, 1] = (norm_state == self.pid)  # self body
         model_input[:, :, 2] = np.isin(norm_state, self.others_head_marks)  # other heads

@@ -1,5 +1,4 @@
 import numpy as np
-import os
 
 from constants import *
 from config import *
@@ -74,7 +73,6 @@ def rotate_state(state, direction):
 
 
 def normalize_state(state, center, direction):
-    # todo validate
     normalized_state = rotate_state(center_state(state, center), direction)
     return normalized_state
 
@@ -123,10 +121,3 @@ def get_next_location(loc, direction):
 
     next_loc = n_y, n_x
     return next_loc
-
-
-# records util
-def clean_records():
-    for fn in os.listdir(RECORDS_DIR):
-        fp = os.path.join(RECORDS_DIR, fn)
-        os.unlink(fp)

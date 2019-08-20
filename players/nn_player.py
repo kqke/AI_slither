@@ -5,16 +5,6 @@ from keras.optimizers import Adam
 from players.deep_q_player import DeepQPlayer
 from utils import *
 
-import time
-
-
-DIRECTION_TO_N_ROT90 = {
-    UP: 0,
-    RIGHT: 1,
-    DOWN: 2,
-    LEFT: 3
-}
-
 
 class NNPlayer(DeepQPlayer):
     def __init__(self, name, pid, head):
@@ -32,7 +22,7 @@ class NNPlayer(DeepQPlayer):
         model.add(Dense(1))
         adam = Adam(lr=self.params["learning_rate"])
         model.compile(loss="mean_squared_error", optimizer=adam)
-        model.summary()  # todo
+        model.summary()
         return model
 
     def extract_model_inputs(self, state):

@@ -20,7 +20,6 @@ FREE_SQUARE_MARK = 0
 
 # dirs
 MODELS_DIR = "models"
-RECORDS_DIR = "records"
 SCREEN_SHOT_DIR = "screen_shots"
 
 # players
