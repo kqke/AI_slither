@@ -24,6 +24,9 @@ Just run the file run.py
 ===============          
 = Quick Overview =        
 ===============   
+
+https://youtu.be/PgPbuVL7rHc
+
 The project is composed of 2 parts: 
 - The Game
 - The Players
