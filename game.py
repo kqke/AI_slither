@@ -15,6 +15,7 @@ from players.nn_player import NNPlayer
 from players.greedy_player import GreedyPlayer
 from players.random_player import RandomPlayer
 from players.manual_player import ManualPlayer
+from players.test_player import TestPlayer
 from utils import *
 from pygame_snake import play_gui
 
@@ -68,6 +69,8 @@ class Game:
                 self._players_dict[pid] = RandomPlayer(name, pid, head)
             elif player_type == MANUAL_PLAYER:
                 self._players_dict[pid] = ManualPlayer(name, pid, head)
+            elif player_type == TEST_1 or TEST_2 or TEST_3 or TEST_4:
+                self._players_dict[pid] = TestPlayer(pid, head, name)
             else:
                 assert 0
             pid += 1

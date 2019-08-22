@@ -32,7 +32,7 @@ CNN_PARAMS = {
     "save_model": 0,
     "save_model_batch_iterations": 20,
     "load_model": 1,
-    "load_model_fn": "EVO_2019-08-20-01-46-38.h5",
+    "load_model_fn": "EVO_2019-08-20-01-50-35.h5",
 }
 
 NN_PARAMS = {
@@ -45,6 +45,40 @@ NN_PARAMS = {
     "save_model_batch_iterations": 1000,
     "load_model": 1,
     "load_model_fn": "NN_2019-08-19-16-17-14.h5",
+}
+
+from constants import *
+
+A_PARAMS = {
+    "head": (GAME_HEIGHT - 3, 2),
+    "direction": UP,
+    "leftover": 40,
+    "actions": [(10, RIGHT_ACTION),
+                (7, RIGHT_ACTION),
+                (10, RIGHT_ACTION),
+                (2, RIGHT_ACTION),
+                (3, RIGHT_ACTION),
+                (1, LEFT_ACTION),
+                (3, LEFT_ACTION),
+                (2, RIGHT_ACTION),
+                ]
+}
+
+B_RECT_PARAMS = {
+    "head": (GAME_HEIGHT - 3, GAME_WIDTH - 8),
+    "direction": UP,
+    "leftover": 30,
+    "actions": [(10, RIGHT_ACTION),
+                (5, RIGHT_ACTION),
+                ]
+}
+
+S_RECT_PARAMS = {
+    "head": (GAME_HEIGHT - 9, 6),
+    "direction": UP,
+    "leftover": 3,
+    "actions": [(0, RIGHT_ACTION),
+                ]
 }
 
 # records

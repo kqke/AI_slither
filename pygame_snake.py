@@ -1,9 +1,12 @@
 import pygame
 import sys
 import random
+import time
 from constants import *
 from config import *
 from pygame.locals import *
+
+one_frame = False
 
 
 def play_gui(game, turns):
@@ -12,13 +15,17 @@ def play_gui(game, turns):
     clock = pygame.time.Clock()
     while i < turns:
         clock.tick(GUI_DELAY)
+        global one_frame
+        if one_frame:
+            one_frame = False
+            pause(s, game)
         for e in pygame.event.get():
             if e.type == QUIT:
                 pygame.quit()
                 quit()
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
-                    pause(s)
+                    pause(s, game)
                 elif e.key == pygame.K_p:
                     capture(s)
         draw_board(s, game)
@@ -64,7 +71,7 @@ def draw_names(screen, game):
         y += SCORE_Y_SPACE
 
 
-def pause(screen):
+def pause(screen, game):
     # draw_pause(screen)
     while True:
         for e in pygame.event.get():
@@ -76,6 +83,11 @@ def pause(screen):
                     return
                 elif e.key == pygame.K_p:
                     capture(screen)
+                elif e.key == pygame.K_n:
+                    global one_frame
+                    one_frame = True
+                    # game.play_turn()
+                    return
 
 
 # todo
@@ -84,7 +96,8 @@ def pause(screen):
 def capture(screen):
     rect = pygame.Rect(BORDER, BORDER, GAME_WIDTH * BLOCK_SIZE, GAME_HEIGHT * BLOCK_SIZE)
     sub = screen.subsurface(rect)
-    pygame.image.save(sub, SCREEN_SHOT_DIR + "/screen_shot.jpg")
+    time_str = time.strftime("%Y-%m-%d-%H-%M-%S")
+    pygame.image.save(sub, SCREEN_SHOT_DIR + "/screen_shot_" + time_str + ".jpg")
 
 
 # doesn't work...
