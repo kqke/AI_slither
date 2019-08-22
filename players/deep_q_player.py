@@ -6,14 +6,6 @@ from keras.models import load_model
 from players.base_player import BasePlayer
 from constants import *
 from config import *
-from utils import get_greedy_action
-
-DIRECTION_TO_N_ROT90 = {
-    UP: 0,
-    RIGHT: 1,
-    DOWN: 2,
-    LEFT: 3
-}
 
 
 class DeepQPlayer(BasePlayer):
@@ -101,13 +93,11 @@ class DeepQPlayer(BasePlayer):
 
                 x[i] = prev_model_input
 
-                # todo review
                 if reward < 0:  # snake is dead
                     y[i] = reward
                 else:
                     y[i] = reward + GAMMA * np.max(cur_q_values)
 
-            # todo redesign
             if self.params["train_model"]:
                 self.loss = self.model.train_on_batch(x, y)
 

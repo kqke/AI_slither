@@ -1,15 +1,3 @@
-# TODO
-# replace game_player by base_player - need pid in cnn_player (more intuitive implementation by using inheritance)
-# kepp a direction member
-# remove p.get_id() - 1 from code - prone to bugs (replace by dict or function if still necessary)
-# food should be represented in state
-# x corresponds to width and y to height (stick with this convention - o.w. prone to bugs)
-# search for todo s ...
-# if reaching end state - don't update cnn player
-# check if CNN can handle width != height, maybe enforce width = height
-
-from pickle import dump
-
 from players.cnn_player import CNNPlayer
 from players.nn_player import NNPlayer
 from players.greedy_player import GreedyPlayer
@@ -129,7 +117,6 @@ class Game:
         player.set_direction(direction)
         n_y, n_x = get_next_location(player.get_head(), direction)
         new_loc = (n_y, n_x)
-        # print("{}: {} -> {} ({})".format(player.get_id(), player.get_head(), new_loc, direction))  # todo verbose
         player.move(new_loc)
 
     def check_food(self, player):
@@ -225,12 +212,6 @@ class Game:
         if self._turn_number % BATCH_SIZE == 0:
             for player in self.get_players():
                 player.update_records()
-
-        if SAVE_RECORDS and (self._turn_number % (SAVE_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0):
-            print("saving players records.")
-            for player in self.get_players():
-                fn = "{}_{}.pkl".format(player.get_type(), player.get_id())
-                dump(player.get_records(), open(os.path.join(RECORDS_DIR, fn), "wb"))
 
         if PRINT_RECORDS and (self._turn_number % (PRINT_RECORDS_BATCH_ITERATIONS * BATCH_SIZE) == 0):
             print("---------")

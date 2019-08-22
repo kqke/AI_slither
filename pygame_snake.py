@@ -33,9 +33,6 @@ def play_gui(game, turns):
         pygame.display.update()
         game.play_turn()
         i += 1
-    # todo
-    # display round results or something
-    # display_results(s, game)
     sys.exit(0)
 
 
@@ -90,9 +87,6 @@ def pause(screen, game):
                     return
 
 
-# todo
-# finish
-# maybe add some indicator that a screen shot was taken
 def capture(screen):
     rect = pygame.Rect(BORDER, BORDER, GAME_WIDTH * BLOCK_SIZE, GAME_HEIGHT * BLOCK_SIZE)
     sub = screen.subsurface(rect)
